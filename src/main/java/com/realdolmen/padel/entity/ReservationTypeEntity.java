@@ -3,25 +3,16 @@ package com.realdolmen.padel.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "COURT", schema = "padel")
-public class CourtEntity {
+@Table(name = "RESERVATION_TYPE", schema = "padel")
+public class ReservationTypeEntity {
     @Id
-    @Column(name = "COURT_ID")
+    @Column(name = "RESERVATION_TYPE_ID")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
     @Basic
-    @Column(name = "COURT_NAME")
+    @Column(name = "RESERVATION_TYPE_NAME")
     private String name;
-
-    public CourtEntity() {
-
-    }
-
-    public CourtEntity(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public long getId() {
         return id;

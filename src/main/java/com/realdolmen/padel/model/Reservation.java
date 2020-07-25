@@ -1,4 +1,4 @@
 package com.realdolmen.padel.model;
 
-public class Plan {
+public class Reservation {
 }

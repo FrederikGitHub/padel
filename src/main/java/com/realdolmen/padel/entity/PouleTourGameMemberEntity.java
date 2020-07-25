@@ -3,22 +3,23 @@ package com.realdolmen.padel.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "POULE_SCHEDULE_RESULT", schema = "padel")
-public class PouleScheduleResultEntity {
+@Table(name = "POULE_TOUR_GAME_MEMBER", schema = "padel")
+public class PouleTourGameMemberEntity {
     @Id
-    @Column(name = "POULE_SCHEDULE_RESULT_ID")
+    @Column(name = "POULE_TOUR_GAME_MEMBER_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "POULE_SCHEDULE_RESULT_POULE_SCHEDULE_ID")
-    private PouleScheduleEntity pouleSchedule;
+    @JoinColumn(name = "POULE_TOUR_GAME_MEMBER_POULE_TOUR_GAME_ID")
+    private PouleTourGameEntity pouleTourGame;
 
-    @ManyToOne
-    @JoinColumn(name = "POULE_SCHEDULE_RESULT_MEMBER_ID")
+    @Basic
+    @Column(name = "POULE_TOUR_GAME_MEMBER_MEMBER_ID")
     private MemberEntity member;
 
-    @Column(name = "POULE_SCHEDULE_RESULT_POINTS")
+    @Basic
+    @Column(name = "POULE_TOUR_GAME_MEMBER_POINTS")
     private Integer points;
 
     public long getId() {
@@ -29,12 +30,12 @@ public class PouleScheduleResultEntity {
         this.id = id;
     }
 
-    public PouleScheduleEntity getPouleSchedule() {
-        return pouleSchedule;
+    public PouleTourGameEntity getPouleTourGame() {
+        return pouleTourGame;
     }
 
-    public void setPouleSchedule(PouleScheduleEntity pouleSchedule) {
-        this.pouleSchedule = pouleSchedule;
+    public void setPouleTourGame(PouleTourGameEntity pouleTourGame) {
+        this.pouleTourGame = pouleTourGame;
     }
 
     public MemberEntity getMember() {

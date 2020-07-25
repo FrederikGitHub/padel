@@ -4,29 +4,26 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "POULE_SCHEDULE", schema = "padel")
-public class PouleScheduleEntity {
+@Table(name = "POULE_TOUR", schema = "padel")
+public class PouleTourEntity {
 
     @Id
-    @Column(name = "POULE_SCHEDULE_ID")
+    @Column(name = "POULE_TOUR_ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "POULE_SCHEDULE_POULE_ID")
-    private PouleEntity poule;
-
     @Basic
-    @Column(name = "POULE_SCHEDULE_FROM_DATE")
+    @Column(name = "POULE_TOUR_FROM_DATE")
     private Timestamp fromDate;
 
     @Basic
-    @Column(name = "POULE_SCHEDULE_TO_DATE")
+    @Column(name = "POULE_TOUR_TO_DATE")
     private Timestamp toDate;
 
+
     @Basic
-    @Column(name = "POULE_SCHEDULE_STATE")
-    private String state;
+    @Column(name = "POULE_TOUR_PLAY_STATE")
+    private PlayStateEntity state;
 
     public long getId() {
         return id;
@@ -36,13 +33,7 @@ public class PouleScheduleEntity {
         this.id = id;
     }
 
-    public PouleEntity getPoule() {
-        return poule;
-    }
 
-    public void setPoule(PouleEntity poule) {
-        this.poule = poule;
-    }
 
     public Timestamp getFromDate() {
         return fromDate;
@@ -60,11 +51,11 @@ public class PouleScheduleEntity {
         this.toDate = toDate;
     }
 
-    public String getState() {
+    public PlayStateEntity getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(PlayStateEntity state) {
         this.state = state;
     }
 }
