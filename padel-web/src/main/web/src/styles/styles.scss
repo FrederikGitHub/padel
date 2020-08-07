@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "variables.scss";
+
+// Import Bootstrap
+@import "~bootstrap/scss/bootstrap.scss";
+
+// Import Custom SCSS
+//@import "global.scss";
+
+// Layout
+@import "src/styles/layout/app-default";
+@import "src/styles/layout/app-fixed";
+
+
+// Navigation
+@import "navigation/nav.scss";
+@import "navigation/topnav.scss";
+@import "navigation/sidenav/sidenav.scss";
+@import "navigation/sidenav/sidenav-light.scss";
+
