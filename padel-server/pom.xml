@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.realdolmen.padel</groupId>
+        <artifactId>padel</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>padel-server</artifactId>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-integration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.realdolmen.padel</groupId>
+            <artifactId>padel-web</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <properties>
+                <tomcat.server>devtomcat</tomcat.server>
+                <tomcat.url>http://localhost:8089/manager/text</tomcat.url>
+                <tomcat.username>tomcat</tomcat.username>
+                <tomcat.password>tomcat</tomcat.password>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>production</id>
+            <properties>
+                <tomcat.server>prodtomcat</tomcat.server>
+                <tomcat.url>http://localhost:8091/manager/text</tomcat.url>
+                <tomcat.username>tomcat</tomcat.username>
+                <tomcat.password>tomcat</tomcat.password>
+            </properties>
+
+        </profile>
+
+        <profile>
+            <id>standalone</id>
+            <properties>
+                <build.profile.id>standalone</build.profile.id>
+                <run.environment>standalone</run.environment>
+                <jdbc.url>jdbc:mysql://localhost:3306/mobilewaiter?useSSL=false</jdbc.url>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>container</id>
+            <properties>
+                <run.environment>container</run.environment>
+                <build.profile.id>container</build.profile.id>
+                <jdbc.url>java:comp/env/jdbc/mobilewaiter</jdbc.url>
+            </properties>
+        </profile>
+
+
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory >
+                            <resources>
+                                <resource>
+                                    <directory>${project.parent.basedir}/padel-web/src/main/web/dist/np-app/</directory >
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
+                    <warName>padel-app</warName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+
+                <configuration>
+                    <!-- Dont forget to add a corresponding server block to your settings.xml -->
+                    <url>${tomcat.url}</url>
+                    <update>true</update>
+                    <server>${tomcat.server}</server>
+                    <username>${tomcat.username}</username>
+                    <password>${tomcat.password}</password>
+                    <path>/padel</path>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
