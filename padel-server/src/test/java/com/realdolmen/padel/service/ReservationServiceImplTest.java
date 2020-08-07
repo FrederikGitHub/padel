@@ -3,7 +3,6 @@ package com.realdolmen.padel.service;
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.MemberBuilder;
 import com.realdolmen.padel.model.builder.TimeSlotBuilder;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
