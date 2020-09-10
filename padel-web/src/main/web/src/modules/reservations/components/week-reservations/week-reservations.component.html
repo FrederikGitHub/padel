@@ -1,0 +1,89 @@
+<p>Op deze pagina zal je weekreservaties kunnen zien van een bepaalde groep(rakkers,lovers) en wie de reserves van de week zijn</p>
+
+
+<!--form>
+    <div class="form-group row">
+        <div class="input-group">
+            <label for="dp" class="col-sm-2 col-form-label">DagPlanning voor</label>
+            <input class="form-control" placeholder="dd-mm-yyyy"
+                   name="dp"  id="dp" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+            </div>
+        </div>
+    </div>
+
+</form>
+<h1>ddd</h1>
+<div *ngFor="let weekPlanning of weekPlannings;">
+<h1>{{weekPlanning.from}} </h1>
+</div>
+
+
+<div>
+    <div class="row">
+        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" data-ng-repeat="order in orders">
+
+            <div class="bs-component">
+
+                <div class="panel panel-primary">
+
+                    <div class="panel-heading order-panel-title">
+
+
+
+                        <div class="btn-group" >
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a style="cursor: pointer;font-size:15px" data-ng-click="annulation(order)">{{'order.annulation' | translate}}</a></li>
+                            </ul>
+                        </div>
+
+
+                        <span style="font-size: small">{{order.orderDate | toHHmm}} {{order.account.firstname}}</span>
+
+                        <span class="badge">{{order.name}}</span>
+
+
+                    </div>
+
+                    <div class="panel-body order-panel-body" data-ng-click="showOrderDetails(order)" role="button"
+                         style="height:175px;overflow-y:scroll;">
+                        <table class="table">
+                            <tr data-ng-repeat="item in order.items | orderBy : 'status.id'">
+                                <td data-ng-class="{'line-through': item.status==='CANCEL'}">{{item.total}} {{item.name}}</td>
+                                <td><i class="{{getOrderItemStatusClass(item.status)}}"></i></td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+
+                    <div class="panel-heading order-panel-title" data-ng-click="updateStatus(order)"
+                         style="cursor: pointer;cursor: hand;">
+                        <div class="row">
+
+                            <div title="{{getNextAllowedStateTooltip(order) | translate}}" class="col-xs-6"><i class="{{getNextAllowedStateClass(order)}}"></i> {{getNextAllowedStateLabel(order)
+                                | translate}}
+                            </div>
+                            <div class="col-xs-6">{{getOrderTotal(order) | currency: "€ "}}
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div-->

@@ -21,8 +21,8 @@ public class PouleTourEntity {
     private Timestamp toDate;
 
 
-    @Basic
-    @Column(name = "POULE_TOUR_PLAY_STATE_ID")
+    @ManyToOne
+    @JoinColumn(name = "POULE_TOUR_PLAY_STATE_ID")
     private PlayStateEntity state;
 
     public long getId() {

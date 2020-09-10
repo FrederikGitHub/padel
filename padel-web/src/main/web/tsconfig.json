@@ -1,22 +1,48 @@
 {
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "fullTemplateTypeCheck": true,
+    "preserveWhitespaces": false,
+    "strictInjectionParameters": true
+  },
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "downlevelIteration": true,
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
+    "baseUrl": "src",
     "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "downlevelIteration": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "importHelpers": true,
     "lib": [
       "es2018",
       "dom"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "./dist/out-tsc",
+    "paths": {
+      "@app/*": [
+        "app/*"
+      ],
+      "@common/*": [
+        "modules/app-common/*"
+      ],
+      "@modules/*": [
+        "modules/*"
+      ],
+      "@testing/*": [
+        "testing/*"
+      ]
+    },
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/typings"
     ]
   }
 }

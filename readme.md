@@ -24,6 +24,8 @@ Another problem is that first page of angular is not shown.see sample applicatio
 
 8.resources
 
+https://medium.com/@coderonfleek/faking-the-backend-in-angular-apps-a10c1b8823c
+https://github.com/StartBootstrap/sb-admin-angular
 
 # spring-boot-angular6-maven-project
 Build and package spring boot and angular6 into a deployable war file

@@ -14,8 +14,8 @@ public class PouleTourGameMemberEntity {
     @JoinColumn(name = "POULE_TOUR_GAME_MEMBER_POULE_TOUR_GAME_ID")
     private PouleTourGameEntity pouleTourGame;
 
-    @Basic
-    @Column(name = "POULE_TOUR_GAME_MEMBER_MEMBER_ID")
+    @ManyToOne
+    @JoinColumn(name = "POULE_TOUR_GAME_MEMBER_MEMBER_ID")
     private MemberEntity member;
 
     @Basic

@@ -18,10 +18,13 @@ public class PouleTourGameEntity {
     @JoinColumn(name = "POULE_TOUR_GAME_POULE_TOUR_ID")
     private PouleTourEntity pouleTour;
 
-    @Basic
-    @Column(name = "POULE_TOUR_GAME_POULE_TOUR_ID_PLAY_STATE_ID")
+    @ManyToOne
+    @JoinColumn(name = "POULE_TOUR_GAME_PLAY_STATE_ID")
     private PlayStateEntity state;
 
+    @ManyToOne
+    @JoinColumn(name = "POULE_TOUR_GAME_TIMESLOT_ID")
+    private TimeSlotEntity timeslot;
 
     public long getId() {
         return id;
@@ -29,6 +32,14 @@ public class PouleTourGameEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public PouleEntity getPoule() {
+        return poule;
+    }
+
+    public void setPoule(PouleEntity poule) {
+        this.poule = poule;
     }
 
     public PouleTourEntity getPouleTour() {
@@ -47,11 +58,11 @@ public class PouleTourGameEntity {
         this.state = state;
     }
 
-    public PouleEntity getPoule() {
-        return poule;
+    public TimeSlotEntity getTimeslot() {
+        return timeslot;
     }
 
-    public void setPoule(PouleEntity poule) {
-        this.poule = poule;
+    public void setTimeslot(TimeSlotEntity timeslot) {
+        this.timeslot = timeslot;
     }
 }

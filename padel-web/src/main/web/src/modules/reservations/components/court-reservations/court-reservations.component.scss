@@ -1,0 +1,6 @@
+@import 'styles/variables.scss';
+.vertical-text {
+    text-align:center;
+    white-space:nowrap;
+    transform: rotate(270deg);
+}

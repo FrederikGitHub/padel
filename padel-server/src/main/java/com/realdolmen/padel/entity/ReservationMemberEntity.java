@@ -11,7 +11,7 @@ public class ReservationMemberEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
 
-    @Basic
+    @ManyToOne
     @JoinColumn(name = "RESERVATION_MEMBER_RESERVATION_ID")
     private ReservationEntity reservation;
 

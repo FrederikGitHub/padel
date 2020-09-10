@@ -1,11 +1,11 @@
 package com.realdolmen.padel.entity;
 
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PLAY_STATE", schema = "padel")
 public class PlayStateEntity {
-
     @Id
     @Column(name = "PLAY_STATE_ID")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,6 +14,16 @@ public class PlayStateEntity {
     @Basic
     @Column(name = "PLAY_STATE_STATE")
     private String state;
+
+
+    public PlayStateEntity() {
+
+    }
+
+    public PlayStateEntity(int id, String name) {
+        this.id = id;
+        this.state = name;
+    }
 
     public long getId() {
         return id;
@@ -31,3 +41,4 @@ public class PlayStateEntity {
         this.state = state;
     }
 }
+

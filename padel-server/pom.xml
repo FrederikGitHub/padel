@@ -115,7 +115,7 @@
                             <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory >
                             <resources>
                                 <resource>
-                                    <directory>${project.parent.basedir}/padel-web/src/main/web/dist/np-app/</directory >
+                                    <directory>${project.parent.basedir}/padel-web/src/main/web/dist/padel</directory >
                                 </resource>
                             </resources>
                         </configuration>

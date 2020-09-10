@@ -19,13 +19,12 @@ public class WeeklyReserveEntity {
     @Column(name = "WEEKLY_RESERVE_YEAR")
     private Integer year;
 
-    @Basic
-    @Column(name = "WEEKLY_RESERVE_MEMBER_ID")
+    @ManyToOne
+    @JoinColumn(name = "WEEKLY_RESERVE_MEMBER_ID")
     private MemberEntity member;
 
-
-    @Basic
-    @Column(name = "WEEKLY_RESERVE_GROUP_ID")
+    @ManyToOne
+    @JoinColumn(name = "WEEKLY_RESERVE_GROUP_ID")
     private GroupEntity group;
 
     public long getId() {
