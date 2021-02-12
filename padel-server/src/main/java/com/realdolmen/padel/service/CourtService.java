@@ -8,13 +8,15 @@ import java.util.List;
 
 public interface CourtService {
 
+    Court getCourt(String court);
+
     void create(Court court);
 
     void update(Court account);
 
-    void delete(Long id);
+    void delete(Court id);
 
-    List<Court> getCourts(String language);
+    List<Court> getCourts();
 
 
 

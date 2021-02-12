@@ -3,21 +3,38 @@ package com.realdolmen.padel.service;
 import com.realdolmen.padel.model.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ReservationService {
 
-    public List<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<TimeSlot> timeSlotList, Group group);
+    void storeWeekPlanning(Set<WeekPlanning> weekPlannings,boolean validateTimeSlotOverBooking,boolean validateMemberOverBooking);
 
-    public List<Reservation> getMemberReservations(Member member, Date fromDate, Date toDate, List<ReservationType> reservationTypeList);
+    boolean validateWeekPlanning(Set<WeekPlanning> weekPlannings,boolean validateTimeSlotOverBooking,boolean validateMemberOverBooking);
 
-    public Map<Court,List<Reservation>> getDayReservations(Date day);
+    Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week,List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members,Group group);
+    //public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlot> courtTimeSlotList, Group group);
+
+    Set<WeekPlanning> getGroupWeekPlanning(LocalDate fromDate, LocalDate toDate, Group group);
+
+    Map<Member,Long> getTotalReservationsByMember(LocalDate fromDate, LocalDate toDate);
+
+    Map<Member,Long> getTotalByeByMember(LocalDate fromDate, LocalDate toDate);
+
+    Map<Court,List<Reservation>> getDayReservations(LocalDate day);
 
     void delete(Long id);
+
+    void deleteAllReservations();
 
     void create(Reservation reservation);
 
     void update(Reservation reservation);
+
+    Reservation findReservationForPeriodAndCourtTimeSlot(LocalDate localdate, CourtTimeSlot courtTimeSlot);
+
+    List<Reservation> findReservationsForPeriodAndMember(LocalDate startDate, LocalDate endDate, Member member);
+
+    List<Reservation> findAllReservations();
 }

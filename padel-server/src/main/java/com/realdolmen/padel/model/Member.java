@@ -1,23 +1,29 @@
 package com.realdolmen.padel.model;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-public class Member {
+public class Member implements Comparable<Member>{
     private long id;
     private String name;
     private String firstName;
     private String email;
     private String gsm;
-    private Group group;
+    private Group level;
+    private List<GroupAvailability> groupAvailabilityList;
     private String active;
 
-    public Member(long id, String name, String firstName, String email, String gsm, Group group, String active) {
+    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, Group level,String active) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
         this.email = email;
         this.gsm = gsm;
-        this.group = group;
+        this.groupAvailabilityList = groupAvailabilityList;
+        this.level = level;
         this.active = active;
     }
 
@@ -66,12 +72,12 @@ public class Member {
         return this;
     }
 
-    public Group getGroup() {
-        return group;
+    public List<GroupAvailability> getGroupAvailability() {
+        return groupAvailabilityList;
     }
 
-    public Member setGroup(Group group) {
-        this.group = group;
+    public Member setGroupAvailability(List<GroupAvailability> groupAvailabilityList) {
+        this.groupAvailabilityList = groupAvailabilityList;
         return this;
     }
 
@@ -84,6 +90,15 @@ public class Member {
         return this;
     }
 
+    public Member setlevel(Group level) {
+        this.level = level;
+        return this;
+    }
+
+    public Group getLevel() {
+        return level;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
@@ -92,7 +107,8 @@ public class Member {
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 ", gsm='" + gsm + '\'' +
-                ", group=" + group +
+                ", group=" + groupAvailabilityList +
+                ", level=" + level +
                 ", active='" + active + '\'' +
                 '}';
     }
@@ -110,5 +126,91 @@ public class Member {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, firstName);
+    }
+
+    @Override
+    public int compareTo(Member o) {
+        return String.CASE_INSENSITIVE_ORDER.compare(this.name + " " + this.firstName,o.name + " " + o.firstName);
+    }
+
+    public static class Functions {
+
+        public static Function<Member, String> TO_LAST_NAME = new Function<Member, String>() {
+            @Override
+            public String apply(Member member) {
+                return member.getName();
+            }
+        };
+
+        public static Function<Member, String> TO_FIRST_NAME = new Function<Member, String>() {
+            @Override
+            public String apply(Member member) {
+                return member.getFirstName();
+            }
+        };
+
+        public static Function<Member, String> TO_FULL_NAME = new Function<Member, String>() {
+            @Override
+            public String apply(Member member) {
+                return member.getName() + " " + member.getFirstName();
+            }
+        };
+
+        public static Function<Member, Stream<GroupAvailability>> TO_GROUP_AVAILABILITY = new Function<Member, Stream<GroupAvailability>>() {
+            @Override
+            public Stream<GroupAvailability> apply(Member member) {
+                return member.getGroupAvailability().stream();
+            }
+        };
+
+    }
+
+    public static class Predicates {
+
+        public static final Predicate<Member> withGroup(final String groupName) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getGroupAvailability().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
+                }
+            };
+        }
+
+        public static final Predicate<Member> withGroupLevel(final String groupLevel) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getLevel() != null && member.getLevel().getName().equalsIgnoreCase(groupLevel);
+                }
+            };
+        }
+
+
+        public static final Predicate<Member> startWithName(final String name) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getName() != null && member.getName().startsWith(name);
+                }
+            };
+        }
+
+
+        public static final Predicate<Member> IS_ACTIVE = new Predicate<Member>() {
+            @Override
+            public boolean test(Member member) {
+                return member.getActive() == null || member.getActive().equalsIgnoreCase("Y");
+            }
+        };
+
+        public static final Predicate<Member> startWithFirstName(final String firstName) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getName() != null && member.getFirstName().startsWith(firstName);
+                }
+            };
+        }
+
     }
 }

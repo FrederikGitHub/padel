@@ -3,27 +3,20 @@ export interface Court {
     name?: string;
 }
 
+export interface Availability {
+    label?: string;
+    weekNumbers?: number[];
+}
+
 export interface Group {
     id?: number;
     name?: string;
+    genders?: string[];
 }
 
-export interface Poule {
-    id?: number;
-    name?: string;
-}
-
-export interface WeekDay {
-    id?: number;
-    dayOfWeek?: number;
-    name?: string;
-}
-
-export interface TimeSlot {
-    weekday?: WeekDay;
-    from?: string;
-    to?: string;
-    court?: Court;
+export interface GroupAvailability {
+    weekNumbersOfMonth?: number[];
+    group?: Group[];
 }
 
 export interface Member {
@@ -32,14 +25,17 @@ export interface Member {
     firstName?: string;
     email?: string;
     gsm?: string;
-    group?: Group;
+    level?: string;
     active?: string;
+    groupAvailabilityList?: GroupAvailability;
 }
 
-export interface ReservationType {
+export interface CourtTimeSlot {
     id?: number;
-    name?: string;
+    timeSlot?: TimeSlot;
+    court?: Court;
 }
+
 
 export interface Reservation {
     id?: number;
@@ -47,44 +43,56 @@ export interface Reservation {
     month?: number;
     year?: number;
     week?: number;
-    timeSlot?: TimeSlot;
+    courtTimeSlot?: CourtTimeSlot;
     reservationMembers?: Member[];
-    reservationType?: ReservationType;
+    reserveMembers?: Member[];
+    group?: Group[];
+}
+
+export interface ReservationType {
+    name?: string;
+}
+
+export interface DayOfWeek {
+
+}
+
+export interface TimeSlot {
+    from?: string;
+    to?: string;
+    dayOfWeek?: DayOfWeek;
+}
+
+export interface Week {
+    weekOfYear?: string;
+    weekOfMonth?: string;
+    startWeekDay?: string;
+    endWeekDay?: string;
+    year?: number;
+
+}
+
+export interface WeekDay {
+    id?: number;
+    dayOfWeek?: number;
+    name?: string;
 }
 
 export interface WeekPlanning {
-    id?: number;
-    weekNr?: number;
-    from?: string;
-    to?: string;
-    timeSlotReservations?: Reservation[];
-    reserveList?:Member[];
+    week?: number;
+    reservationList?: Reservation[];
+    reserveList?: Member[];
 }
 
-export interface PlayState {
-    id?: number;
-    name?:string
+export interface WeekTimeSlot {
+    day?: number;
+    timeslot?: CourtTimeSlot;
+    week?: Week;
 }
 
-export interface PouleTour {
-    id?: number;
-    from?: string;
-    to?: string;
-    state?:PlayState;
-    pouleTourGames:PouleTourGame[];
-}
-
-export interface PouleTourGame {
-    id?: number;
-    pouleTour?: PouleTour;
-    poule?: Poule;
-    state?:PlayState;
-    pouleTourGameMembers:PouleTourGameMember[];
-}
-
-export interface PouleTourGameMember {
-    id?: number;
-    pouleTourGame:PouleTourGame;
-    member?: Member;
-    points?: number;
+export interface MemberFilterForm {
+    name?: string;
+    firstName?: string;
+    level?: string;
+    group?:string;
 }

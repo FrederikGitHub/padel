@@ -13,7 +13,7 @@ export class FakeReservationService  {
 
     }
 
-    createDb() {
+    /*createDb() {
 
         let week_reservations: WeekPlanning[] = [
             {
@@ -76,5 +76,5 @@ export class FakeReservationService  {
         ];
         return of(weekPlannings);
 
-    }
+    }*/
 }

@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class WeekTimeSlot {
     private LocalDate day;
-    private TimeSlot timeslot;
-    private Integer weekNr;
+    private CourtTimeSlot timeslot;
+    private Week week;
 
     public LocalDate getDay() {
         return day;
@@ -16,21 +16,22 @@ public class WeekTimeSlot {
         return this;
     }
 
-    public TimeSlot getTimeslot() {
+    public CourtTimeSlot getTimeslot() {
         return timeslot;
     }
 
-    public WeekTimeSlot setTimeslot(TimeSlot timeslot) {
+    public WeekTimeSlot setTimeslot(CourtTimeSlot timeslot) {
         this.timeslot = timeslot;
         return this;
     }
 
-    public Integer getWeekNr() {
-        return weekNr;
+
+    public Week getWeek() {
+        return week;
     }
 
-    public WeekTimeSlot setWeekNr(Integer weekNr) {
-        this.weekNr = weekNr;
+    public WeekTimeSlot setWeek(Week week) {
+        this.week = week;
         return this;
     }
 
@@ -39,7 +40,7 @@ public class WeekTimeSlot {
         return "WeekTimeSlot{" +
                 "day=" + day +
                 ", timeslot=" + timeslot +
-                ", weekNr=" + weekNr +
+                ", weekNr=" + week +
                 '}';
     }
 }

@@ -14,6 +14,10 @@ import * as adminComponents from './components';
 /* Containers */
 import * as adminContainers from './containers';
 import {AgGridModule} from "ag-grid-angular";
+import {StoreModule} from "@ngrx/store";
+import {EffectsModule} from "@ngrx/effects";
+import {MemberEffects} from "@modules/admin/effects/member.effects";
+
 
 
 @NgModule({
@@ -25,7 +29,8 @@ import {AgGridModule} from "ag-grid-angular";
         AppCommonModule,
         AgGridModule,
         NavigationModule,
-
+        //StoreModule.forFeature('admin', reducers),
+        //EffectsModule.forFeature([MemberEffects]),
     ],
 
     declarations: [...adminContainers.containers, ...adminComponents.components],

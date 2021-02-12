@@ -10,19 +10,19 @@ import {FakeReservationService} from "@modules/reservations/services/fake-reserv
 })
 export class WeekReservationsComponent implements OnInit {
 
-    weekPlannings:WeekPlanning[]=[];
+    weekPlannings:WeekPlanning[] = [];
 
 
     constructor(private reservationService: FakeReservationService) {}
 
     ngOnInit() {
-        this.getWeekPlannings();
+        //this.getWeekPlannings();
     }
 
 
     getWeekPlannings() {
-        this.reservationService.getWeekReservations$().subscribe(data => {
+        /*this.reservationService.getWeekReservations$().subscribe(data => {
             this.weekPlannings = data;
-        });
+        });*/
     }
 }

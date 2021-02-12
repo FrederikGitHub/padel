@@ -2,6 +2,9 @@ package com.realdolmen.padel.model.builder;
 
 import com.realdolmen.padel.model.Group;
 import com.realdolmen.padel.model.Member;
+import com.realdolmen.padel.model.GroupAvailability;
+
+import java.util.List;
 
 public class MemberBuilder {
     private long id;
@@ -9,7 +12,8 @@ public class MemberBuilder {
     private String firstName;
     private String email;
     private String gsm;
-    private Group group;
+    private List<GroupAvailability> groupAvailabilityList;
+    private Group level;
     private String active;
 
     public MemberBuilder setId(long id) {
@@ -37,8 +41,8 @@ public class MemberBuilder {
         return this;
     }
 
-    public MemberBuilder setGroup(Group group) {
-        this.group = group;
+    public MemberBuilder setGroupAvailabilityList(List<GroupAvailability> groupAvailabilityList) {
+        this.groupAvailabilityList = groupAvailabilityList;
         return this;
     }
 
@@ -47,7 +51,12 @@ public class MemberBuilder {
         return this;
     }
 
+    public MemberBuilder setLevel(Group level) {
+        this.level = level;
+        return this;
+    }
+
     public Member build() {
-        return new Member(id, name, firstName, email, gsm, group, active);
+        return new Member(id, name, firstName, email, gsm, groupAvailabilityList, level,active);
     }
 }
