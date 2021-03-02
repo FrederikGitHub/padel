@@ -14,6 +14,7 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RestReservationResource extends BaseResource {
 
 
@@ -135,7 +136,6 @@ public class RestReservationResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/reservation", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Reservation> updateReservation(final @RequestBody Reservation reservation) {
         ResponseEntity responseEntity = new ResponseEntity(reservation, HttpStatus.OK);
 

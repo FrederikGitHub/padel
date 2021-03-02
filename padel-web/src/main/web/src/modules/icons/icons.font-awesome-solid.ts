@@ -23,6 +23,8 @@ import {
     faCalendarDay,
     faUserClock,
     faRobot,
+    faTrashAlt,
+    faCopy,
 
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -48,5 +50,8 @@ export const fontAwesomeSolidIcons = {
     faCalendarWeek,
     faCalendarDay,
     faUserClock,
-    faRobot
+    faRobot,
+    faTrashAlt,
+    faCopy
+
 };

@@ -25,9 +25,9 @@ export class MemberService {
 
     }
 
-    getAllMembers(): Observable<Member[]> {
+    getAllMembers():Observable<Array<Member>> {
 
-
+        console.log("getAllMembers" + this.restMemberUrl);
         let members$: Observable<Member[]> = this.http.get<Member[]>(this.restMemberUrl);
 
         return members$;

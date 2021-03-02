@@ -12,11 +12,12 @@ public class Member implements Comparable<Member>{
     private String firstName;
     private String email;
     private String gsm;
-    private Group level;
+    private String level;
     private List<GroupAvailability> groupAvailabilityList;
+    private String gender;
     private String active;
 
-    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, Group level,String active) {
+    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, String level,String gender,String active) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
@@ -24,6 +25,7 @@ public class Member implements Comparable<Member>{
         this.gsm = gsm;
         this.groupAvailabilityList = groupAvailabilityList;
         this.level = level;
+        this.gender = gender;
         this.active = active;
     }
 
@@ -72,11 +74,11 @@ public class Member implements Comparable<Member>{
         return this;
     }
 
-    public List<GroupAvailability> getGroupAvailability() {
+    public List<GroupAvailability> getGroupAvailabilityList() {
         return groupAvailabilityList;
     }
 
-    public Member setGroupAvailability(List<GroupAvailability> groupAvailabilityList) {
+    public Member setGroupAvailabilityList(List<GroupAvailability> groupAvailabilityList) {
         this.groupAvailabilityList = groupAvailabilityList;
         return this;
     }
@@ -90,13 +92,22 @@ public class Member implements Comparable<Member>{
         return this;
     }
 
-    public Member setlevel(Group level) {
+    public Member setLevel(String level) {
         this.level = level;
         return this;
     }
 
-    public Group getLevel() {
+    public Member setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public String getLevel() {
         return level;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     @Override
@@ -109,6 +120,7 @@ public class Member implements Comparable<Member>{
                 ", gsm='" + gsm + '\'' +
                 ", group=" + groupAvailabilityList +
                 ", level=" + level +
+                ", level=" + gender +
                 ", active='" + active + '\'' +
                 '}';
     }
@@ -159,7 +171,7 @@ public class Member implements Comparable<Member>{
         public static Function<Member, Stream<GroupAvailability>> TO_GROUP_AVAILABILITY = new Function<Member, Stream<GroupAvailability>>() {
             @Override
             public Stream<GroupAvailability> apply(Member member) {
-                return member.getGroupAvailability().stream();
+                return member.getGroupAvailabilityList().stream();
             }
         };
 
@@ -171,7 +183,7 @@ public class Member implements Comparable<Member>{
             return new Predicate<Member>() {
                 @Override
                 public boolean test(Member member) {
-                    return member.getGroupAvailability().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
+                    return member.getGroupAvailabilityList().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
                 }
             };
         }
@@ -180,7 +192,16 @@ public class Member implements Comparable<Member>{
             return new Predicate<Member>() {
                 @Override
                 public boolean test(Member member) {
-                    return member.getLevel() != null && member.getLevel().getName().equalsIgnoreCase(groupLevel);
+                    return member.getLevel() != null && member.getLevel().equalsIgnoreCase(groupLevel);
+                }
+            };
+        }
+
+        public static final Predicate<Member> withId(final Long id) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getId() == id;
                 }
             };
         }

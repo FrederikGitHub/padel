@@ -1,7 +1,10 @@
 package com.realdolmen.padel.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.DayOfWeek;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TimeSlot {
     TIME_SLOT_MONDAY_0630_0800(DayOfWeek.MONDAY,"06:30","08:00"),
     TIME_SLOT_MONDAY_0800_0930(DayOfWeek.MONDAY,"08:00","09:30"),

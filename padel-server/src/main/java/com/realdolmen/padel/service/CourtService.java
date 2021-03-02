@@ -12,9 +12,9 @@ public interface CourtService {
 
     void create(Court court);
 
-    void update(Court account);
+    void update(Court court);
 
-    void delete(Court id);
+    void delete(Court court);
 
     List<Court> getCourts();
 

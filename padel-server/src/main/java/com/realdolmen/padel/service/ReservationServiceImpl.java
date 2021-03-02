@@ -1,8 +1,9 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.data.InMemoryDataStore;
+import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.exception.*;
 import com.realdolmen.padel.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -21,6 +22,10 @@ import java.util.stream.Stream;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
+
+
+    @Autowired
+    DataStore dataStore;
 
 
     @Override
@@ -45,10 +50,10 @@ public class ReservationServiceImpl implements ReservationService {
             @Override
             public boolean test(Member member) {
                 List<Integer> availableWeekNumbers = new ArrayList<Integer>();
-                Optional<GroupAvailability> groupAvailability = member.getGroupAvailability().stream().filter(GroupAvailability.Predicates.withGroup(group)).findFirst();
+                Optional<GroupAvailability> groupAvailability = member.getGroupAvailabilityList().stream().filter(GroupAvailability.Predicates.withGroup(group)).findFirst();
 
                 if (groupAvailability.isPresent()) {
-                    availableWeekNumbers = groupAvailability.get().getWeekNumbersOfMonth();
+                    availableWeekNumbers = groupAvailability.get().getAvailability().getWeekNumbers();
                 }
 
                 return (availableWeekNumbers == null || availableWeekNumbers.size() >= 4);
@@ -110,7 +115,7 @@ public class ReservationServiceImpl implements ReservationService {
         Map<Integer, List<TimeSlotGroupMembers>> groupMembersByTimeSlot = new HashMap<Integer, List<TimeSlotGroupMembers>>();
         List<Group> availableGroups = availableMembers.stream().flatMap(Member.Functions.TO_GROUP_AVAILABILITY).map(GroupAvailability.Functions.TO_GROUP).distinct().collect(Collectors.toList());
         for (Group availableGroup : availableGroups) {
-            List<Member> groupMembers = availableMembers.stream().filter(Member.Predicates.withGroupLevel(availableGroup.getName())).collect(Collectors.toList());
+            List<Member> groupMembers = availableMembers.stream().filter(Member.Predicates.withGroupLevel(availableGroup.getVtvLevel())).collect(Collectors.toList());
             if (groupMembers.size()==0){
                 break;
             }
@@ -220,10 +225,10 @@ public class ReservationServiceImpl implements ReservationService {
     private List<Member> findWeekMembersPlannedInOtherGroup(List<Member> memberList, Integer weekOfMonth, Group group) {
         List<Member> weekMembersPlannedInOtherGroup = new ArrayList<Member>();
         for (Member member : memberList) {
-            if (!CollectionUtils.isEmpty(member.getGroupAvailability())) {
-                for (GroupAvailability groupAvailability : member.getGroupAvailability()) {
+            if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())) {
+                for (GroupAvailability groupAvailability : member.getGroupAvailabilityList()) {
                     if (!groupAvailability.getGroup().equals(group)) {
-                        if (groupAvailability.getWeekNumbersOfMonth().contains(weekOfMonth)) {
+                        if (groupAvailability.getAvailability().getWeekNumbers().contains(weekOfMonth)) {
                             weekMembersPlannedInOtherGroup.add(member);
                         }
                     }
@@ -237,13 +242,13 @@ public class ReservationServiceImpl implements ReservationService {
     private List<Member> calculateWeeklyMembers(List<Member> groupMemberList, Week week, Group group) {
         List<Member> weeklyMembers = new ArrayList<Member>();
         for (Member groupMember : groupMemberList) {
-            if (groupMember.getGroupAvailability() != null) {
+            if (groupMember.getGroupAvailabilityList() != null) {
                 List<Integer> availableWeekNumbers = new ArrayList<Integer>();
 
-                Optional<GroupAvailability> groupAvailability = groupMember.getGroupAvailability().stream().filter(GroupAvailability.Predicates.withGroup(group)).findFirst();
+                Optional<GroupAvailability> groupAvailability = groupMember.getGroupAvailabilityList().stream().filter(GroupAvailability.Predicates.withGroup(group)).findFirst();
 
                 if (groupAvailability.isPresent()) {
-                    availableWeekNumbers = groupAvailability.get().getWeekNumbersOfMonth();
+                    availableWeekNumbers = groupAvailability.get().getAvailability().getWeekNumbers();
                 }
 
 
@@ -386,7 +391,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Set<WeekPlanning> getGroupWeekPlanning(LocalDate fromDate, LocalDate toDate, Group group) {
         Predicate<Reservation> predicateStartDate = Reservation.Predicates.isAfterDate(fromDate).or(Reservation.Predicates.withDate(fromDate));
         Predicate<Reservation> predicateEndDate = Reservation.Predicates.isBeforeDate(toDate).or(Reservation.Predicates.withDate(toDate));
-        Map<Week, List<Reservation>> reservationsByWeek = InMemoryDataStore.getReservations().stream().filter(Reservation.Predicates.withGroup(group).and(predicateStartDate.and(predicateEndDate))).collect(Collectors.groupingBy(Reservation.Functions.TO_WEEK));
+        Map<Week, List<Reservation>> reservationsByWeek = dataStore.getReservations().stream().filter(Reservation.Predicates.withGroup(group).and(predicateStartDate.and(predicateEndDate))).collect(Collectors.groupingBy(Reservation.Functions.TO_WEEK));
         Set<WeekPlanning> weekPlanningList = new TreeSet<WeekPlanning>();
         for (Map.Entry<Week, List<Reservation>> entry : reservationsByWeek.entrySet()) {
             WeekPlanning weekPlanning = new WeekPlanning();
@@ -403,7 +408,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Map<Member, Long> getTotalReservationsByMember(LocalDate fromDate, LocalDate toDate) {
         Predicate<Reservation> predicateStartDate = Reservation.Predicates.isAfterDate(fromDate).or(Reservation.Predicates.withDate(fromDate));
         Predicate<Reservation> predicateEndDate = Reservation.Predicates.isBeforeDate(toDate).or(Reservation.Predicates.withDate(toDate));
-        return InMemoryDataStore.getReservations().stream().filter(predicateStartDate.and(predicateEndDate)).flatMap(Reservation.Functions.TO_MEMBERS).collect(Collectors.groupingBy(o -> o, Collectors.counting()));
+        return dataStore.getReservations().stream().filter(predicateStartDate.and(predicateEndDate)).flatMap(Reservation.Functions.TO_MEMBERS).collect(Collectors.groupingBy(o -> o, Collectors.counting()));
 
     }
 
@@ -411,12 +416,12 @@ public class ReservationServiceImpl implements ReservationService {
     public Map<Member, Long> getTotalByeByMember(LocalDate fromDate, LocalDate toDate) {
         Predicate<Reservation> predicateStartDate = Reservation.Predicates.isAfterDate(fromDate).or(Reservation.Predicates.withDate(fromDate));
         Predicate<Reservation> predicateEndDate = Reservation.Predicates.isBeforeDate(toDate).or(Reservation.Predicates.withDate(toDate));
-        return InMemoryDataStore.getReservations().stream().filter(predicateStartDate.and(predicateEndDate)).flatMap(Reservation.Functions.TO_RESERVE_MEMBERS).collect(Collectors.groupingBy(o -> o, Collectors.counting()));
+        return dataStore.getReservations().stream().filter(predicateStartDate.and(predicateEndDate)).flatMap(Reservation.Functions.TO_RESERVE_MEMBERS).collect(Collectors.groupingBy(o -> o, Collectors.counting()));
     }
 
     @Override
     public Map<Court, List<Reservation>> getDayReservations(LocalDate day) {
-        return InMemoryDataStore.getReservations().stream().filter(Reservation.Predicates.withDate(day)).collect(Collectors.groupingBy(Reservation.Functions.TO_COURT));
+        return dataStore.getReservations().stream().filter(Reservation.Predicates.withDate(day)).collect(Collectors.groupingBy(Reservation.Functions.TO_COURT));
     }
 
 
@@ -427,24 +432,24 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void deleteAllReservations() {
-        InMemoryDataStore.getReservations().clear();
+        dataStore.deleteAllReservations();
     }
 
     @Override
     public void create(Reservation reservation) {
-        InMemoryDataStore.getReservations().add(reservation);
+        dataStore.create(reservation);
     }
 
     @Override
     public void update(Reservation padelReservation) {
         int index = 0;
-        for (Reservation reservation : InMemoryDataStore.getReservations()) {
+        for (Reservation reservation : dataStore.getReservations()) {
             if (reservation.equals(padelReservation)) {
                 break;
             }
             index++;
         }
-        InMemoryDataStore.getReservations().set(index, padelReservation);
+        dataStore.getReservations().set(index, padelReservation);
     }
 
 
@@ -542,7 +547,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation findReservationForPeriodAndCourtTimeSlot(LocalDate localdate, CourtTimeSlot courtTimeSlot) {
         Reservation reservation = null;
-        Optional<Reservation> optionalReservation = InMemoryDataStore.getReservations().stream().filter(Reservation.Predicates.withCourtTimeSlot(courtTimeSlot).and(Reservation.Predicates.withDate(localdate))).findFirst();
+        Optional<Reservation> optionalReservation = dataStore.getReservations().stream().filter(Reservation.Predicates.withCourtTimeSlot(courtTimeSlot).and(Reservation.Predicates.withDate(localdate))).findFirst();
         if (optionalReservation.isPresent()) {
             reservation = optionalReservation.get();
         }
@@ -553,11 +558,11 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> findReservationsForPeriodAndMember(LocalDate startDate, LocalDate endDate, Member member) {
         Predicate<Reservation> predicateStartDate = Reservation.Predicates.isAfterDate(startDate).or(Reservation.Predicates.withDate(startDate));
         Predicate<Reservation> predicateEndDate = Reservation.Predicates.isBeforeDate(endDate).or(Reservation.Predicates.withDate(endDate));
-        return InMemoryDataStore.getReservations().stream().filter(Reservation.Predicates.hasMember(member).and(predicateStartDate).and(predicateEndDate)).collect(Collectors.toList());
+        return dataStore.getReservations().stream().filter(Reservation.Predicates.hasMember(member).and(predicateStartDate).and(predicateEndDate)).collect(Collectors.toList());
     }
 
     @Override
     public List<Reservation> findAllReservations() {
-        return InMemoryDataStore.getReservations();
+        return dataStore.getReservations();
     }
 }

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'padel-timeslots-container',
+    selector: 'padel-timeslot-container',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './timeslots-container.component.html',
+    templateUrl: './timeslot-container.component.html',
 })
-export class TimeslotsContainerComponent implements OnInit {
+export class TimeSlotContainerComponent implements OnInit {
     constructor() {}
     ngOnInit() {}
 }

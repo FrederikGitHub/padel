@@ -14,7 +14,7 @@ export class IconsModule {
         library.addIconPacks(
             fontAwesomeSolidIcons,
             fontAwesomeRegularIcons,
-            fontAwesomeBrandsIcons
+            fontAwesomeBrandsIcons,
         );
     }
 }

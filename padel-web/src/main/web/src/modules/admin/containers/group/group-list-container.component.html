@@ -1,4 +1,4 @@
 <padel-layout-dashboard>
     <padel-dashboard-head [hideBreadcrumbs]="false"></padel-dashboard-head>
-    <padel-timeslots></padel-timeslots>
+    <padel-group-list [groups]="groups$ | async"></padel-group-list>
 </padel-layout-dashboard>

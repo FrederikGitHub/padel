@@ -40,6 +40,10 @@ public class PadelMessageCode extends MessageCode {
             "Too many reservations.",
             "Een of meerdere spelers zijn overboekt.");
 
+    public static final MessageCode MEMBER_AVAILABILITY_DUPLICATES = new PadelMessageCode("0090",
+            "Too many reservations.",
+            "Een of meerdere spelers zijn overboekt.");
+
 
 
     protected PadelMessageCode(String p_code, String p_defaultName,

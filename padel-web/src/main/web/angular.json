@@ -29,6 +29,7 @@
                         ],
                         "styles": [
                             "src/styles/styles.scss",
+                            "./node_modules/ngx-toastr/toastr.css",
                             "./node_modules/ag-grid-community/dist/styles/ag-grid.css",
                             "./node_modules/ag-grid-community/dist/styles/ag-theme-blue.css"
                         ],
@@ -51,7 +52,6 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "aot": true,
                             "extractLicenses": true,

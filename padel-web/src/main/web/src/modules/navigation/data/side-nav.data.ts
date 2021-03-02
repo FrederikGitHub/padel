@@ -7,15 +7,11 @@ export const sideNavSections: SideNavSection[] = [
     },
     {
         text: 'ADMIN',
-        items: ['members', 'timeslots', 'poule', 'group', 'court'],
+        items: ['members', 'timeslots', 'group', 'court'],
     },
     {
         text: 'RESERVATIES',
         items: ['generate', 'weekReservations','courtReservations','myReservations'],
-    },
-    {
-        text: 'POULES',
-        items: ['admin', 'results'],
     },
     {
         text: 'STATISTIEKEN',
@@ -55,11 +51,7 @@ export const sideNavItems: SideNavItems = {
         text: 'Timeslots',
         link: '/admin/timeslots',
     },
-    poule: {
-        icon: 'table',
-        text: 'Poules',
-        link: '/admin/poule',
-    },
+
     group: {
         icon: 'user-friends',
         text: 'Groepen',

@@ -1,94 +1,67 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.data.InMemoryDataStore;
+import com.realdolmen.padel.data.DataStore;
+import com.realdolmen.padel.exception.PadelMessageCode;
+import com.realdolmen.padel.exception.PadelRuntimeException;
 import com.realdolmen.padel.model.GroupAvailability;
 import com.realdolmen.padel.model.Member;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Service("InMemoryMemberService")
+@Service
 public class InMemoryMemberService implements MemberService{
 
-    @Override
-    public void addGroupAvailability(Member member,GroupAvailability groupAvailability) {
-        Member padelMember = findMember(member);
-        padelMember.getGroupAvailability().add(groupAvailability);
+    @Autowired
+    DataStore dataStore;
 
-        //code te be used for identify duplicates
-        /*LinkedHashMultiset<Integer> duplicates = LinkedHashMultiset.create(input);
-
-        // Remove all entries with a count of 1
-        duplicates.entrySet().removeIf(entry -> entry.getCount() == 1);
-
-        return duplicates.elementSet();*/
-    }
-
-    //private boolean
-
-    @Override
-    public void removeGroupAvailability(Member member,GroupAvailability groupAvailability) {
-        Member padelMember = findMember(member);
-        padelMember.getGroupAvailability().remove(groupAvailability);
-    }
-
-    @Override
-    public void updateGroupAvailability(Member member, GroupAvailability groupAvailability) {
-
-    }
 
     @Override
     public List<Member> getPadelMembers() {
-        List<Member> padelMembers = InMemoryDataStore.getPadelMembers().stream().filter(Member.Predicates.IS_ACTIVE).sorted().collect(Collectors.toList());
+        List<Member> padelMembers = dataStore.getPadelMembers().stream().filter(Member.Predicates.IS_ACTIVE).sorted().collect(Collectors.toList());
         return padelMembers;
     }
 
-    @Override
-    public List<Member> getMemberByName(String name) {
-        List<Member> memberList = InMemoryDataStore.getPadelMembers().stream().filter(Member.Predicates.startWithName(name).and(Member.Predicates.IS_ACTIVE)).sorted().collect(Collectors.toList());
-        return memberList;
-    }
-
-    @Override
-    public List<Member> getMemberByFirstName(String firstName) {
-        List<Member> memberList = InMemoryDataStore.getPadelMembers().stream().filter(Member.Predicates.startWithFirstName(firstName).and(Member.Predicates.IS_ACTIVE)).sorted().collect(Collectors.toList());
-        return memberList;
-    }
-
-    @Override
-    public List<Member> getMembersForGroupAvailability(String groupName) {
-        List<Member> groupMembers = InMemoryDataStore.getPadelMembers().stream().filter(Member.Predicates.withGroup(groupName).and(Member.Predicates.IS_ACTIVE)).sorted().collect(Collectors.toList());
-        return groupMembers;
-    }
-
-    @Override
-    public List<Member> getMembersForLevel(String level) {
-        List<Member> groupMembers = InMemoryDataStore.getPadelMembers().stream().filter(Member.Predicates.withGroupLevel(level).and(Member.Predicates.IS_ACTIVE)).sorted().collect(Collectors.toList());
-        return groupMembers;
-    }
 
 
     @Override
     public void create(Member member) {
-        InMemoryDataStore.getPadelMembers().add(member);
+        dataStore.create(member);
+    }
+
+    private boolean hasDuplicateAvailability(Member member){
+        //Member existingMember = dataStore.getPadelMembers().stream().filter(Member.Predicates.withId(member.getId())).findFirst().get();
+        List<Integer> allWeekNumberListOfMember = member.getGroupAvailabilityList().stream().flatMap(GroupAvailability.Functions.TO_WEEK_NUMBERS).collect(Collectors.toList());
+        //List<Integer> weekNumberListOfNewMember = member.getGroupAvailability().stream().flatMap(GroupAvailability.Functions.TO_WEEK_NUMBERS).collect(Collectors.toList());
+
+        //List<Integer> allWeekNumberListOfMember = Stream.concat(weekNumberListOfExistingMember.stream(), weekNumberListOfNewMember.stream()).collect(Collectors.toList());
+
+        List<Integer> duplicates = allWeekNumberListOfMember.stream().collect(Collectors.groupingBy(Function.identity()))
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() > 1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        return duplicates.size()>0;
     }
 
     @Override
     public void update(Member padelMember) {
-        int index = 0;
-        for (Member member:InMemoryDataStore.getPadelMembers()){
-            if (member.equals(padelMember)){
-                break;
-            }
-            index++;
+
+        if (hasDuplicateAvailability(padelMember)){
+            throw new PadelRuntimeException(PadelMessageCode.MEMBER_AVAILABILITY_DUPLICATES);
         }
-        InMemoryDataStore.getPadelMembers().set(index,padelMember);
+
+        dataStore.update(padelMember);
     }
 
     private Member findMember(Member padelMember){
         Member foundMember=null;
-        for (Member member:InMemoryDataStore.getPadelMembers()){
+        for (Member member:dataStore.getPadelMembers()){
             if (member.equals(padelMember)){
                 foundMember = member;
                 break;
@@ -99,6 +72,13 @@ public class InMemoryMemberService implements MemberService{
 
     @Override
     public void delete(Member member) {
-        InMemoryDataStore.getPadelMembers().remove(member);
+        dataStore.delete(member);
+    }
+
+
+    @Override
+    public List<Member> getMembersForGroupAvailability(String groupName) {
+        List<Member> groupMembers = dataStore.getPadelMembers().stream().filter(Member.Predicates.withGroup(groupName).and(Member.Predicates.IS_ACTIVE)).sorted().collect(Collectors.toList());
+        return groupMembers;
     }
 }

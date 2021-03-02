@@ -4,19 +4,24 @@ export interface Court {
 }
 
 export interface Availability {
+    id?: number;
     label?: string;
     weekNumbers?: number[];
+
+
 }
 
 export interface Group {
     id?: number;
     name?: string;
-    genders?: string[];
+    active?: string;
+    vtvLevel?: string;
+
 }
 
 export interface GroupAvailability {
-    weekNumbersOfMonth?: number[];
-    group?: Group[];
+    availability?: Availability;
+    group?: Group;
 }
 
 export interface Member {
@@ -27,7 +32,16 @@ export interface Member {
     gsm?: string;
     level?: string;
     active?: string;
-    groupAvailabilityList?: GroupAvailability;
+    gender?: string;
+    groupAvailabilityList?: GroupAvailability[];
+}
+
+
+export interface Level {
+    id?: number;
+    name?: string;
+    genders?: string[];
+
 }
 
 export interface CourtTimeSlot {

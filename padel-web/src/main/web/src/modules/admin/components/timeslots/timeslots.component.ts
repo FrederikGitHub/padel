@@ -1,137 +1,58 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
-import {GridOptions} from "ag-grid-community";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnChanges,
+    OnInit,
+    SimpleChanges
+} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Group} from "@common/models";
+import {RouteData} from "@common/services/route-data.service";
 
 @Component({
-    selector: 'padel-timeslots',
+    selector: 'padel-timeslot',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './timeslots.component.html',
 })
-export class TimeslotsComponent implements OnInit {
-
-    public getRowNodeId: any;
+export class TimeSlotComponent implements OnInit, OnChanges, AfterViewInit {
 
 
-    public gridOptions: GridOptions;
-    public columnDefs: any[];
+    timeSlotForm: FormGroup;
 
-    public rowData: any[];
-    public gridApi: any;
+    constructor(private routeData: RouteData, private cd: ChangeDetectorRef, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+        this.timeSlotForm = this.fb.group({
+            'id': [""],
+            'name': ["", Validators.required],
 
-    constructor() {
 
-        this.rowData = [
-            {id: 1, day: 'Maandag',from:"08:00",to:"09:30",court:"Padel 1"},
-            {id: 2, day: 'Maandag',from:"09:30",to:"11:00",court:"Padel 1"},
-            {id: 3, day: 'Maandag',from:"11:00",to:"12:30",court:"Padel 1"},
-            {id: 4, day: 'Maandag',from:"12:30",to:"14:00",court:"Padel 1"},
-            {id: 5, day: 'Maandag',from:"14:00",to:"15:30",court:"Padel 1"},
-            {id: 6, day: 'Maandag',from:"15:30",to:"17:00",court:"Padel 1"},
-            {id: 7, day: 'Maandag',from:"17:00",to:"18:30",court:"Padel 1"},
-            {id: 8, day: 'Maandag',from:"18:30",to:"20:00",court:"Padel 1"},
-            {id: 9, day: 'Maandag',from:"20:00",to:"21:30",court:"Padel 1"},
-            {id: 10, day: 'Maandag',from:"21:30",to:"23:00",court:"Padel 1"},
-        ];
-
-        this.gridOptions = <GridOptions>{
-            rowSelection: 'single'
-        };
-
-        this.getRowNodeId = function (data: any) {
-            return data.id;
-        };
-
-        this.columnDefs = [
-            {
-                headerName: "id",
-                field: "id",
-                editable: false,
-            },
-            {
-                headerName: "Dag",
-                field: "day",
-                editable: true,
-            },
-            {
-                headerName: "Van",
-                field: "from",
-                editable: true,
-            },
-            {
-                headerName: "Tot",
-                field: "to",
-                editable: true,
-            },
-            {
-                headerName: "Terrein",
-                field: "court",
-                editable: true,
-            },
-        ];
-
+        });
     }
 
 
-    onRowSelectionChanged(params: any) {
+    fillFormData(group: Group) {
+        this.timeSlotForm.controls.id.setValue(group.id);
+        this.timeSlotForm.controls.name.setValue(group.name);
 
     }
 
-    onCellEditingStarted(params: any) {
+    ngOnInit(): void {
 
+        this.fillFormData(this.routeData.storage);
     }
 
+    ngAfterViewInit() {
+        this.cd.detectChanges();
+    }
 
-    onSelectionChanged(params: any) {
+    ngOnChanges(changes: SimpleChanges): void {
 
 
     }
 
 
-    ngOnInit() {
-
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-
-    }
-
-
-    onRowEditingStarted(params: any) {
-
-    }
-
-
-    onRowValueChanged(params: any) {
-
-
-    }
-
-    onRowEditingStopped(params: any) {
-
-    }
-
-    onCellValueChanged(params: any) {
-        //this.store.dispatch(new DossierActions.UpdateOrderItemAction(params.node.data));
-    }
-
-    onCellEditingStopped(params: any) {
-
-    }
-
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-    }
-
-    onGridReady(params: any) {
-        params.api.sizeColumnsToFit();
-        this.gridApi = params.api;
-        params.api.setFocusedCell(1, "name", null);
-    }
 }
 
 

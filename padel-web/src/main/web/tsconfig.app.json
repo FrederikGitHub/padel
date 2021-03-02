@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./out-tsc/app",
+        "declaration": false,
         "types": [
         ]
     },

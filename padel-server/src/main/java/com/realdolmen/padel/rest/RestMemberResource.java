@@ -13,37 +13,14 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RestMemberResource extends BaseResource {
 
 
     @Autowired
     private MemberService memberService;
 
-    @RequestMapping(value = "/rest/member", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<List<Member>> getMembersByGroup(final HttpServletRequest request, final @RequestParam(value = "groupAvailability") String groupAvailability) {
-
-        List<Member> memberList = new ArrayList<Member>();
-        ResponseEntity<List<Member>> responseEntity = new ResponseEntity<List<Member>>(memberList, HttpStatus.OK);
-        try {
-
-
-            memberList = memberService.getMembersForGroupAvailability(groupAvailability);
-
-            responseEntity = new ResponseEntity(memberList, HttpStatus.OK);
-
-            return responseEntity;
-
-        } catch (Exception e) {
-            responseEntity = handleException("Er is een fout opgetreden bij het ophalen van de padel leden" , e);
-
-        }
-        return responseEntity;
-
-    }
-
-    @RequestMapping(value = "/rest/member", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*")
+    @GetMapping("/rest/member")
     public ResponseEntity<List<Member>> getAllMembers() {
 
         List<Member> memberList = new ArrayList<Member>();
@@ -65,31 +42,6 @@ public class RestMemberResource extends BaseResource {
 
     }
 
-    @RequestMapping(value = "/rest/member", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<List<Member>> getMembersByLevel(final HttpServletRequest request, final @RequestParam(value = "level") String level) {
-
-        List<Member> memberList = new ArrayList<Member>();
-        ResponseEntity<List<Member>> responseEntity = new ResponseEntity<List<Member>>(memberList, HttpStatus.OK);
-        try {
-
-
-            memberList = memberService.getMembersForLevel(level);
-
-            responseEntity = new ResponseEntity(memberList, HttpStatus.OK);
-
-            return responseEntity;
-
-        } catch (Exception e) {
-            responseEntity = handleException("Er is een fout opgetreden bij het ophalen van de padel leden" , e);
-
-        }
-        return responseEntity;
-
-    }
-
-
-
     @RequestMapping(value = "/rest/member", method = RequestMethod.POST)
     public ResponseEntity<Member> addMember(final HttpServletRequest request, final @RequestBody Member member) {
         ResponseEntity responseEntity = new ResponseEntity(member, HttpStatus.OK);
@@ -109,8 +61,7 @@ public class RestMemberResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/member", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Member> updatMember(final @RequestBody Member member) {
+    public ResponseEntity<Member> updateMember(final @RequestBody Member member) {
         ResponseEntity responseEntity = new ResponseEntity(member, HttpStatus.OK);
 
         try {

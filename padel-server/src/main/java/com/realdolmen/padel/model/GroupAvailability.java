@@ -1,15 +1,15 @@
 package com.realdolmen.padel.model;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class GroupAvailability {
-    private List<Integer> weekNumbersOfMonth;
+    private Availability availability;
     private Group group;
 
-    public GroupAvailability(List<Integer> weekNumbersOfMonth, Group group) {
-        this.weekNumbersOfMonth = weekNumbersOfMonth;
+    public GroupAvailability(Availability availability, Group group) {
+        this.availability = availability;
         this.group = group;
     }
 
@@ -21,20 +21,13 @@ public class GroupAvailability {
         this.group = group;
     }
 
-    public List<Integer> getWeekNumbersOfMonth() {
-        return weekNumbersOfMonth;
+
+    public Availability getAvailability() {
+        return availability;
     }
 
-    public void setWeekNumbersOfMonth(List<Integer> weekNumbersOfMonth) {
-        this.weekNumbersOfMonth = weekNumbersOfMonth;
-    }
-
-    @Override
-    public String toString() {
-        return "MemberPercentageGroup{" +
-                "percentage=" + weekNumbersOfMonth +
-                ", group=" + group +
-                '}';
+    public void setAvailability(Availability availability) {
+        this.availability = availability;
     }
 
     public static class Functions {
@@ -43,6 +36,13 @@ public class GroupAvailability {
             @Override
             public Group apply(GroupAvailability groupAvailability) {
                 return groupAvailability.getGroup();
+            }
+        };
+
+        public static Function<GroupAvailability, Stream<Integer>> TO_WEEK_NUMBERS = new Function<GroupAvailability, Stream<Integer>>() {
+            @Override
+            public Stream<Integer> apply(GroupAvailability groupAvailability) {
+                return groupAvailability.getAvailability().getWeekNumbers().stream();
             }
         };
 

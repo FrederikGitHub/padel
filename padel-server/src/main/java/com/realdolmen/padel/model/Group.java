@@ -1,6 +1,5 @@
 package com.realdolmen.padel.model;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -8,12 +7,13 @@ import java.util.function.Predicate;
 public class Group implements Comparable<Group> {
     private long id;
     private String name;
-    private List<String> genders;
+    private String active;
+    private String vtvLevel;
 
-    public Group(long id, String name, List<String> genders) {
+    public Group(long id, String name, String vtvLevel) {
         this.id = id;
         this.name = name;
-        this.genders = genders;
+        this.vtvLevel = vtvLevel;
     }
 
     public long getId() {
@@ -33,18 +33,32 @@ public class Group implements Comparable<Group> {
         this.name = name;
     }
 
-    public List<String> getGenders() {
-        return genders;
+
+    public String getActive() {
+        return active;
     }
 
-    public void setGenders(List<String> genders) {
-        this.genders = genders;
+    public Group setActive(String active) {
+        this.active = active;
+        return this;
+    }
+
+    public Group setVtvLevel(String vtvLevel) {
+        this.vtvLevel = vtvLevel;
+        return this;
+    }
+
+    public String getVtvLevel() {
+        return vtvLevel;
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "id=" + id +
+                "name=" + id +
+                "vtvLevel=" + vtvLevel +
+                "active=" + active +
                 '}';
     }
 
@@ -77,6 +91,13 @@ public class Group implements Comparable<Group> {
                 }
             };
         }
+
+        public static final Predicate<Group> IS_ACTIVE = new Predicate<Group>() {
+            @Override
+            public boolean test(Group group) {
+                return group.getActive() == null || group.getActive().equalsIgnoreCase("Y");
+            }
+        };
 
     }
 

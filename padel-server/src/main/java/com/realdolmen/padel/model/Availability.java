@@ -1,49 +1,64 @@
 package com.realdolmen.padel.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 import java.util.List;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Availability {
 
-    FIRST_WEEK_AVAILABILITY("25% (week1)",Arrays.asList(1)),
-    SECOND_WEEK_AVAILABILITY("25% (week2)",Arrays.asList(2)),
-    THIRD_WEEK_AVAILABILITY("25% (week3)",Arrays.asList(3)),
-    FOURTH_WEEK_AVAILABILITY("25% (week4)",Arrays.asList(4)),
+    FIRST_WEEK_AVAILABILITY(1L, "25% (week1)", Arrays.asList(1)),
+    SECOND_WEEK_AVAILABILITY(2L, "25% (week2)", Arrays.asList(2)),
+    THIRD_WEEK_AVAILABILITY(3L, "25% (week3)", Arrays.asList(3)),
+    FOURTH_WEEK_AVAILABILITY(4L, "25% (week4)", Arrays.asList(4)),
 
-    FIRST_SECOND_WEEK_AVAILABILITY("50% (week1,week2)",Arrays.asList(1,2)),
-    FIRST_THIRD_WEEK_AVAILABILITY("50% (week1,week3)",Arrays.asList(1,3)),
-    FIRST_FOURTH_WEEK_AVAILABILITY("50% (week1,week4)",Arrays.asList(1,4)),
-    SECOND_FOURTH_WEEK_AVAILABILITY("50% (week2,week4)",Arrays.asList(2,4)),
-    SECOND_THIRD_WEEK_AVAILABILITY("50% (week2,week3)",Arrays.asList(2,3)),
-    THIRD_FOURTH_WEEK_AVAILABILITY("50% (week3,week4)",Arrays.asList(3,4)),
-    THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY("50%+ (week3,week4,week5)",Arrays.asList(3,4,5)),
-    SECOND_FOURTH_FIFTH_WEEK_AVAILABILITY("50%+ (week2,week4,week5)",Arrays.asList(2,4,5)),
-    SECOND_THIRD_FIFTH_WEEK_AVAILABILITY("50%+ (week2,week3,week5)",Arrays.asList(2,3,5)),
-    FIRST_THIRD_FIFTH_WEEK_AVAILABILITY("50%+ (week1,week3,week5)",Arrays.asList(1,3,5)),
-    FIRST_FOURTH_FIFTH_WEEK_AVAILABILITY("50%+ (week1,week4,week5)",Arrays.asList(1,4,5)),
-    FIRST_SECOND_FIFTH_WEEK_AVAILABILITY("50%+ (week1,week2,week5)",Arrays.asList(1,2,5)),
+    FIRST_SECOND_WEEK_AVAILABILITY(5L, "50% (week1,week2)", Arrays.asList(1, 2)),
+    FIRST_THIRD_WEEK_AVAILABILITY(6L, "50% (week1,week3)", Arrays.asList(1, 3)),
+    FIRST_FOURTH_WEEK_AVAILABILITY(7L, "50% (week1,week4)", Arrays.asList(1, 4)),
+    SECOND_FOURTH_WEEK_AVAILABILITY(8L, "50% (week2,week4)", Arrays.asList(2, 4)),
+    SECOND_THIRD_WEEK_AVAILABILITY(9L, "50% (week2,week3)", Arrays.asList(2, 3)),
+    THIRD_FOURTH_WEEK_AVAILABILITY(10L, "50% (week3,week4)", Arrays.asList(3, 4)),
+    THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY(11L, "50%+ (week3,week4,week5)", Arrays.asList(3, 4, 5)),
+    SECOND_FOURTH_FIFTH_WEEK_AVAILABILITY(12L, "50%+ (week2,week4,week5)", Arrays.asList(2, 4, 5)),
+    SECOND_THIRD_FIFTH_WEEK_AVAILABILITY(13L, "50%+ (week2,week3,week5)", Arrays.asList(2, 3, 5)),
+    FIRST_THIRD_FIFTH_WEEK_AVAILABILITY(14L, "50%+ (week1,week3,week5)", Arrays.asList(1, 3, 5)),
+    FIRST_FOURTH_FIFTH_WEEK_AVAILABILITY(15L, "50%+ (week1,week4,week5)", Arrays.asList(1, 4, 5)),
+    FIRST_SECOND_FIFTH_WEEK_AVAILABILITY(16L, "50%+ (week1,week2,week5)", Arrays.asList(1, 2, 5)),
 
-    SECOND_THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY("75% (week2,week3,week4,week5)",Arrays.asList(2,3,4,5)),
-    FIRST_THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY("75% (week1,week3,week4,week5)",Arrays.asList(1,3,4,5)),
-    FIRST_SECOND_FOURTH_FIFTH_WEEK_AVAILABILITY("75% (week1,week2,week4,week5)",Arrays.asList(1,2,4,5)),
-    FIRST_SECOND_THIRD_FIFTH_WEEK_AVAILABILITY("75% (week1,week2,week3,week5)",Arrays.asList(1,2,3,5)),
+    SECOND_THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY(17L, "75% (week2,week3,week4,week5)", Arrays.asList(2, 3, 4, 5)),
+    FIRST_THIRD_FOURTH_FIFTH_WEEK_AVAILABILITY(18L, "75% (week1,week3,week4,week5)", Arrays.asList(1, 3, 4, 5)),
+    FIRST_SECOND_FOURTH_FIFTH_WEEK_AVAILABILITY(19L, "75% (week1,week2,week4,week5)", Arrays.asList(1, 2, 4, 5)),
+    FIRST_SECOND_THIRD_FIFTH_WEEK_AVAILABILITY(20L, "75% (week1,week2,week3,week5)", Arrays.asList(1, 2, 3, 5)),
 
-    FULL_TIME_AVAILABILITY("100%",Arrays.asList(1,2,3,4,5));
+    FULL_TIME_AVAILABILITY(21L, "100%", Arrays.asList(1, 2, 3, 4, 5));
 
+    private final Long id;
     private final String label;
     private final List<Integer> weekNumbers;
 
 
-    private Availability(String label, List<Integer> weekNumbers) {
+    private Availability(Long id, String label, List<Integer> weekNumbers) {
+        this.id = id;
         this.label = label;
         this.weekNumbers = weekNumbers;
     }
 
+    //@JsonValue
     public String getLabel() {
         return label;
     }
 
+    //@JsonValue
     public List<Integer> getWeekNumbers() {
         return weekNumbers;
     }
+
+    //@JsonValue
+    public Long getId() {
+        return id;
+    }
+
+
 }

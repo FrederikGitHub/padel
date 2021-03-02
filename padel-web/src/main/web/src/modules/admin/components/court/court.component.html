@@ -1,18 +1,62 @@
-<ag-grid-angular style="height: 300px;width:100%"
-                 class="ag-theme-blue"
-                 [rowData]="rowData"
-                 [columnDefs]="columnDefs"
-                 [deltaRowDataMode]="true"
-                 [gridOptions]="gridOptions"
-                 (selectionChanged)="onRowSelectionChanged($event)"
-                 (cellEditingStarted)="onCellEditingStarted($event)"
-                 (rowEditingStarted)="onRowEditingStarted($event)"
-                 (rowEditingStopped)="onRowEditingStopped($event)"
-                 (rowValueChanged)="onRowValueChanged($event)"
-                 (cellValueChanged)="onCellValueChanged($event)"
-                 (cellEditingStopped)="onCellEditingStopped($event)"
-                 (selectionChanged)="onSelectionChanged($event)"
-                 [getRowNodeId]="getRowNodeId"
-                 [stopEditingWhenGridLosesFocus]="true"
-                 (gridReady)="onGridReady($event)">
-</ag-grid-angular>
+<mat-dialog-content>
+    <div class="card bg-light">
+
+
+        <div class="card-header text-white bg-primary">
+            <h3 class="card-title">Groep</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form [formGroup]="courtForm" id="courtForm" name="courtForm">
+
+
+                <div class="form-group row">
+                    <label for="id"
+                           class="col-xl-2 control-label">Id</label>
+                    <div class="col-xl-10">
+                        <input type="text" readonly required class="form-control" maxlength="30" formControlName="id" id="id" name="id">
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="name"
+                           class="col-xl-2 control-label">Naam</label>
+                    <div class="col-xl-10">
+                        <input type="text" required class="form-control" maxlength="30" formControlName="name" id="name" name="name">
+
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+        <div class="card-footer">
+
+            <div class="btn-toolbar">
+
+                <div class="btn-group mr-2" role="group">
+                    <button class="btn btn-primary btn-sm" >
+                        save
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                    <button class="btn btn-primary btn-sm" >
+                        close
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</mat-dialog-content>
+
+
+

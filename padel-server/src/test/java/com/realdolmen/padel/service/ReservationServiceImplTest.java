@@ -1,7 +1,9 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.assertions.WeekPlanningAssert;
 import com.realdolmen.padel.data.InMemoryDataStore;
+import com.realdolmen.padel.data.MysqlDatabaseStore;
+import com.realdolmen.padel.assertions.WeekPlanningAssert;
+import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.exception.PadelRuntimeException;
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.CourtTimeSlotBuilder;
@@ -13,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -60,26 +61,34 @@ public class ReservationServiceImplTest {
     private CourtTimeSlot mondayAt2130OnCourt2;
 
     @Autowired
-    @Qualifier("InMemoryMemberService")
+    //@Qualifier("InMemoryMemberService")
     private MemberService memberService;
 
     @Autowired
-    @Qualifier("InMemoryCourtService")
+    //@Qualifier("InMemoryCourtService")
     private CourtService courtService;
+
+    @Autowired
+    //@Qualifier("InMemoryCourtService")
+    private GroupService groupService;
 
     LocalDate startDate;
     LocalDate endDate;
+
+
+    @Autowired
+    DataStore dataStore;
 
     @BeforeEach
     public void setUp() {
 
 
-        InMemoryDataStore.getReservations().clear();
+        dataStore.deleteAllReservations();
         //different padel group used for testing
-        p500MenMembers = memberService.getMembersForGroupAvailability(InMemoryDataStore.P500_MEN);
-        p300MenMembers = memberService.getMembersForGroupAvailability(InMemoryDataStore.P300_MEN);
-        p200MenMembers = memberService.getMembersForGroupAvailability(InMemoryDataStore.P200_MEN);
-        dummyMembers = memberService.getMembersForGroupAvailability(InMemoryDataStore.DUMMY_GROUP);
+        p500MenMembers = memberService.getMembersForGroupAvailability(dataStore.P500_MEN);
+        p300MenMembers = memberService.getMembersForGroupAvailability(dataStore.P300_MEN);
+        p200MenMembers = memberService.getMembersForGroupAvailability(dataStore.P200_MEN);
+        dummyMembers = memberService.getMembersForGroupAvailability(dataStore.DUMMY_GROUP);
 
         //court used for testing
         courtOne = courtService.getCourt("1");
@@ -207,20 +216,21 @@ public class ReservationServiceImplTest {
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
 
         //generate weekplanning for p500
-        Set<WeekPlanning> p500WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p500courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(p500WeekPlanningList,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p500WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p500courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
+        weekPlanningDisplay.displayPlanning(p500WeekPlanningList,groupService.getGroup(dataStore.P500_MEN));
 
         //generate weekplanning for p300
-        Set<WeekPlanning> p300WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p300courtTimeSlotListByWeek, p300MenMembers, new Group(2L, InMemoryDataStore.P300_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(p300WeekPlanningList,new Group(2L, InMemoryDataStore.P300_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p300WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p300courtTimeSlotListByWeek, p300MenMembers, groupService.getGroup(dataStore.P300_MEN));
+        weekPlanningDisplay.displayPlanning(p300WeekPlanningList,groupService.getGroup(dataStore.P300_MEN));
 
         //generate weekplanning for p200
-        Set<WeekPlanning> p200WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p200courtTimeSlotListByWeek, p200MenMembers, new Group(3L, InMemoryDataStore.P200_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(p200WeekPlanningList,new Group(3L, InMemoryDataStore.P200_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p200WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p200courtTimeSlotListByWeek, p200MenMembers, groupService.getGroup(dataStore.P200_MEN));
+        weekPlanningDisplay.displayPlanning(p200WeekPlanningList,groupService.getGroup(dataStore.P200_MEN));
 
         Assertions.assertThat(p300WeekPlanningList.size()).describedAs("No weekPlannings").isGreaterThan(0);
 
-        Member DiegoVanHuffel = memberService.getMemberByName("Van Huffel").get(0);
+
+        Member DiegoVanHuffel = memberService.getPadelMembers().stream().filter(Member.Predicates.startWithName("Van Huffel")).findFirst().get();
         long totalReservationsForDiegoVanHuffel = p500WeekPlanningList.stream().flatMap(WeekPlanning.Functions.TO_RESERVATIONS).flatMap(Reservation.Functions.TO_MEMBERS).collect(Collectors.toList()).stream().filter(Member.Predicates.startWithName(DiegoVanHuffel.getName())).count();
 
         Assertions.assertThat(totalReservationsForDiegoVanHuffel).describedAs("No correct total reservations for diego").isGreaterThan(2);
@@ -254,7 +264,7 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
         try {
-            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
             Assertions.fail("Padel runtime exception with message code 'NOT_ENOUGH_TIMESLOTS' should be thrown");
         } catch (PadelRuntimeException padelRuntimeException) {
             logger.info(padelRuntimeException.getLocalizedMessage());
@@ -284,7 +294,7 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
         try {
-            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(endDate, startDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(endDate, startDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
             Assertions.fail("Padel runtime exception with message code 'NO_CORRECT_PLANNING_PERIOD' should be thrown");
         } catch (PadelRuntimeException padelRuntimeException) {
             logger.info(padelRuntimeException.getLocalizedMessage());
@@ -316,7 +326,7 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
         try {
-            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, dummyMembers, new Group(1L, InMemoryDataStore.DUMMY_GROUP, Arrays.asList(InMemoryDataStore.MEN)));
+            Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, dummyMembers, groupService.getGroup(dataStore.DUMMY_GROUP));
             Assertions.fail("Padel runtime exception with message code 'NOT_ENOUGH_MEMBERS_TO_MAKE_PLANNING' should be thrown");
         } catch (PadelRuntimeException padelRuntimeException) {
             logger.info(padelRuntimeException.getLocalizedMessage());
@@ -325,7 +335,7 @@ public class ReservationServiceImplTest {
 
     @Test
     public void generateAndStoreWeekPlanningTest() {
-//weekly timeslots by group
+        //weekly timeslots by group
         List<CourtTimeSlot> p500CourtTimeSlotList = new ArrayList<CourtTimeSlot>();
         List<CourtTimeSlot> p300CourtTimeSlotList = new ArrayList<CourtTimeSlot>();
         List<CourtTimeSlot> p200and300FirstWeekCourtTimeSlotList = new ArrayList<CourtTimeSlot>();
@@ -398,12 +408,12 @@ public class ReservationServiceImplTest {
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
 
         //generate weekplanning for p500
-        Set<WeekPlanning> p500WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p500courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(p500WeekPlanningList,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p500WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p500courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
+        weekPlanningDisplay.displayPlanning(p500WeekPlanningList,groupService.getGroup(dataStore.P500_MEN));
 
         //generate weekplanning for p300
-        Set<WeekPlanning> p300WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p300courtTimeSlotListByWeek, p300MenMembers, new Group(2L, InMemoryDataStore.P300_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(p300WeekPlanningList,new Group(2L, InMemoryDataStore.P300_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p300WeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, p300courtTimeSlotListByWeek, p300MenMembers, groupService.getGroup(dataStore.P300_MEN));
+        weekPlanningDisplay.displayPlanning(p300WeekPlanningList,groupService.getGroup(dataStore.P300_MEN));
 
         reservationService.storeWeekPlanning(p500WeekPlanningList, false, false);
         reservationService.storeWeekPlanning(p300WeekPlanningList, false, false);
@@ -412,13 +422,13 @@ public class ReservationServiceImplTest {
 
         logger.debug("size allReservations" + allReservations.size());
 
-        Set<WeekPlanning> p500StoredGroupPlanning = reservationService.getGroupWeekPlanning(startDate,endDate,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p500StoredGroupPlanning = reservationService.getGroupWeekPlanning(startDate,endDate,groupService.getGroup(dataStore.P500_MEN));
         logger.debug("total stored week reservation" + p500StoredGroupPlanning.size());
-        weekPlanningDisplay.displayPlanning(p500StoredGroupPlanning,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        weekPlanningDisplay.displayPlanning(p500StoredGroupPlanning,groupService.getGroup(dataStore.P500_MEN));
 
-        Set<WeekPlanning> p300StoredGroupPlanning = reservationService.getGroupWeekPlanning(startDate,endDate,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> p300StoredGroupPlanning = reservationService.getGroupWeekPlanning(startDate,endDate,groupService.getGroup(dataStore.P500_MEN));
         logger.debug("total stored week reservation" + p300StoredGroupPlanning.size());
-        weekPlanningDisplay.displayPlanning(p300StoredGroupPlanning,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        weekPlanningDisplay.displayPlanning(p300StoredGroupPlanning,groupService.getGroup(dataStore.P500_MEN));
 
         Map<Member,Long> totalReservationsByMember = reservationService.getTotalReservationsByMember(startDate,endDate);
         for (Map.Entry<Member, Long> entry : totalReservationsByMember.entrySet()) {
@@ -462,10 +472,10 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), courtTimeSlotList);
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
-        Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
-        weekPlanningDisplay.displayPlanning(weekPlanningList,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        weekPlanningDisplay.displayPlanning(weekPlanningList,groupService.getGroup(dataStore.P500_MEN));
 
         reservationService.storeWeekPlanning(weekPlanningList, false, false);
 
@@ -507,10 +517,10 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), courtTimeSlotList);
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
-        Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> weekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
-        weekPlanningDisplay.displayPlanning(weekPlanningList,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        weekPlanningDisplay.displayPlanning(weekPlanningList,groupService.getGroup(dataStore.P500_MEN));
 
         reservationService.storeWeekPlanning(weekPlanningList, false, false);
 
@@ -553,18 +563,18 @@ public class ReservationServiceImplTest {
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), courtTimeSlotList);
         courtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), courtTimeSlotList);
 
-        Set<WeekPlanning> weekPlanningList1 = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> weekPlanningList1 = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
-        weekPlanningDisplay.displayPlanning(weekPlanningList1,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        weekPlanningDisplay.displayPlanning(weekPlanningList1,groupService.getGroup(dataStore.P500_MEN));
 
         reservationService.storeWeekPlanning(weekPlanningList1, false, false);
 
-        logger.debug(""+ InMemoryDataStore.getReservations().size());
-        logger.debug(""+ InMemoryDataStore.getReservations().toString());
+        logger.debug(""+ dataStore.getReservations().size());
+        logger.debug(""+ dataStore.getReservations().toString());
 
-        Set<WeekPlanning> weekPlanningList2 = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
-        weekPlanningDisplay.displayPlanning(weekPlanningList2,new Group(1L, InMemoryDataStore.P500_MEN, Arrays.asList(InMemoryDataStore.MEN)));
+        Set<WeekPlanning> weekPlanningList2 = reservationService.generateWeekPlanning(startDate, endDate, courtTimeSlotListByWeek, p500MenMembers, groupService.getGroup(dataStore.P500_MEN));
+        weekPlanningDisplay.displayPlanning(weekPlanningList2,groupService.getGroup(dataStore.P500_MEN));
 
         reservationService.storeWeekPlanning(weekPlanningList2, false, false);
 
@@ -582,15 +592,30 @@ public class ReservationServiceImplTest {
             return new ReservationServiceImpl();
         }
 
-        @Bean("InMemoryMemberService")
+        @Bean
+        //@Bean("InMemoryMemberService")
         public MemberService memberService() {
             return new InMemoryMemberService();
         }
 
 
-        @Bean("InMemoryCourtService")
+//        @Bean("InMemoryCourtService")
+        @Bean
         public CourtService courtService() {
             return new InMemoryCourtService();
+        }
+
+        @Bean
+        public GroupService groupService() {
+            return new InMemoryGroupService();
+        }
+
+
+
+
+        @Bean
+        public DataStore dataSource() {
+            return new InMemoryDataStore();
         }
 
 

@@ -1,110 +1,69 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
-import {GridOptions} from "ag-grid-community";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    OnChanges,
+    OnInit,
+    SimpleChanges
+} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Group, Member} from "@common/models";
+import {RouteData} from "@common/services/route-data.service";
 
 @Component({
     selector: 'padel-group',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './group.component.html',
 })
-export class GroupComponent implements OnInit {
-
-    public getRowNodeId: any;
+export class GroupComponent implements OnInit, OnChanges, AfterViewInit {
 
 
-    public gridOptions: GridOptions;
-    public columnDefs: any[];
+    levels: string[] = ["P50", "P100", "P200", "P300", "P500", "P750", "P1000"];
 
-    public rowData: any[];
-    public gridApi: any;
+    groupForm: FormGroup;
 
-    constructor() {
+    constructor(private routeData:RouteData,private cd: ChangeDetectorRef, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+        this.groupForm = this.fb.group({
+            'id': [""],
+            'name': ["", Validators.required],
+            'vtvLevel': ["", Validators.required],
 
-        this.rowData = [{id: 1, name: 'Lovers'}, {id: 2, name: 'Rakkers'}];
-
-        this.gridOptions = <GridOptions>{
-            rowSelection: 'single'
-        };
-
-        this.getRowNodeId = function (data: any) {
-            return data.id;
-        };
-
-        this.columnDefs = [
-            {
-                headerName: "id",
-                field: "id",
-                editable: false,
-            },
-            {
-                headerName: "Naam",
-                field: "name",
-                editable: true,
-            },
-        ];
-
+        });
     }
 
 
-    onRowSelectionChanged(params: any) {
+
+
+
+
+
+
+
+    fillFormData(group: Group) {
+        this.groupForm.controls.id.setValue(group.id);
+        this.groupForm.controls.name.setValue(group.name);
+        this.groupForm.controls.vtvLevel.setValue(group.vtvLevel);
 
     }
 
-    onCellEditingStarted(params: any) {
+    ngOnInit(): void {
 
+        this.fillFormData(this.routeData.storage);
     }
 
+    ngAfterViewInit() {
+        this.cd.detectChanges();
+    }
 
-    onSelectionChanged(params: any) {
+    ngOnChanges(changes: SimpleChanges): void {
 
 
     }
 
 
-    ngOnInit() {
-
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-
-    }
-
-
-    onRowEditingStarted(params: any) {
-
-    }
-
-
-    onRowValueChanged(params: any) {
-
-
-    }
-
-    onRowEditingStopped(params: any) {
-
-    }
-
-    onCellValueChanged(params: any) {
-        //this.store.dispatch(new DossierActions.UpdateOrderItemAction(params.node.data));
-    }
-
-    onCellEditingStopped(params: any) {
-
-    }
-
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-    }
-
-    onGridReady(params: any) {
-        params.api.sizeColumnsToFit();
-        this.gridApi = params.api;
-        params.api.setFocusedCell(1, "name", null);
-    }
 }
+
+
 

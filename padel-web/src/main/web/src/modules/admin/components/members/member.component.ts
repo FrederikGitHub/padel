@@ -1,142 +1,167 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
-import {GridOptions} from "ag-grid-community";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges
+} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Availability, Group, Member} from "@common/models";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RouteData} from "@common/services/route-data.service";
+import {ToastrService} from "ngx-toastr";
+
 
 @Component({
     selector: 'padel-member',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './member.component.html',
 })
-export class MemberComponent implements OnInit {
+export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
 
-    public getRowNodeId: any;
+    @Output() update = new EventEmitter<Member>();
+
+    groups: Group[] = [];
+    availabilities: Availability[] = [];
+    levels: string[] = [];
+    genders: string[] = [];
 
 
-    public gridOptions: GridOptions;
-    public columnDefs: any[];
+    memberForm: FormGroup;
 
-    public rowData: any[];
-    public gridApi: any;
 
-    constructor() {
+    constructor(private toastrService: ToastrService, private routeData: RouteData, private cd: ChangeDetectorRef, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+        this.memberForm = this.fb.group({
+            'id': [""],
+            'name': ["", Validators.required],
+            'firstName': ["", Validators.required],
+            'email': ["", Validators.email],
+            'gsm': [""],
+            'level': ["", Validators.required],
+            'gender': ["", Validators.required],
+            'groupAvailabilityList': this.fb.array([]),
+            'active': [""],
+        });
+    }
 
-        this.rowData = [
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-            {id: 1, name: 'Van Heddeghem',firstName:"Frederik",email:"frederik.vanheddeghem@gmail.com",gsm:"0472761287",active:true},
-        ];
+    get groupAvailabilityList(): FormArray {
+        return this.memberForm.get('groupAvailabilityList') as FormArray;
+    }
 
-        this.gridOptions = <GridOptions>{
-            rowSelection: 'single'
-        };
+    public closePopup() {
+        /* If we do not write this line then auxiliary route url will persist
+        even if we close the pop-up. So we set the modal outlet to null */
+        this.router.navigate(['expert']);
+        // To close the pop up
 
-        this.getRowNodeId = function (data: any) {
-            return data.id;
-        };
+    }
 
-        this.columnDefs = [
-            {
-                headerName: "id",
-                field: "id",
-                editable: false,
-            },
-            {
-                headerName: "Naam",
-                field: "name",
-                editable: true,
-            },
-            {
-                headerName: "Voornaam",
-                field: "firstName",
-                editable: true,
-            },
-            {
-                headerName: "Email",
-                field: "email",
-                editable: true,
-            },
-            {
-                headerName: "Gsm",
-                field: "gsm",
-                editable: true,
-            },
-            {
-                headerName: "Actief",
-                field: "active",
-                editable: true,
-            },
-        ];
+    duplicateGroupAvailability() {
+
+        this.groupAvailabilityList.push(this.fb.group({
+            availability: this.availabilities[0],
+            group: this.groups[0],
+        }));
+    }
+
+    removeGroupAvailability(index:number) {
+        this.groupAvailabilityList.removeAt(index);
+    }
+
+    addMember() {
+        this.memberForm.reset({id:-1});
+        this.groupAvailabilityList.clear();
+        this.groupAvailabilityList.push(this.fb.group({
+            availability: this.availabilities[0],
+            group: this.groups[0],
+        }));
+
+    }
+
+    removeMember() {
+        this.memberForm.get('active')?.setValue('N');
+        this.router.navigate(['admin/members']);
+    }
+
+    test(){
+        this.toastrService.warning("Niet alle gegevens zijn correct ingevuld", "Leden", {positionClass: 'toast-bottom-full-width'});
+    }
+
+    onSubmit() {
+        const values = this.memberForm.value;
+
+        const keys = Object.keys(values);
+
+        if (this.memberForm.valid) {
+            this.update.emit(values);
+        } else {
+            keys.forEach(key => {
+                const ctrl = this.memberForm.controls[key];
+                if (!ctrl.valid) {
+                    ctrl.markAsTouched();
+                    this.toastrService.warning("Niet alle gegevens zijn correct ingevuld", "Leden", {positionClass: 'toast-bottom-full-width'});
+                }
+
+            });
+        }
+    }
+
+    fillFormData(member: Member) {
+        this.memberForm.controls.name.setValue(member.name);
+        this.memberForm.controls.firstName.setValue(member.firstName);
+        this.memberForm.controls.email.setValue(member.email);
+        this.memberForm.controls.gsm.setValue(member.gsm);
+        this.memberForm.controls.level.setValue(member.level);
+        this.memberForm.controls.gender.setValue(member.gender);
+
+
+        if (member && member.groupAvailabilityList) {
+            //this.deliveryForm.controls.dossierDeliveryMode.setValue(deliveryDialogForm.dossierDeliveryMode);
+
+
+            let control = <FormArray>this.memberForm.controls.groupAvailabilityList;
+
+            member.groupAvailabilityList.forEach(groupAvailability => {
+
+                control.push(this.fb.group({
+                        availability: groupAvailability.availability,
+                        group: groupAvailability.group
+                    }),
+                );
+            });
+        }
+
+
+    }
+
+    compareFn(c1: any, c2: any): boolean {
+        return c1 && c2 ? c1.id === c2.id : c1 === c2;
+    }
+
+    ngOnInit(): void {
+        this.fillFormData(this.routeData.storage);
+        this.availabilities = this.route.snapshot.data['memberResolverData']['availabilities'];
+        this.groups = this.route.snapshot.data['memberResolverData']['groups'];
+        this.levels = this.route.snapshot.data['memberResolverData']['levels'];
+        this.genders = this.route.snapshot.data['memberResolverData']['genders'];
+    }
+
+
+    ngAfterViewInit() {
+        this.cd.detectChanges();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+
 
     }
 
 
-    onRowSelectionChanged(params: any) {
-
-    }
-
-    onCellEditingStarted(params: any) {
-
-    }
-
-
-    onSelectionChanged(params: any) {
-
-
-    }
-
-
-    ngOnInit() {
-
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-
-    }
-
-
-    onRowEditingStarted(params: any) {
-
-    }
-
-
-    onRowValueChanged(params: any) {
-
-
-    }
-
-    onRowEditingStopped(params: any) {
-
-    }
-
-    onCellValueChanged(params: any) {
-        //this.store.dispatch(new DossierActions.UpdateOrderItemAction(params.node.data));
-    }
-
-    onCellEditingStopped(params: any) {
-
-    }
-
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: any) {
-
-        /*setTimeout(x => {
-            this.gridApi.sizeColumnsToFit();
-        }, 0);*/
-    }
-
-    onGridReady(params: any) {
-        params.api.sizeColumnsToFit();
-        this.gridApi = params.api;
-        params.api.setFocusedCell(1, "name", null);
-    }
 }
+
 
 

@@ -1,9 +1,7 @@
 package com.realdolmen.padel.rest;
 
 import com.realdolmen.padel.model.Group;
-import com.realdolmen.padel.model.Member;
 import com.realdolmen.padel.service.GroupService;
-import com.realdolmen.padel.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RestGroupResource extends BaseResource {
 
 
@@ -22,16 +21,12 @@ public class RestGroupResource extends BaseResource {
     private GroupService groupService;
 
     @RequestMapping(value = "/rest/group", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*")
     public ResponseEntity<List<Group>> getGroups(final HttpServletRequest request) {
 
         List<Group> groupList = new ArrayList<Group>();
         ResponseEntity<List<Group>> responseEntity = new ResponseEntity<List<Group>>(groupList, HttpStatus.OK);
         try {
-
-
             groupList = groupService.getGroups();
-
             responseEntity = new ResponseEntity(groupList, HttpStatus.OK);
 
             return responseEntity;
@@ -47,7 +42,7 @@ public class RestGroupResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/group", method = RequestMethod.POST)
-    public ResponseEntity<Member> addGroepr(final HttpServletRequest request, final @RequestBody Group group) {
+    public ResponseEntity<Group> addGroup(final HttpServletRequest request, final @RequestBody Group group) {
         ResponseEntity responseEntity = new ResponseEntity(group, HttpStatus.OK);
 
         try {
@@ -65,8 +60,7 @@ public class RestGroupResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/group", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*")
-    public ResponseEntity<Member> updateGroup(final @RequestBody Group group) {
+    public ResponseEntity<Group> updateGroup(final @RequestBody Group group) {
         ResponseEntity responseEntity = new ResponseEntity(group, HttpStatus.OK);
 
         try {

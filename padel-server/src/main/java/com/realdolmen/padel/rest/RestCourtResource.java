@@ -15,6 +15,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RestCourtResource extends BaseResource {
 
 
@@ -22,7 +23,6 @@ public class RestCourtResource extends BaseResource {
     private CourtService courtService;
 
     @RequestMapping(value = "/rest/court", method = RequestMethod.GET)
-    @CrossOrigin(origins = "*")
     public ResponseEntity<List<Court>> getCourts(final HttpServletRequest request) {
 
         List<Court> courtList = new ArrayList<Court>();
@@ -65,7 +65,6 @@ public class RestCourtResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/court", method = RequestMethod.PUT)
-    @CrossOrigin(origins = "*")
     public ResponseEntity<Member> updateCourt(final @RequestBody Court court) {
         ResponseEntity responseEntity = new ResponseEntity(court, HttpStatus.OK);
 
