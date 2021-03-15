@@ -44,7 +44,7 @@ public class InMemoryGroupService implements GroupService {
 
     @Override
     public List<Group> getGroups() {
-        return dataStore.getGroups().stream().sorted().collect(Collectors.toList());
+        return dataStore.getGroups().stream().filter(Group.Predicates.IS_ACTIVE).sorted().collect(Collectors.toList());
     }
 }
 

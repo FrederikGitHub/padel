@@ -154,7 +154,7 @@ public class RestReservationResource extends BaseResource {
     }
 
 
-    @RequestMapping(value = "/rest/reservation/generateAndValidate", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/rest/reservation/generateAndValidate", method = RequestMethod.POST)
     public ResponseEntity<Set<WeekPlanning>> generateAndValidatePlanning(final HttpServletRequest request, final @RequestBody PlanningRequest planningRequest) {
         Set<WeekPlanning> weekPlannings = new HashSet<WeekPlanning>();
 
@@ -162,7 +162,7 @@ public class RestReservationResource extends BaseResource {
 
         try {
             if (planningRequest != null) {
-                weekPlannings = reservationService.generateWeekPlanning(planningRequest.getFromDate(), planningRequest.getToDate(), planningRequest.getCourtTimeSlotListByWeek(), planningRequest.getMembers(), planningRequest.getGroup());
+                weekPlannings = reservationService.restGenerateWeekPlanning(planningRequest.getFromDate(), planningRequest.getToDate(), planningRequest.getCourtTimeSlotWeekList(), planningRequest.getMembers(), planningRequest.getGroup(),false);
                 reservationService.validateWeekPlanning(weekPlannings, true, true);
                 responseEntity = new ResponseEntity(weekPlannings, HttpStatus.OK);
             }
@@ -172,7 +172,7 @@ public class RestReservationResource extends BaseResource {
         }
 
         return responseEntity;
-    }
+    }*/
 
 
 }

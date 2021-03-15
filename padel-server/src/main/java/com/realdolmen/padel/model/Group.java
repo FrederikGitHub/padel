@@ -1,19 +1,22 @@
 package com.realdolmen.padel.model;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Group implements Comparable<Group> {
-    private long id;
+    private Long id;
     private String name;
     private String active;
-    private String vtvLevel;
+    private List<String> vtvLevels;
 
-    public Group(long id, String name, String vtvLevel) {
+
+    public Group(long id, String name, List<String> vtvLevels,String active) {
         this.id = id;
         this.name = name;
-        this.vtvLevel = vtvLevel;
+        this.vtvLevels = vtvLevels;
+        this.active = active;
     }
 
     public long getId() {
@@ -43,21 +46,23 @@ public class Group implements Comparable<Group> {
         return this;
     }
 
-    public Group setVtvLevel(String vtvLevel) {
-        this.vtvLevel = vtvLevel;
+    public Group setVtvLevel(List<String> vtvLevels) {
+        this.vtvLevels = vtvLevels;
         return this;
     }
 
-    public String getVtvLevel() {
-        return vtvLevel;
+
+
+    public List<String> getVtvLevels() {
+        return vtvLevels;
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "id=" + id +
-                "name=" + id +
-                "vtvLevel=" + vtvLevel +
+                "name=" + name +
+                "vtvLevel=" + vtvLevels +
                 "active=" + active +
                 '}';
     }
@@ -72,12 +77,12 @@ public class Group implements Comparable<Group> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 
     @Override
     public int compareTo(Group o) {
-        return String.CASE_INSENSITIVE_ORDER.compare(this.name, o.name);
+        return this.id.compareTo(o.id);
     }
 
 
@@ -88,6 +93,15 @@ public class Group implements Comparable<Group> {
                 @Override
                 public boolean test(Group group) {
                     return group.getName() != null && group.getName().equalsIgnoreCase(groupName);
+                }
+            };
+        }
+
+        public static final Predicate<Group> withGroupLevel(final String vtvLevel) {
+            return new Predicate<Group>() {
+                @Override
+                public boolean test(Group group) {
+                    return group.getVtvLevels() != null && group.getVtvLevels().contains (vtvLevel);
                 }
             };
         }

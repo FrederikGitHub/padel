@@ -1,5 +1,6 @@
 package com.realdolmen.padel.rest;
 
+import com.realdolmen.padel.model.Group;
 import com.realdolmen.padel.model.Member;
 import com.realdolmen.padel.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,28 @@ public class RestMemberResource extends BaseResource {
             memberList = memberService.getPadelMembers();
 
             responseEntity = new ResponseEntity(memberList, HttpStatus.OK);
+
+            return responseEntity;
+
+        } catch (Exception e) {
+            responseEntity = handleException("Er is een fout opgetreden bij het ophalen van de padel leden" , e);
+
+        }
+        return responseEntity;
+
+    }
+
+    @RequestMapping(value = "/rest/member/group", method = RequestMethod.POST)
+    public ResponseEntity<List<Member>> getMembersForGroup(final @RequestBody Group group) {
+
+        List<Member> padelGroupMembers = new ArrayList<Member>();
+        ResponseEntity<List<Member>> responseEntity = new ResponseEntity<List<Member>>(padelGroupMembers, HttpStatus.OK);
+        try {
+
+
+            padelGroupMembers = memberService.getPadelGroupMembers(group);
+
+            responseEntity = new ResponseEntity(padelGroupMembers, HttpStatus.OK);
 
             return responseEntity;
 

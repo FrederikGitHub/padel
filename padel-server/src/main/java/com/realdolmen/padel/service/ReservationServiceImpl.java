@@ -6,7 +6,6 @@ import com.realdolmen.padel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,8 +28,13 @@ public class ReservationServiceImpl implements ReservationService {
 
 
     @Override
-    public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members, Group group) {
+    public Set<WeekPlanning> restGenerateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlotWeek> courtTimeSlotWeekList, List<Member> members, Group group,boolean mixLevels) {
+        Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek = courtTimeSlotWeekList.stream().collect(Collectors.toMap(CourtTimeSlotWeek::getWeek, CourtTimeSlotWeek::getCourtTimeSlotList));
+        return generateWeekPlanning(fromDate,toDate,courtTimeSlotListByWeek,members,group,mixLevels);
+    }
 
+    @Override
+    public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members, Group group,boolean mixLevels) {
         if (fromDate.isAfter(toDate)) {
             Map<String, String> paramMap = Stream.of(new String[][]{
                     {"startdate", fromDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))},
@@ -81,7 +85,10 @@ public class ReservationServiceImpl implements ReservationService {
             List<Reservation> weekReservationList = new ArrayList<Reservation>();
 
             List<WeekTimeSlot> weekTimeSlots = entry.getValue();
-            Map<Integer, List<TimeSlotGroupMembers>> timeSlotGroupMembersByTimeSlotNr = findTimeSlotTotalGroupMembers(availableWeekMembers, weekTimeSlots.size(), group);
+            Map<Integer, List<TimeSlotGroupMembers>> timeSlotGroupMembersByTimeSlotNr=null;
+            if (mixLevels){
+                timeSlotGroupMembersByTimeSlotNr = findTimeSlotTotalGroupMembers(availableWeekMembers, weekTimeSlots.size(), group);
+            }
 
             Integer weekTimeSlotIndex = 0;
             for (WeekTimeSlot weekTimeSlot : weekTimeSlots) {
@@ -93,8 +100,15 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.setCourtTimeSlot(weekTimeSlot.getTimeslot());
                 reservation.setReserveMembers(reserveList.entrySet().stream().findFirst().get().getKey());
                 reservation.setGroup(group);
-                List<TimeSlotGroupMembers> weekTimeSlotGroupMembers = timeSlotGroupMembersByTimeSlotNr.get(weekTimeSlotIndex);
-                List<Member> reservationMembers = getRandomWeekMembers(availableWeekMembers, weekTimeSlotGroupMembers);
+                List<Member> reservationMembers;
+                if (mixLevels && timeSlotGroupMembersByTimeSlotNr != null){
+                    List<TimeSlotGroupMembers> weekTimeSlotGroupMembers = timeSlotGroupMembersByTimeSlotNr.get(weekTimeSlotIndex);
+                    reservationMembers = getRandomWeekMembers(availableWeekMembers, weekTimeSlotGroupMembers);
+                }else{
+                    reservationMembers = getRandomWeekMembers(availableWeekMembers);
+                }
+
+
                 reservation.setReservationMembers(reservationMembers);
                 weekReservationList.add(reservation);
                 weekTimeSlotIndex++;
@@ -115,7 +129,7 @@ public class ReservationServiceImpl implements ReservationService {
         Map<Integer, List<TimeSlotGroupMembers>> groupMembersByTimeSlot = new HashMap<Integer, List<TimeSlotGroupMembers>>();
         List<Group> availableGroups = availableMembers.stream().flatMap(Member.Functions.TO_GROUP_AVAILABILITY).map(GroupAvailability.Functions.TO_GROUP).distinct().collect(Collectors.toList());
         for (Group availableGroup : availableGroups) {
-            List<Member> groupMembers = availableMembers.stream().filter(Member.Predicates.withGroupLevel(availableGroup.getVtvLevel())).collect(Collectors.toList());
+            List<Member> groupMembers = availableMembers.stream().filter(Member.Predicates.withGroupLevel(availableGroup.getVtvLevels())).collect(Collectors.toList());
             if (groupMembers.size()==0){
                 break;
             }
@@ -265,11 +279,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     private List<Member> getRandomWeekMembers(List<Member> availableWeekMembers, List<TimeSlotGroupMembers> timeSlotGroupMembers) {
         List<Member> randomMembers = new ArrayList<Member>();
-        int totalMembersInTimeSlot = 0;
-
 
         for (TimeSlotGroupMembers timeSlotGroupMember : timeSlotGroupMembers) {
-            List<Member> availableGroupMembers = availableWeekMembers.stream().filter(Member.Predicates.withGroupLevel(timeSlotGroupMember.getGroup().getName())).collect(Collectors.toList());
+            List<Member> availableGroupMembers = availableWeekMembers.stream().filter(Member.Predicates.withGroupLevel(timeSlotGroupMember.getGroup().getVtvLevels())).collect(Collectors.toList());
             for (int i = 0; i < timeSlotGroupMember.getTotalMembers(); i++) {
                 Random random = new Random();
                 int randomNumber = random.nextInt(timeSlotGroupMember.getTotalMembers() > availableGroupMembers.size() ? availableGroupMembers.size() : timeSlotGroupMember.getTotalMembers());
@@ -280,6 +292,19 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
 
+        return randomMembers;
+
+    }
+
+
+    private List<Member> getRandomWeekMembers(List<Member> availableWeekMembers){
+        List<Member> randomMembers = new ArrayList<Member>();
+        for (int i=0;i<4;i++){
+            Random random = new Random();
+            Member randomMember = availableWeekMembers.get(random.nextInt(availableWeekMembers.size()));
+            randomMembers.add(randomMember);
+            availableWeekMembers.remove(randomMember);
+        }
         return randomMembers;
 
     }

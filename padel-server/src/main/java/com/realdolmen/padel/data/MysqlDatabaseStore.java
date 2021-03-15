@@ -122,4 +122,9 @@ public class MysqlDatabaseStore implements DataStore {
     public void update(TimeSlot timeSlot) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public List<CourtTimeSlot> getCourtTimeSlots() {
+        throw new UnsupportedOperationException();
+    }
 }

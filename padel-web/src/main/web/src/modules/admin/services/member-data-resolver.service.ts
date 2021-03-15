@@ -6,7 +6,7 @@ import {selectAvailabilityState, selectGroupState} from "@modules/admin/reducers
 import {AvailabilityService} from "@modules/admin/services/availability.service";
 import {Availability, Group} from "@common/models";
 import {map} from "rxjs/operators";
-import {GroupService} from "@modules/admin/services/group.service";
+import {GroupService} from "@common/services/group.service";
 
 
 @Injectable({

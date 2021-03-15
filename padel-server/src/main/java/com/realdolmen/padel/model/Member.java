@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class Member implements Comparable<Member>{
+public class Member implements Comparable<Member> {
     private long id;
     private String name;
     private String firstName;
@@ -17,7 +17,7 @@ public class Member implements Comparable<Member>{
     private String gender;
     private String active;
 
-    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, String level,String gender,String active) {
+    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, String level, String gender, String active) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
@@ -130,19 +130,17 @@ public class Member implements Comparable<Member>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return id == member.id &&
-                Objects.equals(name, member.name) &&
-                Objects.equals(firstName, member.firstName);
+        return id == member.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, firstName);
+        return Objects.hash(id);
     }
 
     @Override
     public int compareTo(Member o) {
-        return String.CASE_INSENSITIVE_ORDER.compare(this.name + " " + this.firstName,o.name + " " + o.firstName);
+        return String.CASE_INSENSITIVE_ORDER.compare(this.name + " " + this.firstName, o.name + " " + o.firstName);
     }
 
     public static class Functions {
@@ -188,11 +186,11 @@ public class Member implements Comparable<Member>{
             };
         }
 
-        public static final Predicate<Member> withGroupLevel(final String groupLevel) {
+        public static final Predicate<Member> withGroupLevel(final List<String> groupLevels) {
             return new Predicate<Member>() {
                 @Override
                 public boolean test(Member member) {
-                    return member.getLevel() != null && member.getLevel().equalsIgnoreCase(groupLevel);
+                    return member.getLevel() != null && groupLevels.contains(member.getLevel());
                 }
             };
         }

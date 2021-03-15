@@ -13,8 +13,16 @@ import * as reservationContainers from './containers';
 import * as reservationComponents from './components';
 
 import * as reservationServices from './services';
-
-
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatIconModule} from "@angular/material/icon";
+import {MatInputModule} from "@angular/material/input";
+import {MatListModule} from "@angular/material/list";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {EffectsModule} from "@ngrx/effects";
+import {ReservationEffects} from "@modules/reservations/effects/reservation.effects";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -24,7 +32,16 @@ import * as reservationServices from './services';
         ReactiveFormsModule,
         FormsModule,
         AppCommonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        NgbModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatGridListModule,
         NavigationModule,
+        EffectsModule.forFeature([ReservationEffects]),
 
     ],
     providers: [...reservationServices.services],

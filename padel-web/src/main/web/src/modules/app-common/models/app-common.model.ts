@@ -110,3 +110,12 @@ export interface MemberFilterForm {
     level?: string;
     group?:string;
 }
+
+export interface PlanningRequest {
+    fromDate?: string;
+    toDate?: string;
+    courtTimeSlotListByWeek?: CourtTimeSlot[];
+    members?:Member[];
+    group?:Group;
+}
+

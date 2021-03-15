@@ -1,6 +1,7 @@
 package com.realdolmen.padel.model;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class CourtTimeSlot {
     private long id;
@@ -58,5 +59,22 @@ public class CourtTimeSlot {
     @Override
     public int hashCode() {
         return Objects.hash(id, timeSlot, court);
+    }
+
+
+    public static class Predicates {
+
+        public static final Predicate<CourtTimeSlot> withId(final Long id) {
+            return new Predicate<CourtTimeSlot>() {
+                @Override
+                public boolean test(CourtTimeSlot courtTimeSlot) {
+                    return courtTimeSlot.getId() == id;
+                }
+            };
+        }
+
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.realdolmen.padel.rest;
 
+import com.realdolmen.padel.model.AutoReservationRequest;
 import com.realdolmen.padel.model.PlanningRequest;
 import com.realdolmen.padel.model.WeekPlanning;
 import com.realdolmen.padel.service.ReservationService;
@@ -25,21 +26,21 @@ public class RestPlanningResource extends BaseResource {
 
 
     @RequestMapping(value = "/rest/planning/generateAndValidate", method = RequestMethod.POST)
-    public ResponseEntity<Set<WeekPlanning>> generateAndValidatePlanning(final HttpServletRequest request, final @RequestBody PlanningRequest planningRequest) {
+    public ResponseEntity<Set<WeekPlanning>> generateAndValidatePlanning(final HttpServletRequest request, final @RequestBody AutoReservationRequest planningRequest) {
         Set<WeekPlanning> weekPlannings = new HashSet<WeekPlanning>();
 
         ResponseEntity responseEntity = new ResponseEntity(weekPlannings, HttpStatus.OK);
 
-        try {
+        /*try {
             if (planningRequest != null) {
-                weekPlannings = reservationService.generateWeekPlanning(planningRequest.getFromDate(),planningRequest.getToDate(),planningRequest.getCourtTimeSlotListByWeek(),planningRequest.getMembers(),planningRequest.getGroup());
+                weekPlannings = reservationService.restGenerateWeekPlanning(planningRequest.getFromDate(),planningRequest.getToDate(),planningRequest.getCourtTimeSlotWeekList(),planningRequest.getMembers(),planningRequest.getGroup(),false);
                 reservationService.validateWeekPlanning(weekPlannings,true,true);
                 responseEntity = new ResponseEntity(weekPlannings, HttpStatus.OK);
             }
 
         } catch (Exception e) {
             responseEntity = handleException("Er is een fout opgetreden bij het opmaken van de planning", e);
-        }
+        }*/
 
         return responseEntity;
     }

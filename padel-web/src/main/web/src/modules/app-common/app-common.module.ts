@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 /* Third Party */
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { IconsModule } from '@modules/icons/icons.module';
 
 const thirdParty = [IconsModule, NgbModule];
@@ -18,14 +18,19 @@ import * as appCommonComponents from './components';
 /* Guards */
 import * as appCommonGuards from './guards';
 
+import * as appCommonPipes from './pipes';
+
+
 /* Services */
 import * as appCommonServices from './services';
 import * as authServices from '@modules/auth/services';
+import {CallbackPipe} from "./pipes";
+import {NgbDateCustomParserFormatter} from "@common/services/custom-date-formatter-parser.service";
 
 @NgModule({
-    imports: [CommonModule, RouterModule, ...thirdParty],
-    providers: [...appCommonServices.services, ...authServices.services, ...appCommonGuards.guards],
-    declarations: [...appCommonContainers.containers, ...appCommonComponents.components],
-    exports: [...appCommonContainers.containers, ...appCommonComponents.components, ...thirdParty],
+    imports: [CommonModule,NgbModule, RouterModule, ...thirdParty],
+    providers: [{provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},...appCommonServices.services, ...authServices.services, ...appCommonGuards.guards,...appCommonPipes.pipes],
+    declarations: [...appCommonContainers.containers, ...appCommonComponents.components, CallbackPipe],
+    exports: [...appCommonContainers.containers, ...appCommonComponents.components, ...thirdParty, CallbackPipe],
 })
 export class AppCommonModule {}

@@ -1,7 +1,12 @@
 package com.realdolmen.padel.model;
 
+import io.micrometer.core.instrument.util.StringUtils;
+
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.StringTokenizer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class Week implements Comparable<Week>{
     private Integer weekOfYear;
@@ -13,6 +18,10 @@ public class Week implements Comparable<Week>{
     public Week() {
     }
 
+
+    public Week(Integer weekOfYear) {
+        this.weekOfYear = weekOfYear;
+    }
     public Week(Integer weekOfYear, Integer weekOfMonth, LocalDate startWeekDay, LocalDate endWeekDay, Integer year) {
         this.weekOfYear = weekOfYear;
         this.weekOfMonth = weekOfMonth;
@@ -92,5 +101,59 @@ public class Week implements Comparable<Week>{
         } else {
             return 1;
         }
+    }
+
+
+    public static class Functions {
+
+        public static Function<String, Week> FROM_WEEK_KEY = new Function<String, Week>() {
+            @Override
+            public Week apply(String weekKey) {
+                String[] weekKeyList = weekKey.split(";");
+                Week week = new Week();
+                if (weekKeyList.length>1 && StringUtils.isNotEmpty(weekKeyList[1])){
+                    LocalDate fromDate = LocalDate.parse(weekKeyList[1]);
+                    week.setStartWeekDay(fromDate);
+                }
+                if (weekKeyList.length>2 && StringUtils.isNotEmpty(weekKeyList[2])){
+                    LocalDate toDate = LocalDate.parse(weekKeyList[2]);
+                    week.setStartWeekDay(toDate);
+                }
+                if (weekKeyList.length>3 && StringUtils.isNotEmpty(weekKeyList[3])){
+                    week.setWeekOfYear(new Integer(weekKeyList[3]));
+                }
+                if (weekKeyList.length>4 && StringUtils.isNotEmpty(weekKeyList[4])){
+                    week.setWeekOfMonth(new Integer(weekKeyList[4]));
+                }
+                if (weekKeyList.length>5 && StringUtils.isNotEmpty(weekKeyList[5])){
+                    week.setYear(new Integer(weekKeyList[5]));
+                }
+
+
+                return week;
+            }
+        };
+
+        public static Function<Member, String> TO_FIRST_NAME = new Function<Member, String>() {
+            @Override
+            public String apply(Member member) {
+                return member.getFirstName();
+            }
+        };
+
+        public static Function<Member, String> TO_FULL_NAME = new Function<Member, String>() {
+            @Override
+            public String apply(Member member) {
+                return member.getName() + " " + member.getFirstName();
+            }
+        };
+
+        public static Function<Member, Stream<GroupAvailability>> TO_GROUP_AVAILABILITY = new Function<Member, Stream<GroupAvailability>>() {
+            @Override
+            public Stream<GroupAvailability> apply(Member member) {
+                return member.getGroupAvailabilityList().stream();
+            }
+        };
+
     }
 }

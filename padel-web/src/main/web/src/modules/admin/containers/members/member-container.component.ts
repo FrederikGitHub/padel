@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit, SimpleChanges} from '@angular/core';
-import {Member} from "@common/models";
+import {Court, Member} from "@common/models";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Store} from "@ngrx/store";
 
 @Component({
     selector: 'padel-member-container',
@@ -10,7 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class MemberContainerComponent implements OnInit {
 
 
-    constructor(private router: Router,private route: ActivatedRoute) {
+    constructor(private router: Router,private route: ActivatedRoute,private store: Store<{ courts: Court[] }>) {
 
 
     }
@@ -32,8 +33,15 @@ export class MemberContainerComponent implements OnInit {
 
 
     updateMember(member: Member) {
-        //this.store.dispatch(new UpdateSettingsAction(settings));
+        if (member.id == -1){
+            this.store.dispatch({ type: 'Add member',member:member});
+        }else{
+            this.store.dispatch({ type: 'Update member',member:member});
+        }
     }
+
+
+
 
 
     ngOnDestroy(): void {

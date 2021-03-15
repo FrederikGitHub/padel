@@ -13,7 +13,11 @@ public interface ReservationService {
 
     boolean validateWeekPlanning(Set<WeekPlanning> weekPlannings,boolean validateTimeSlotOverBooking,boolean validateMemberOverBooking);
 
-    Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week,List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members,Group group);
+
+
+    Set<WeekPlanning> restGenerateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlotWeek> courtTimeSlotWeekList, List<Member> members,Group group,boolean mixLevels);
+
+    Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week,List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members,Group group,boolean mixLevels);
     //public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlot> courtTimeSlotList, Group group);
 
     Set<WeekPlanning> getGroupWeekPlanning(LocalDate fromDate, LocalDate toDate, Group group);

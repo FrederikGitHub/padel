@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Member} from "@common/models";
 import {select, Store} from "@ngrx/store";
-import {MemberService} from "@modules/admin/services/member.service";
+import {MemberService} from "@common/services/member.service";
 import {selectMemberState} from "@modules/admin/reducers";
 import {take} from "rxjs/operators";
 

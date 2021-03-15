@@ -8,23 +8,12 @@ import {CourtService} from "@modules/admin/services/court.service";
 export class CourtEffects {
 
 
-    /*loadMembers$ = createEffect(() => this.actions$.pipe(
-        ofType('[Member Page] Load Members'),
-        mergeMap(() => this.memberService.getAllMembers()
-            .pipe(
-                map(members => ({ type: '[Member Page] Load Members', payload: members })),
-                catchError(() => EMPTY)
-            ))
-        )
-    );*/
-
-
     loadCourts$ = createEffect(() =>
         this.actions$.pipe(
             ofType('Retrieve all courts'),
             mergeMap(() => this.courtService.getCourts()
                 .pipe(
-                    map(courts => ( {type: 'Retrieve all courts success', courts: courts})),
+                    map(courts => ({type: 'Retrieve all courts success', courts: courts})),
                     catchError(() => EMPTY))
             )
         )

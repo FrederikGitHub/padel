@@ -111,6 +111,8 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     fillFormData(member: Member) {
+        this.memberForm.controls.id.setValue(member.id);
+        this.memberForm.controls.active.setValue(member.active);
         this.memberForm.controls.name.setValue(member.name);
         this.memberForm.controls.firstName.setValue(member.firstName);
         this.memberForm.controls.email.setValue(member.email);

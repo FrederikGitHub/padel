@@ -1,6 +1,8 @@
 package com.realdolmen.padel.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
@@ -45,19 +47,32 @@ public enum Availability {
         this.weekNumbers = weekNumbers;
     }
 
-    //@JsonValue
+
     public String getLabel() {
         return label;
     }
 
-    //@JsonValue
+
     public List<Integer> getWeekNumbers() {
         return weekNumbers;
     }
 
-    //@JsonValue
+
     public Long getId() {
         return id;
+    }
+
+    @JsonCreator
+    public static Availability forValues(@JsonProperty("id") Long id,
+                                         @JsonProperty("label") String label, @JsonProperty("weekNumbers") List<Integer> weekNumbers) {
+        for (Availability availability : Availability.values()) {
+            if (
+                    availability.getId().equals(id) && availability.getLabel().equalsIgnoreCase(label)) {
+                return availability;
+            }
+        }
+
+        return null;
     }
 
 

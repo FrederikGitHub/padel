@@ -1,37 +1,51 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {MemberService} from "@modules/admin/services/member.service";
-import {catchError, map, mergeMap} from "rxjs/operators";
+import {MemberService} from "@common/services/member.service";
+import {catchError, exhaustMap, map, mergeMap} from "rxjs/operators";
 import {EMPTY} from "rxjs";
+import {MemberActions} from "@modules/admin/actions";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class MemberEffects {
 
-
-    /*loadMembers$ = createEffect(() => this.actions$.pipe(
-        ofType('[Member Page] Load Members'),
-        mergeMap(() => this.memberService.getAllMembers()
-            .pipe(
-                map(members => ({ type: '[Member Page] Load Members', payload: members })),
-                catchError(() => EMPTY)
-            ))
-        )
-    );*/
-
-
     loadMembers$ = createEffect(() =>
         this.actions$.pipe(
-            ofType('Retrieve all members'),
+            ofType(MemberActions.LoadMembers),
             mergeMap(() => this.memberService.getAllMembers()
                 .pipe(
-                    map(Member => ( {type: 'Retrieve all members success', members: Member})),
+                    map(members => ({type: 'Retrieve all members success', members: members})),
                     catchError(() => EMPTY))
             )
         )
     );
 
+    updateMembers$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(MemberActions.UpdateMember),
+                exhaustMap((action) => this.memberService.updateMember(action.member)
+                    .pipe(
+                        map(() => this.router.navigate(['admin/members'])),
+                        catchError(() => EMPTY))
+                )
+            )
+        , {dispatch: false});
+
+
+    addMembers$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(MemberActions.AddMember),
+                exhaustMap((action) => this.memberService.addMember(action.member)
+                    .pipe(
+                        map(() => this.router.navigate(['admin/members'])),
+                        catchError(() => EMPTY))
+                )
+            )
+        , {dispatch: false});
+
 
     constructor(
+        private router: Router,
         private actions$: Actions,
         private memberService: MemberService
     ) {

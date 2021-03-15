@@ -8,6 +8,8 @@ import { ReservationModule } from './reservation.module';
 
 /* Containers */
 import * as reservationContainers from './containers';
+import {MemberDataResolverService} from "@modules/admin/services/member-data-resolver.service";
+import {ReservationDataResolverService} from "@modules/reservations/services/reservation-data-resolver";
 
 export const ROUTES: Routes = [
 
@@ -64,6 +66,9 @@ export const ROUTES: Routes = [
     },
     {
         path: 'auto',
+        resolve: {
+            memberResolverData: ReservationDataResolverService
+        },
         data: {
             title: 'Genereer reservaties',
             breadcrumbs: [

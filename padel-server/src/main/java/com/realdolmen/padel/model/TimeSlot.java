@@ -1,6 +1,9 @@
 package com.realdolmen.padel.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.time.DayOfWeek;
 
@@ -101,16 +104,33 @@ public enum TimeSlot {
         this.dayOfWeek = dayOfWeek;
     }
 
+
     public String getFrom() {
         return from;
     }
+
 
     public String getTo() {
         return to;
     }
 
+
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
+    }
+
+
+    @JsonCreator
+    public static TimeSlot forValues(@JsonProperty("from") String from,
+                                         @JsonProperty("to") String to, @JsonProperty("dayOfWeek") DayOfWeek dayOfWeek) {
+        for (TimeSlot timeSlot : TimeSlot.values()) {
+            if (
+                    timeSlot.getFrom().equalsIgnoreCase(from) && timeSlot.getTo().equalsIgnoreCase(to) && timeSlot.getDayOfWeek().equals(dayOfWeek)) {
+                return timeSlot;
+            }
+        }
+
+        return null;
     }
 
 

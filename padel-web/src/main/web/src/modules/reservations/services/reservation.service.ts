@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Group, WeekPlanning} from "@common/models";
+import {PlanningRequest, WeekPlanning} from "@common/models";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
@@ -9,12 +9,19 @@ export class ReservationService {
 
     base_url: string = environment.url + "/rest/reservation/";
     week_endpoint = "week";
+    generateAndValidate_endpoint = "generateAndValidate";
 
-    constructor(private http: HttpClient) {}
 
-    getWeekReservations$():Observable<WeekPlanning[]>{
+    constructor(private http: HttpClient) {
+    }
+
+    getWeekReservations$(): Observable<WeekPlanning[]> {
         return this.http
             .get<WeekPlanning[]>(this.base_url + this.week_endpoint);
+    }
+
+    generateAndValidatePlanning(planningRequest: PlanningRequest): Observable<WeekPlanning[]> {
+        return this.http.post<WeekPlanning[]>(this.base_url + this.generateAndValidate_endpoint, planningRequest);
     }
 
 
