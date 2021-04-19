@@ -16,16 +16,19 @@ public interface DataStore {
     static final String P100_WOMEN = "P100W";
     static final String P200_WOMEN = "P200W";
 
-    static final String BUBBEL_ONE = "BUBBEL-ONE";
-    static final String BUBBEL_TWO = "BUBBEL-TWO";
-    static final String BUBBEL_THREE = "BUBBEL-THREE";
-    static final String BUBBEL_FOUR = "BUBBEL-FOUR";
-    static final String BUBBEL_FIVE = "BUBBEL-FIVE";
-    static final String BUBBEL_SIX = "BUBBEL-SIX";
-    static final String BUBBEL_SEVEN = "BUBBEL-SEVEN";
-    static final String BUBBEL_EIGHT = "BUBBEL-EIGHT";
-    static final String BUBBEL_NINE = "BUBBEL-NINE";
-    static final String BUBBEL_TEN = "BUBBEL-TEN";
+    static final String BUBBEL_ONE_MEN = "MANNEN-A";
+    static final String BUBBEL_TWO_MEN = "MANNEN-B";
+    static final String BUBBEL_THREE_MEN = "MANNEN-C";
+    static final String BUBBEL_FOUR_MEN = "MANNEN-D";
+    static final String BUBBEL_FIVE_MEN = "MANNEN-E";
+    static final String BUBBEL_SIX_MEN = "MANNEN-F";
+    static final String BUBBEL_SEVEN_MEN = "MANNEN-G";
+    static final String BUBBEL_EIGHT_MEN = "MANNEN-H";
+
+    static final String BUBBEL_ONE_WOMEN = "VROUWEN-A";
+    static final String BUBBEL_TWO_WOMEN = "VROUWEN-B";
+    static final String BUBBEL_THREE_WOMEN = "VROUWEN-C";
+    static final String BUBBEL_FOUR_WOMEN = "VROUWEN-D";
 
     static final String P50_LEVEL = "P50";
     static final String P100_LEVEL = "P100";

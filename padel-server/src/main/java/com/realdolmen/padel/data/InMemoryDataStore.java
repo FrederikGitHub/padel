@@ -2,7 +2,6 @@ package com.realdolmen.padel.data;
 
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.MemberBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -156,16 +155,16 @@ public class InMemoryDataStore implements DataStore{
         clubGroups.add(new Group(7L,P500_MEN,Arrays.asList(P500_LEVEL),"Y"));
         clubGroups.add(new Group(8L,DUMMY_GROUP,Arrays.asList(P500_LEVEL),"N"));
 
-        clubGroups.add(new Group(9L,BUBBEL_ONE,Arrays.asList(P500_LEVEL,P300_LEVEL),"Y"));
-        clubGroups.add(new Group(10L,BUBBEL_TWO,Arrays.asList(P500_LEVEL,P300_LEVEL),"Y"));
-        clubGroups.add(new Group(11L,BUBBEL_THREE,Arrays.asList(P300_LEVEL,P200_LEVEL),"Y"));
-        clubGroups.add(new Group(12L,BUBBEL_FOUR,Arrays.asList(P200_LEVEL),"Y"));
-        clubGroups.add(new Group(13L,BUBBEL_FIVE,Arrays.asList(P200_LEVEL),"Y"));
-        clubGroups.add(new Group(14L,BUBBEL_SIX,Arrays.asList(P200_LEVEL),"Y"));
-        clubGroups.add(new Group(15L,BUBBEL_SEVEN,Arrays.asList(P100_LEVEL),"Y"));
-        clubGroups.add(new Group(16L,BUBBEL_EIGHT,Arrays.asList(P100_LEVEL),"Y"));
-        clubGroups.add(new Group(15L,BUBBEL_NINE,Arrays.asList(P100_LEVEL),"Y"));
-        clubGroups.add(new Group(16L,BUBBEL_TEN,Arrays.asList(P100_LEVEL),"Y"));
+        clubGroups.add(new Group(9L, BUBBEL_ONE_MEN,Arrays.asList(P500_LEVEL,P300_LEVEL),"Y"));
+        clubGroups.add(new Group(10L, BUBBEL_TWO_MEN,Arrays.asList(P500_LEVEL,P300_LEVEL),"Y"));
+        clubGroups.add(new Group(11L, BUBBEL_THREE_MEN,Arrays.asList(P300_LEVEL,P200_LEVEL),"Y"));
+        clubGroups.add(new Group(12L, BUBBEL_FOUR_MEN,Arrays.asList(P200_LEVEL),"Y"));
+        clubGroups.add(new Group(13L, BUBBEL_FIVE_MEN,Arrays.asList(P200_LEVEL),"Y"));
+        clubGroups.add(new Group(14L, BUBBEL_SIX_MEN,Arrays.asList(P200_LEVEL),"Y"));
+        clubGroups.add(new Group(15L, BUBBEL_SEVEN_MEN,Arrays.asList(P100_LEVEL),"Y"));
+        clubGroups.add(new Group(16L, BUBBEL_EIGHT_MEN,Arrays.asList(P100_LEVEL),"Y"));
+        clubGroups.add(new Group(15L, BUBBEL_ONE_WOMEN,Arrays.asList(P100_LEVEL),"Y"));
+        clubGroups.add(new Group(16L, BUBBEL_TWO_WOMEN,Arrays.asList(P100_LEVEL),"Y"));
     }
     static{
         availabilities.add(FIRST_WEEK_AVAILABILITY);
@@ -429,56 +428,56 @@ public class InMemoryDataStore implements DataStore{
 
     static{
         //BEGIN BUBBEL_ONE
-        bubbelMembers.add(new MemberBuilder().setId(1L).setName("D'hose").setFirstName("Kris").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(2L).setName("Goossens").setFirstName("Werner").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(3L).setName("Stalpaert").setFirstName("Bart").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(4L).setName("Vandevelde").setFirstName("Tom").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(5L).setName("Vanhee").setFirstName("Kris").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(6L).setName("Verplanken").setFirstName("Christophe").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(7L).setName("Van Heddeghem").setFirstName("Frederik").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(8L).setName("Dirk").setFirstName("Demil").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(9L).setName("Uyttenhove").setFirstName("Dries").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(10L).setName("Van Wymeersch").setFirstName("Tim").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(1L).setName("D'hose").setFirstName("Kris").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(2L).setName("Goossens").setFirstName("Werner").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(3L).setName("Stalpaert").setFirstName("Bart").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(4L).setName("Vandevelde").setFirstName("Tom").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(5L).setName("Vanhee").setFirstName("Kris").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(6L).setName("Verplanken").setFirstName("Christophe").setActive("Y").setLevel(P500_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(7L).setName("Van Heddeghem").setFirstName("Frederik").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(8L).setName("Dirk").setFirstName("Demil").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(9L).setName("Uyttenhove").setFirstName("Dries").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(10L).setName("Van Wymeersch").setFirstName("Tim").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_ONE_MEN)))).build());
         //END BUBBEL_ONE
 
         //BEGIN BUBBEL_TWO
-        bubbelMembers.add(new MemberBuilder().setId(11L).setName("De Smedt").setFirstName("Dominik").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(12L).setName("Leroy").setFirstName("Pedro").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(13L).setName("Torrekens").setFirstName("Bruno").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(14L).setName("Van Huffel").setFirstName("Diego").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(15L).setName("Verstichelen").setFirstName("Davy").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(16L).setName("De Smet Van Damme").setFirstName("Jan").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(17L).setName("D'Hoker").setFirstName("Pieter").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(18L).setName("Leroy").setFirstName("Wendy").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(19L).setName("Paternoster").setFirstName("Stefaan").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(20L).setName("Baeyens").setFirstName("Brecht").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(11L).setName("De Smedt").setFirstName("Dominik").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(12L).setName("Leroy").setFirstName("Pedro").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(13L).setName("Torrekens").setFirstName("Bruno").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(14L).setName("Van Huffel").setFirstName("Diego").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(15L).setName("Verstichelen").setFirstName("Davy").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(16L).setName("De Smet Van Damme").setFirstName("Jan").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(17L).setName("D'Hoker").setFirstName("Pieter").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(18L).setName("Leroy").setFirstName("Wendy").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(19L).setName("Paternoster").setFirstName("Stefaan").setActive("Y").setLevel(P300_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(20L).setName("Baeyens").setFirstName("Brecht").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_TWO_MEN)))).build());
         //END BUBBEL_TWO
 
 
         //BEGIN BUBBEL_THREE
-        bubbelMembers.add(new MemberBuilder().setId(21L).setName("Capelleman").setFirstName("Philip").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(22L).setName("Coesens").setFirstName("Joris").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(23L).setName("Collage").setFirstName("Kristof").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(24L).setName("Cortier").setFirstName("Kathy").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(25L).setName("De Backer").setFirstName("Bart").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(26L).setName("De Brakeleer").setFirstName("Kristof").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(27L).setName("Janssens").setFirstName("Johan").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(28L).setName("Paternoster").setFirstName("Kris").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(29L).setName("Peereman").setFirstName("Frederik").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(30L).setName("Reyns").setFirstName("Liesbet").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(21L).setName("Capelleman").setFirstName("Philip").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(22L).setName("Coesens").setFirstName("Joris").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(23L).setName("Collage").setFirstName("Kristof").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(24L).setName("Cortier").setFirstName("Kathy").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(25L).setName("De Backer").setFirstName("Bart").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(26L).setName("De Brakeleer").setFirstName("Kristof").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(27L).setName("Janssens").setFirstName("Johan").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(28L).setName("Paternoster").setFirstName("Kris").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(29L).setName("Peereman").setFirstName("Frederik").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(30L).setName("Reyns").setFirstName("Liesbet").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_THREE_MEN)))).build());
         //END BUBBEL_THREE
 
         //BEGIN BUBBEL_FOUR
-        bubbelMembers.add(new MemberBuilder().setId(31L).setName("De Clercq").setFirstName("Stijn").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(32L).setName("De Cock").setFirstName("Jurgen").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(33L).setName("Delestrée").setFirstName("Jasper").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(34L).setName("De Meester").setFirstName("Jan").setActive("Y").setLevel(P200_LEVEL).setGender(WOMEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(35L).setName("Diependaele").setFirstName("Ilse").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(36L).setName("Eeckhout").setFirstName("Andy").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(37L).setName("Van Haesevelde").setFirstName("Ellert").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(38L).setName("Vanhee").setFirstName("Dieter").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(39L).setName("Verplanken").setFirstName("Marco").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
-        bubbelMembers.add(new MemberBuilder().setId(40L).setName("Verstuyft").setFirstName("Joeri").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(31L).setName("De Clercq").setFirstName("Stijn").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(32L).setName("De Cock").setFirstName("Jurgen").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(33L).setName("Delestrée").setFirstName("Jasper").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(34L).setName("De Meester").setFirstName("Jan").setActive("Y").setLevel(P200_LEVEL).setGender(WOMEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(35L).setName("Diependaele").setFirstName("Ilse").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(36L).setName("Eeckhout").setFirstName("Andy").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(37L).setName("Van Haesevelde").setFirstName("Ellert").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(38L).setName("Vanhee").setFirstName("Dieter").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(39L).setName("Verplanken").setFirstName("Marco").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
+        bubbelMembers.add(new MemberBuilder().setId(40L).setName("Verstuyft").setFirstName("Joeri").setActive("Y").setLevel(P200_LEVEL).setGender(MEN).setGroupAvailabilityList(Arrays.asList(new GroupAvailability(Availability.FULL_TIME_AVAILABILITY,getPadelGroup(BUBBEL_FOUR_MEN)))).build());
         //END BUBBEL_FOUR
 
     }

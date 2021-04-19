@@ -1,9 +1,8 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.data.InMemoryDataStore;
-import com.realdolmen.padel.data.MysqlDatabaseStore;
 import com.realdolmen.padel.assertions.WeekPlanningAssert;
 import com.realdolmen.padel.data.DataStore;
+import com.realdolmen.padel.data.InMemoryDataStore;
 import com.realdolmen.padel.exception.PadelRuntimeException;
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.CourtTimeSlotBuilder;

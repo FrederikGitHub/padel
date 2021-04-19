@@ -108,6 +108,7 @@
     </profiles>
 
     <build>
+        <!--finalName>padel</finalName-->
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
