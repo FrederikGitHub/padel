@@ -1,7 +1,9 @@
 package com.realdolmen.padel.service;
 
+import com.realdolmen.padel.model.VtvLevel;
+
 import java.util.List;
 
 public interface LevelService {
-    List<String> getLevels();
+    List<VtvLevel> getLevels();
 }

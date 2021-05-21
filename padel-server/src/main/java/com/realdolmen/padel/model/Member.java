@@ -1,9 +1,15 @@
 package com.realdolmen.padel.model;
 
+import com.realdolmen.padel.entity.MemberEntity;
+import com.realdolmen.padel.entity.MemberGroupAvailabilityEntity;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Member implements Comparable<Member> {
@@ -12,19 +18,24 @@ public class Member implements Comparable<Member> {
     private String firstName;
     private String email;
     private String gsm;
-    private String level;
+    private VtvLevel vtvLevel;
     private List<GroupAvailability> groupAvailabilityList;
     private String gender;
     private String active;
+    private String password;
 
-    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, String level, String gender, String active) {
+    public Member() {
+
+    }
+
+    public Member(long id, String name, String firstName, String email, String gsm, List<GroupAvailability> groupAvailabilityList, VtvLevel vtvLevel, String gender, String active) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
         this.email = email;
         this.gsm = gsm;
         this.groupAvailabilityList = groupAvailabilityList;
-        this.level = level;
+        this.vtvLevel = vtvLevel;
         this.gender = gender;
         this.active = active;
     }
@@ -92,8 +103,8 @@ public class Member implements Comparable<Member> {
         return this;
     }
 
-    public Member setLevel(String level) {
-        this.level = level;
+    public Member setLevel(VtvLevel level) {
+        this.vtvLevel = level;
         return this;
     }
 
@@ -102,12 +113,24 @@ public class Member implements Comparable<Member> {
         return this;
     }
 
-    public String getLevel() {
-        return level;
-    }
-
     public String getGender() {
         return gender;
+    }
+
+    public VtvLevel getVtvLevel() {
+        return vtvLevel;
+    }
+
+    public void setVtvLevel(VtvLevel vtvLevel) {
+        this.vtvLevel = vtvLevel;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -119,7 +142,7 @@ public class Member implements Comparable<Member> {
                 ", email='" + email + '\'' +
                 ", gsm='" + gsm + '\'' +
                 ", group=" + groupAvailabilityList +
-                ", level=" + level +
+                ", level=" + vtvLevel +
                 ", level=" + gender +
                 ", active='" + active + '\'' +
                 '}';
@@ -173,6 +196,48 @@ public class Member implements Comparable<Member> {
             }
         };
 
+        public static Function<MemberEntity, Member> FROM_MEMBER_ENTITY = new Function<MemberEntity, Member>() {
+            @Override
+            public Member apply(MemberEntity memberEntity) {
+                Member member = new Member();
+                member.setId(memberEntity.getId());
+                member.setName(memberEntity.getName());
+                member.setFirstName(memberEntity.getFirstName());
+                member.setEmail(memberEntity.getEmail());
+                member.setActive(memberEntity.getActive());
+                member.setGender(memberEntity.getGender());
+                if (memberEntity.getVtvLevel() != null){
+                    member.setLevel(VtvLevel.Functions.FROM_VTV_LEVEL_ENTITY.apply(memberEntity.getVtvLevel()));
+                }
+                if (!CollectionUtils.isEmpty(memberEntity.getGroupAvailabilityList())){
+                    List<GroupAvailability> groupAvailabilityList = memberEntity.getGroupAvailabilityList().stream().map(GroupAvailability.Functions.FROM_MEMBER_GROUP_AVAILABILITY_ENTITY).collect(Collectors.toList());
+                    member.setGroupAvailabilityList(groupAvailabilityList);
+                }
+
+                return member;
+            }
+        };
+
+        public static Function<Member, MemberEntity> TO_MEMBER_ENTITY = new Function<Member, MemberEntity>() {
+            @Override
+            public MemberEntity apply(Member member) {
+                MemberEntity memberEntity = new MemberEntity();
+                memberEntity.setId(member.getId());
+                memberEntity.setName(member.getName());
+                memberEntity.setFirstName(member.getFirstName());
+                memberEntity.setPassword(member.getPassword());
+                memberEntity.setGsm(member.getGsm());
+                memberEntity.setActive(member.getActive());
+                memberEntity.setEmail(member.getEmail());
+                if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())){
+                    Set<MemberGroupAvailabilityEntity> memberGroupAvailabilityEntityList = member.getGroupAvailabilityList().stream().map(GroupAvailability.Functions.TO_MEMBER_GROUP_AVAILABILITY_ENTITY).collect(Collectors.toSet());
+                    memberEntity.setGroupAvailabilityList(memberGroupAvailabilityEntityList);
+                }
+
+                return memberEntity;
+            }
+        };
+
     }
 
     public static class Predicates {
@@ -186,11 +251,11 @@ public class Member implements Comparable<Member> {
             };
         }
 
-        public static final Predicate<Member> withGroupLevel(final List<String> groupLevels) {
+        public static final Predicate<Member> withGroupLevel(final List<VtvLevel> groupLevels) {
             return new Predicate<Member>() {
                 @Override
                 public boolean test(Member member) {
-                    return member.getLevel() != null && groupLevels.contains(member.getLevel());
+                    return member.getVtvLevel() != null && groupLevels.contains(member.getVtvLevel());
                 }
             };
         }

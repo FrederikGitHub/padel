@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "GROUP", schema = "padel")
+//because group is a reserved word in mysql you have to prefix and suffix table name with \"
+@Table(name = "\"group\"", schema = "padel")
 public class GroupEntity {
     @Id
     @Column(name = "GROUP_ID")
@@ -15,8 +16,17 @@ public class GroupEntity {
     @Column(name = "GROUP_NAME")
     private String name;
 
-    @OneToMany(mappedBy="group")
-    private Set<MemberEntity> members;
+    @Basic
+    @Column(name = "GROUP_ACTIVE")
+    private String active;
+
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "group_vtv_level", joinColumns = {
+            @JoinColumn(name = "GROUP_VTV_LEVEL_GROUP_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "GROUP_VTV_LEVEL_VTV_LEVEL_ID")})
+    private Set<VtvLevelEntity> vtvLevels;
 
     public GroupEntity() {
 
@@ -43,11 +53,20 @@ public class GroupEntity {
         this.name = name;
     }
 
-    public Set<MemberEntity> getMembers() {
-        return members;
+
+    public String getActive() {
+        return active;
     }
 
-    public void setMembers(Set<MemberEntity> members) {
-        this.members = members;
+    public void setActive(String active) {
+        this.active = active;
+    }
+
+    public Set<VtvLevelEntity> getVtvLevels() {
+        return vtvLevels;
+    }
+
+    public void setVtvLevels(Set<VtvLevelEntity> vtvLevels) {
+        this.vtvLevels = vtvLevels;
     }
 }

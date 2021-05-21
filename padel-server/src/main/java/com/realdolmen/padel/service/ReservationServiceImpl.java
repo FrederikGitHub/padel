@@ -467,14 +467,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void update(Reservation padelReservation) {
-        int index = 0;
-        for (Reservation reservation : dataStore.getReservations()) {
-            if (reservation.equals(padelReservation)) {
-                break;
-            }
-            index++;
-        }
-        dataStore.getReservations().set(index, padelReservation);
+        dataStore.update(padelReservation);
     }
 
 

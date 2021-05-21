@@ -11,5 +11,7 @@ public interface CourtDao {
 
     List<CourtEntity> getCourtList();
 
+    public CourtEntity findCourtById(Long id);
+
 
 }

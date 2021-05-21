@@ -1,5 +1,6 @@
 package com.realdolmen.padel.rest;
 
+import com.realdolmen.padel.model.VtvLevel;
 import com.realdolmen.padel.service.LevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,10 @@ public class RestLevelResource extends BaseResource {
     private LevelService levelService;
 
     @RequestMapping(value = "/rest/level", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getLevels(final HttpServletRequest request) {
+    public ResponseEntity<List<VtvLevel>> getLevels(final HttpServletRequest request) {
 
-        List<String> levels = new ArrayList<String>();
-        ResponseEntity<List<String>> responseEntity = new ResponseEntity<List<String>>(levels, HttpStatus.OK);
+        List<VtvLevel> levels = new ArrayList<VtvLevel>();
+        ResponseEntity<List<VtvLevel>> responseEntity = new ResponseEntity<List<VtvLevel>>(levels, HttpStatus.OK);
         try {
             levels = levelService.getLevels();
             responseEntity = new ResponseEntity(levels, HttpStatus.OK);

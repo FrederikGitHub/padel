@@ -6,7 +6,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>padel-server</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -91,7 +91,7 @@
             <properties>
                 <build.profile.id>standalone</build.profile.id>
                 <run.environment>standalone</run.environment>
-                <jdbc.url>jdbc:mysql://localhost:3306/mobilewaiter?useSSL=false</jdbc.url>
+                <jdbc.url>jdbc:mysql://192.168.0.240:3306/padel?useSSL=false</jdbc.url>
             </properties>
         </profile>
 

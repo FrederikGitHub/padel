@@ -1,5 +1,8 @@
 package com.realdolmen.padel.model;
 
+import com.realdolmen.padel.entity.MemberEntity;
+import com.realdolmen.padel.entity.ReservationEntity;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -185,7 +188,18 @@ public class Reservation {
             }
         };
 
+        public static Function<ReservationEntity, Reservation> FROM_RESERVATION_ENTITY = new Function<ReservationEntity, Reservation>() {
+            @Override
+            public Reservation apply(ReservationEntity memberEntity) {
+                Reservation reservation = new Reservation();
+
+                return reservation;
+            }
+        };
+
     }
+
+
 
 
     public static class Predicates {

@@ -30,13 +30,13 @@ public interface DataStore {
     static final String BUBBEL_THREE_WOMEN = "VROUWEN-C";
     static final String BUBBEL_FOUR_WOMEN = "VROUWEN-D";
 
-    static final String P50_LEVEL = "P50";
-    static final String P100_LEVEL = "P100";
-    static final String P200_LEVEL = "P200";
-    static final String P300_LEVEL = "P300";
-    static final String P500_LEVEL = "P500";
-    static final String P750_LEVEL = "P750";
-    static final String P1000_LEVEL = "P1000";
+    static final VtvLevel P50_LEVEL = new VtvLevel(1L,"P50");
+    static final VtvLevel P100_LEVEL = new VtvLevel(2L,"P1000");
+    static final VtvLevel P200_LEVEL = new VtvLevel(3L,"P200");
+    static final VtvLevel P300_LEVEL = new VtvLevel(4L,"P300");
+    static final VtvLevel P500_LEVEL = new VtvLevel(5L,"P500");
+    static final VtvLevel P750_LEVEL = new VtvLevel(6L,"P750");
+    static final VtvLevel P1000_LEVEL = new VtvLevel(7L,"P1000");
 
     static final String WOMEN = "V";
     static final String MEN = "M";
@@ -49,7 +49,7 @@ public interface DataStore {
 
     List<Court> getCourtList();
 
-    List<String> getVtvLevels();
+    List<VtvLevel> getVtvLevels();
 
     List<Availability> getAvailabilities();
 

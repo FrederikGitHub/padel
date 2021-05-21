@@ -3,7 +3,7 @@ package com.realdolmen.padel.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "POULE_TOUR_GAME", schema = "padel")
+@Table(name = "poule_tour_game", schema = "padel")
 public class PouleTourGameEntity {
     @Id
     @Column(name = "POULE_TOUR_GAME_ID")

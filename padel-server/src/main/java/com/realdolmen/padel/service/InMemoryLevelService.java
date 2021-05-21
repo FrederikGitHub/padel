@@ -1,6 +1,7 @@
 package com.realdolmen.padel.service;
 
 import com.realdolmen.padel.data.DataStore;
+import com.realdolmen.padel.model.VtvLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class InMemoryLevelService implements LevelService{
     DataStore dataStore;
 
     @Override
-    public List<String> getLevels() {
+    public List<VtvLevel> getLevels() {
         return dataStore.getVtvLevels();
     }
 }

@@ -3,10 +3,15 @@ package com.realdolmen.padel.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.realdolmen.padel.entity.AvailabilityEntity;
+import io.micrometer.core.instrument.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Availability {
@@ -73,6 +78,35 @@ public enum Availability {
         }
 
         return null;
+    }
+
+    public static class Functions {
+
+        public static Function<AvailabilityEntity, Availability> FROM_AVAILABILITY_ENTITY = new Function<AvailabilityEntity, Availability>() {
+            @Override
+            public Availability apply(AvailabilityEntity availabilityEntity) {
+                List<Integer> weekNumbers = new ArrayList<Integer>();
+                if (StringUtils.isNotEmpty(availabilityEntity.getWeekNumbers())) {
+                    weekNumbers = new ArrayList<String>(Arrays.asList(availabilityEntity.getWeekNumbers().split(" , "))).stream().map(Integer::valueOf).collect(Collectors.toList());
+                }
+                return Availability.forValues(availabilityEntity.getId(), availabilityEntity.getLabel(), weekNumbers);
+            }
+        };
+
+        public static Function<Availability, AvailabilityEntity> TO_AVAILABILITY_ENTITY = new Function<Availability, AvailabilityEntity>() {
+            @Override
+            public AvailabilityEntity apply(Availability availability) {
+                AvailabilityEntity availabilityEntity = new AvailabilityEntity();
+                availabilityEntity.setId(availability.getId());
+                if (!CollectionUtils.isEmpty(availability.getWeekNumbers())) {
+                    String weekNumbers = String.join(",", availability.getWeekNumbers().stream().map(String::valueOf).collect(Collectors.toList()));
+                    availabilityEntity.setWeekNumbers(weekNumbers);
+                }
+                availabilityEntity.setLabel(availability.getLabel());
+                return availabilityEntity;
+            }
+        };
+
     }
 
 

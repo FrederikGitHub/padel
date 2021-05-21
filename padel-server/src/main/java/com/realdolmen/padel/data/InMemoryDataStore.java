@@ -18,12 +18,11 @@ public class InMemoryDataStore implements DataStore{
 
 
 
-
     private static List<Reservation> reservations=new ArrayList<Reservation>();
 
     private static List<Group> clubGroups =new ArrayList<Group>();
 
-    private static List<String> vtvLevels=new ArrayList<String>();
+    private static List<VtvLevel> vtvLevels=new ArrayList<VtvLevel>();
 
     private static List<Availability> availabilities =new ArrayList<Availability>();
 
@@ -141,7 +140,6 @@ public class InMemoryDataStore implements DataStore{
 
     static{
         genders.add(WOMEN);
-        vtvLevels.add(MEN);
     }
 
 
@@ -510,7 +508,7 @@ public class InMemoryDataStore implements DataStore{
         return courtList;
     }
 
-    public List<String> getVtvLevels(){
+    public List<VtvLevel> getVtvLevels(){
         return vtvLevels;
     }
 

@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.realdolmen.padel.entity.ReservationTypeEntity;
+import com.realdolmen.padel.entity.TimeSlotEntity;
 
 import java.time.DayOfWeek;
+import java.util.function.Function;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TimeSlot {
@@ -120,6 +123,8 @@ public enum TimeSlot {
     }
 
 
+
+
     @JsonCreator
     public static TimeSlot forValues(@JsonProperty("from") String from,
                                          @JsonProperty("to") String to, @JsonProperty("dayOfWeek") DayOfWeek dayOfWeek) {
@@ -132,6 +137,19 @@ public enum TimeSlot {
 
         return null;
     }
+
+    public static class Functions {
+
+        public static Function<TimeSlotEntity, TimeSlot> FROM_TIMESLOT_ENTITY = new Function<TimeSlotEntity, TimeSlot>() {
+            @Override
+            public TimeSlot apply(TimeSlotEntity timeSlotEntity) {
+                TimeSlot reservationtype = TimeSlot.forValues(timeSlotEntity.getFrom(),timeSlotEntity.getTo(),DayOfWeek.of((int)timeSlotEntity.getWeekday().getId()));
+                return reservationtype;
+            }
+        };
+
+    }
+
 
 
 }

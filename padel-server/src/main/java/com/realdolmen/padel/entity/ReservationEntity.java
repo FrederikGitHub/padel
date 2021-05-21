@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "RESERVATION", schema = "padel")
+@Table(name = "reservation", schema = "padel")
 public class ReservationEntity {
     @Id
     @Column(name = "RESERVATION_ID")
@@ -31,12 +31,19 @@ public class ReservationEntity {
     @JoinColumn(name = "RESERVATION_TIMESLOT_ID")
     private TimeSlotEntity timeSlot;
 
-    @OneToMany(mappedBy = "reservation")
-    private Set<ReservationMemberEntity> reservationMembers;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "reservation_member", joinColumns = {
+            @JoinColumn(name = "RESERVATION_MEMBER_RESERVATION_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "RESERVATION_MEMBER_MEMBER_ID")})
+    private Set<MemberEntity> reservationMembers;
 
     @ManyToOne
     @JoinColumn(name = "RESERVATION_RESERVATION_TYPE_ID")
     private ReservationTypeEntity reservationType;
+
+    @ManyToOne
+    @JoinColumn(name = "RESERVATION_GROUP_ID")
+    private GroupEntity groupEntity;
 
     public long getId() {
         return id;
@@ -86,11 +93,11 @@ public class ReservationEntity {
         this.timeSlot = timeSlot;
     }
 
-    public Set<ReservationMemberEntity> getReservationMembers() {
+    public Set<MemberEntity> getReservationMembers() {
         return reservationMembers;
     }
 
-    public void setReservationMembers(Set<ReservationMemberEntity> reservationMembers) {
+    public void setReservationMembers(Set<MemberEntity> reservationMembers) {
         this.reservationMembers = reservationMembers;
     }
 
@@ -100,5 +107,13 @@ public class ReservationEntity {
 
     public void setReservationType(ReservationTypeEntity reservationType) {
         this.reservationType = reservationType;
+    }
+
+    public GroupEntity getGroupEntity() {
+        return groupEntity;
+    }
+
+    public void setGroupEntity(GroupEntity groupEntity) {
+        this.groupEntity = groupEntity;
     }
 }

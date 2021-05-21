@@ -4,7 +4,7 @@ package com.realdolmen.padel.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PLAY_STATE", schema = "padel")
+@Table(name = "play_state", schema = "padel")
 public class PlayStateEntity {
     @Id
     @Column(name = "PLAY_STATE_ID")

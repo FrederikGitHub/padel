@@ -1,13 +1,19 @@
 package com.realdolmen.padel.model;
 
 
+import com.realdolmen.padel.entity.CourtEntity;
+
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class Court implements Comparable<Court>{
+public class Court implements Comparable<Court> {
     private long id;
     private String name;
 
+    public Court() {
+
+    }
 
     public Court(long id, String name) {
         this.id = id;
@@ -55,7 +61,7 @@ public class Court implements Comparable<Court>{
 
     @Override
     public int compareTo(Court o) {
-        return String.CASE_INSENSITIVE_ORDER.compare(this.name,o.name);
+        return String.CASE_INSENSITIVE_ORDER.compare(this.name, o.name);
     }
 
     public static class Predicates {
@@ -77,8 +83,29 @@ public class Court implements Comparable<Court>{
                 }
             };
         }
+    }
 
+    public static class Functions {
 
+        public static Function<CourtEntity, Court> FROM_COURT_ENTITY = new Function<CourtEntity, Court>() {
+            @Override
+            public Court apply(CourtEntity courtEntity) {
+                Court court = new Court();
+                court.setId(courtEntity.getId());
+                court.setName(courtEntity.getName());
+                return court;
+            }
+        };
+
+        public static Function<Court, CourtEntity> TO_COURT_ENTITY = new Function<Court, CourtEntity>() {
+            @Override
+            public CourtEntity apply(Court court) {
+                CourtEntity courtEntity = new CourtEntity();
+                courtEntity.setId(court.getId());
+                courtEntity.setName(court.getName());
+                return courtEntity;
+            }
+        };
 
     }
 }

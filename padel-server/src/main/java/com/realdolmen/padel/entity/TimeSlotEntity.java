@@ -3,7 +3,7 @@ package com.realdolmen.padel.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "TIMESLOT", schema = "padel")
+@Table(name = "timeslot", schema = "padel")
 public class TimeSlotEntity {
 
     @Id
@@ -23,9 +23,7 @@ public class TimeSlotEntity {
     @Column(name = "TIMESLOT_TO")
     private String to;
 
-    @ManyToOne
-    @JoinColumn(name = "TIMESLOT_COURT_ID")
-    private CourtEntity court;
+
 
     public long getId() {
         return id;
@@ -43,11 +41,19 @@ public class TimeSlotEntity {
         this.weekday = weekday;
     }
 
-    public CourtEntity getCourt() {
-        return court;
+    public String getFrom() {
+        return from;
     }
 
-    public void setCourt(CourtEntity court) {
-        this.court = court;
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }
