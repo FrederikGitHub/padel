@@ -17,7 +17,6 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Ignore
 public class HibernateCourtDaoITTest {
 
     @Autowired

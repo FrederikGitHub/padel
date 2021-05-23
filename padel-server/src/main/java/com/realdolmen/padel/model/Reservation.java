@@ -1,5 +1,7 @@
 package com.realdolmen.padel.model;
 
+import com.realdolmen.padel.entity.CourtEntity;
+import com.realdolmen.padel.entity.GroupEntity;
 import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.ReservationEntity;
 
@@ -197,9 +199,10 @@ public class Reservation {
             }
         };
 
+
+
+
     }
-
-
 
 
     public static class Predicates {
@@ -226,7 +229,7 @@ public class Reservation {
             return new Predicate<Reservation>() {
                 @Override
                 public boolean test(Reservation reservation) {
-                    LocalDate reservationDate = LocalDate.of(reservation.getYear(),reservation.getMonth(),reservation.getDay());
+                    LocalDate reservationDate = LocalDate.of(reservation.getYear(), reservation.getMonth(), reservation.getDay());
                     return reservationDate.isBefore(endDate);
                 }
             };
@@ -236,7 +239,7 @@ public class Reservation {
             return new Predicate<Reservation>() {
                 @Override
                 public boolean test(Reservation reservation) {
-                    LocalDate reservationDate = LocalDate.of(reservation.getYear(),reservation.getMonth(),reservation.getDay());
+                    LocalDate reservationDate = LocalDate.of(reservation.getYear(), reservation.getMonth(), reservation.getDay());
                     return reservationDate.isAfter(startDate);
                 }
             };
@@ -260,7 +263,6 @@ public class Reservation {
                 }
             };
         }
-
 
 
     }

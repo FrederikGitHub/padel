@@ -36,6 +36,8 @@ public class MysqlDatabaseStore implements DataStore {
     private VtvLevelDao vtvLevelDao;
 
 
+
+
     @Override
     public List<Group> getGroups() {
         List<GroupEntity> groupEntityList = groupDao.getGroupList();
@@ -126,8 +128,8 @@ public class MysqlDatabaseStore implements DataStore {
 
     @Override
     public void create(Court court) {
-        CourtEntity courtEntityc = Court.Functions.TO_COURT_ENTITY.apply(court);
-        courtDao.save(courtEntityc);
+        CourtEntity courtEntity = Court.Functions.TO_COURT_ENTITY.apply(court);
+        courtDao.save(courtEntity);
     }
 
     @Override
@@ -144,7 +146,15 @@ public class MysqlDatabaseStore implements DataStore {
 
     @Override
     public void create(Reservation reservation) {
-        throw new UnsupportedOperationException();
+        ReservationEntity reservationEntity = new ReservationEntity();
+
+        if (reservation.getGroup() != null){
+            GroupEntity groupEntity = groupDao.findGroupById(reservation.getGroup().getId());
+            reservationEntity.setGroupEntity(groupEntity);
+        }
+
+
+        reservationDao.save(reservationEntity);
     }
 
     @Override

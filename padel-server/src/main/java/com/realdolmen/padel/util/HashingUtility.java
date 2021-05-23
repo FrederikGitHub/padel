@@ -11,7 +11,8 @@ public class HashingUtility {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         md.update(SECRET.getBytes());
         byte[] digest = md.digest();
-        return DatatypeConverter
+        String hash =  DatatypeConverter
                 .printHexBinary(digest).toUpperCase();
+        return hash;
     }
 }

@@ -52,12 +52,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
+            <version>8.0.22</version>
         </dependency>
     </dependencies>
 
@@ -91,7 +86,7 @@
             <properties>
                 <build.profile.id>standalone</build.profile.id>
                 <run.environment>standalone</run.environment>
-                <jdbc.url>jdbc:mysql://192.168.0.240:3306/padel?useSSL=false</jdbc.url>
+                <jdbc.url>jdbc:mysql://192.168.0.236:3306/padel?useSSL=false</jdbc.url>
             </properties>
         </profile>
 
