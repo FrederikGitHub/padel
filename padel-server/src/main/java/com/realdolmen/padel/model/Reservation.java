@@ -4,6 +4,7 @@ import com.realdolmen.padel.entity.CourtEntity;
 import com.realdolmen.padel.entity.GroupEntity;
 import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.ReservationEntity;
+import org.springframework.util.CollectionUtils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Reservation {
@@ -26,6 +28,7 @@ public class Reservation {
     private List<Member> reservationMembers;
     private List<Member> reserveMembers;
     private Group group;
+    private ReservationType reservationType;
 
     public long getId() {
         return id;
@@ -122,6 +125,13 @@ public class Reservation {
                 '}';
     }
 
+    public ReservationType getReservationType() {
+        return reservationType;
+    }
+
+    public void setReservationType(ReservationType reservationType) {
+        this.reservationType = reservationType;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -192,8 +202,33 @@ public class Reservation {
 
         public static Function<ReservationEntity, Reservation> FROM_RESERVATION_ENTITY = new Function<ReservationEntity, Reservation>() {
             @Override
-            public Reservation apply(ReservationEntity memberEntity) {
+            public Reservation apply(ReservationEntity reservationEntity) {
                 Reservation reservation = new Reservation();
+
+                reservation.setId(reservationEntity.getId());
+                reservation.setDay(reservationEntity.getDay());
+                reservation.setMonth(reservationEntity.getMonth());
+                reservation.setYear(reservationEntity.getYear());
+                reservation.setWeek(reservationEntity.getWeek());
+                if (reservationEntity.getGroupEntity() != null){
+                    Group group = Group.Functions.FROM_GROUP_ENTITY.apply(reservationEntity.getGroupEntity());
+                    reservation.setGroup(group);
+                }
+
+                if (reservationEntity.getCourtTimeSlot() != null){
+                    CourtTimeSlot courtTimeSlot = CourtTimeSlot.Functions.FROM_COURT_TIMESLOT_ENTITY.apply(reservationEntity.getCourtTimeSlot());
+                    reservation.setCourtTimeSlot(courtTimeSlot);
+                }
+
+                if (reservationEntity.getReservationType() != null){
+                    ReservationType reservationType = ReservationType.valueOf(reservationEntity.getReservationType().getName());
+                    reservation.setReservationType(reservationType);
+                }
+                if (!CollectionUtils.isEmpty(reservationEntity.getReservationMembers())){
+                    List<Member> reservationMembers = reservationEntity.getReservationMembers().stream().map(Member.Functions.FROM_MEMBER_ENTITY).collect(Collectors.toList());
+                    reservation.setReservationMembers(reservationMembers);
+                }
+
 
                 return reservation;
             }
@@ -211,7 +246,7 @@ public class Reservation {
             return new Predicate<Reservation>() {
                 @Override
                 public boolean test(Reservation reservation) {
-                    return reservation.getCourtTimeSlot().getCourt().getName().equalsIgnoreCase(courtTimeSlot.getCourt().getName()) && reservation.getCourtTimeSlot().getTimeSlot().getDayOfWeek().equals(courtTimeSlot.getTimeSlot().getDayOfWeek()) && reservation.getCourtTimeSlot().getTimeSlot().getFrom().equals(courtTimeSlot.getTimeSlot().getFrom()) && reservation.getCourtTimeSlot().getTimeSlot().getTo().equals(courtTimeSlot.getTimeSlot().getTo());
+                    return reservation.getCourtTimeSlot().getId() == courtTimeSlot.getId();
                 }
             };
         }

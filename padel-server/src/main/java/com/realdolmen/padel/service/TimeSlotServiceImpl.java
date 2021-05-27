@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class InMemoryTimeSlotService implements TimeSlotService {
+public class TimeSlotServiceImpl implements TimeSlotService {
 
     @Autowired
     DataStore dataStore;

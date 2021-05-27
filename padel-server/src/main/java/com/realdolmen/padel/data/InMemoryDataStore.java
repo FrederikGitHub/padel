@@ -4,7 +4,9 @@ import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.MemberBuilder;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +15,6 @@ import java.util.Optional;
 import static com.realdolmen.padel.model.Availability.*;
 
 @Component
-@Primary
 public class InMemoryDataStore implements DataStore{
 
 
@@ -36,7 +37,6 @@ public class InMemoryDataStore implements DataStore{
 
 
     static{
-        timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_1100_1230);
@@ -48,7 +48,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_MONDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_1100_1230);
@@ -60,7 +59,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_TUESDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_1100_1230);
@@ -72,7 +70,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_WEDNESDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_1100_1230);
@@ -84,7 +81,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_THURSDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_1100_1230);
@@ -96,7 +92,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_FRIDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_1100_1230);
@@ -108,7 +103,6 @@ public class InMemoryDataStore implements DataStore{
         timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_2000_2130);
         timeSlots.add(TimeSlot.TIME_SLOT_SATURDAY_2130_2300);
 
-        timeSlots.add(TimeSlot.TIME_SLOT_SUNDAY_0630_0800);
         timeSlots.add(TimeSlot.TIME_SLOT_SUNDAY_0800_0930);
         timeSlots.add(TimeSlot.TIME_SLOT_SUNDAY_0930_1100);
         timeSlots.add(TimeSlot.TIME_SLOT_SUNDAY_1100_1230);
@@ -194,167 +188,161 @@ public class InMemoryDataStore implements DataStore{
 
     static{
         courtTimeSlots.add(new CourtTimeSlot(1L,timeSlots.get(0),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(2L,timeSlots.get(0),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(3L,timeSlots.get(1),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(4L,timeSlots.get(1),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(5L,timeSlots.get(2),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(6L,timeSlots.get(2),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(7L,timeSlots.get(3),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(8L,timeSlots.get(4),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(9L,timeSlots.get(5),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(10L,timeSlots.get(5),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(11L,timeSlots.get(6),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(12L,timeSlots.get(6),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(13L,timeSlots.get(7),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(14L,timeSlots.get(7),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(15L,timeSlots.get(8),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(16L,timeSlots.get(8),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(17L,timeSlots.get(9),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(18L,timeSlots.get(9),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(19L,timeSlots.get(10),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(20L,timeSlots.get(10),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(2L,timeSlots.get(1),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(3L,timeSlots.get(2),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(4L,timeSlots.get(3),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(5L,timeSlots.get(4),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(6L,timeSlots.get(5),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(7L,timeSlots.get(6),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(8L,timeSlots.get(7),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(9L,timeSlots.get(8),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(10L,timeSlots.get(9),courtList.get(0)));
 
-        courtTimeSlots.add(new CourtTimeSlot(21L,timeSlots.get(11),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(22L,timeSlots.get(11),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(23L,timeSlots.get(12),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(24L,timeSlots.get(12),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(25L,timeSlots.get(13),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(26L,timeSlots.get(13),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(27L,timeSlots.get(14),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(28L,timeSlots.get(14),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(29L,timeSlots.get(15),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(30L,timeSlots.get(15),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(31L,timeSlots.get(16),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(32L,timeSlots.get(16),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(33L,timeSlots.get(17),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(34L,timeSlots.get(17),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(35L,timeSlots.get(18),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(36L,timeSlots.get(18),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(37L,timeSlots.get(19),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(38L,timeSlots.get(19),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(39L,timeSlots.get(20),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(40L,timeSlots.get(20),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(41L,timeSlots.get(21),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(42L,timeSlots.get(21),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(11L,timeSlots.get(10),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(12L,timeSlots.get(11),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(13L,timeSlots.get(12),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(14L,timeSlots.get(13),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(15L,timeSlots.get(14),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(16L,timeSlots.get(15),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(17L,timeSlots.get(16),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(18L,timeSlots.get(17),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(19L,timeSlots.get(18),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(20L,timeSlots.get(19),courtList.get(0)));
 
-        courtTimeSlots.add(new CourtTimeSlot(43L,timeSlots.get(22),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(44L,timeSlots.get(22),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(45L,timeSlots.get(23),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(46L,timeSlots.get(23),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(47L,timeSlots.get(24),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(48L,timeSlots.get(24),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(49L,timeSlots.get(25),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(50L,timeSlots.get(25),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(51L,timeSlots.get(26),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(52L,timeSlots.get(26),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(53L,timeSlots.get(27),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(54L,timeSlots.get(27),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(55L,timeSlots.get(28),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(56L,timeSlots.get(28),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(57L,timeSlots.get(29),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(58L,timeSlots.get(29),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(59L,timeSlots.get(30),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(60L,timeSlots.get(30),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(61L,timeSlots.get(31),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(62L,timeSlots.get(31),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(63L,timeSlots.get(32),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(64L,timeSlots.get(32),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(21L,timeSlots.get(20),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(22L,timeSlots.get(21),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(23L,timeSlots.get(22),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(24L,timeSlots.get(23),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(25L,timeSlots.get(24),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(26L,timeSlots.get(25),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(27L,timeSlots.get(26),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(28L,timeSlots.get(27),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(29L,timeSlots.get(28),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(30L,timeSlots.get(29),courtList.get(0)));
+
+        courtTimeSlots.add(new CourtTimeSlot(31L,timeSlots.get(30),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(32L,timeSlots.get(31),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(33L,timeSlots.get(32),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(34L,timeSlots.get(33),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(35L,timeSlots.get(34),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(36L,timeSlots.get(35),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(37L,timeSlots.get(36),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(38L,timeSlots.get(37),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(39L,timeSlots.get(38),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(40L,timeSlots.get(39),courtList.get(0)));
 
 
-        courtTimeSlots.add(new CourtTimeSlot(65L,timeSlots.get(33),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(66L,timeSlots.get(33),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(67L,timeSlots.get(34),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(68L,timeSlots.get(34),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(69L,timeSlots.get(35),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(70L,timeSlots.get(35),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(71L,timeSlots.get(36),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(72L,timeSlots.get(36),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(73L,timeSlots.get(37),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(74L,timeSlots.get(37),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(75L,timeSlots.get(38),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(76L,timeSlots.get(38),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(77L,timeSlots.get(39),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(78L,timeSlots.get(39),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(79L,timeSlots.get(40),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(80L,timeSlots.get(40),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(81L,timeSlots.get(41),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(82L,timeSlots.get(41),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(83L,timeSlots.get(42),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(84L,timeSlots.get(42),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(85L,timeSlots.get(43),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(86L,timeSlots.get(43),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(41L,timeSlots.get(40),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(42L,timeSlots.get(41),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(43L,timeSlots.get(42),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(44L,timeSlots.get(43),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(45L,timeSlots.get(44),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(46L,timeSlots.get(45),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(47L,timeSlots.get(46),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(48L,timeSlots.get(47),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(49L,timeSlots.get(48),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(50L,timeSlots.get(49),courtList.get(0)));
+
+        courtTimeSlots.add(new CourtTimeSlot(51L,timeSlots.get(50),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(52L,timeSlots.get(51),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(53L,timeSlots.get(52),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(54L,timeSlots.get(53),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(55L,timeSlots.get(54),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(56L,timeSlots.get(55),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(57L,timeSlots.get(56),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(58L,timeSlots.get(57),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(59L,timeSlots.get(58),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(60L,timeSlots.get(59),courtList.get(0)));
+
+        courtTimeSlots.add(new CourtTimeSlot(61L,timeSlots.get(60),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(62L,timeSlots.get(61),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(63L,timeSlots.get(62),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(64L,timeSlots.get(63),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(65L,timeSlots.get(64),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(66L,timeSlots.get(65),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(67L,timeSlots.get(66),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(68L,timeSlots.get(67),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(69L,timeSlots.get(68),courtList.get(0)));
+        courtTimeSlots.add(new CourtTimeSlot(70L,timeSlots.get(69),courtList.get(0)));
+
+        courtTimeSlots.add(new CourtTimeSlot(71L,timeSlots.get(0),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(72L,timeSlots.get(1),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(73L,timeSlots.get(2),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(74L,timeSlots.get(3),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(75L,timeSlots.get(4),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(76L,timeSlots.get(5),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(77L,timeSlots.get(6),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(78L,timeSlots.get(7),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(79L,timeSlots.get(8),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(80L,timeSlots.get(9),courtList.get(1)));
+
+        courtTimeSlots.add(new CourtTimeSlot(81L,timeSlots.get(10),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(82L,timeSlots.get(11),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(83L,timeSlots.get(12),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(84L,timeSlots.get(13),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(85L,timeSlots.get(14),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(86L,timeSlots.get(15),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(87L,timeSlots.get(16),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(88L,timeSlots.get(17),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(89L,timeSlots.get(18),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(90L,timeSlots.get(19),courtList.get(1)));
+
+        courtTimeSlots.add(new CourtTimeSlot(91L,timeSlots.get(20),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(92L,timeSlots.get(21),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(93L,timeSlots.get(22),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(94L,timeSlots.get(23),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(95L,timeSlots.get(24),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(96L,timeSlots.get(25),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(97L,timeSlots.get(26),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(98L,timeSlots.get(27),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(99L,timeSlots.get(28),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(100L,timeSlots.get(29),courtList.get(1)));
+
+        courtTimeSlots.add(new CourtTimeSlot(101L,timeSlots.get(30),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(102L,timeSlots.get(31),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(103L,timeSlots.get(32),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(104L,timeSlots.get(33),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(105L,timeSlots.get(34),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(106L,timeSlots.get(35),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(107L,timeSlots.get(36),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(108L,timeSlots.get(37),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(109L,timeSlots.get(38),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(110L,timeSlots.get(39),courtList.get(1)));
 
 
-        courtTimeSlots.add(new CourtTimeSlot(87L,timeSlots.get(44),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(88L,timeSlots.get(44),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(89L,timeSlots.get(45),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(90L,timeSlots.get(45),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(91L,timeSlots.get(46),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(92L,timeSlots.get(46),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(93L,timeSlots.get(47),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(94L,timeSlots.get(47),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(95L,timeSlots.get(48),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(96L,timeSlots.get(48),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(97L,timeSlots.get(49),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(98L,timeSlots.get(49),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(99L,timeSlots.get(50),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(100L,timeSlots.get(50),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(101L,timeSlots.get(51),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(102L,timeSlots.get(51),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(103L,timeSlots.get(52),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(104L,timeSlots.get(52),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(105L,timeSlots.get(53),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(106L,timeSlots.get(53),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(107L,timeSlots.get(54),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(108L,timeSlots.get(54),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(111L,timeSlots.get(40),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(112L,timeSlots.get(41),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(113L,timeSlots.get(42),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(114L,timeSlots.get(43),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(115L,timeSlots.get(44),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(116L,timeSlots.get(45),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(117L,timeSlots.get(46),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(118L,timeSlots.get(47),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(119L,timeSlots.get(48),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(120L,timeSlots.get(49),courtList.get(1)));
 
+        courtTimeSlots.add(new CourtTimeSlot(121L,timeSlots.get(50),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(122L,timeSlots.get(51),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(123L,timeSlots.get(52),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(124L,timeSlots.get(53),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(125L,timeSlots.get(54),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(126L,timeSlots.get(55),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(127L,timeSlots.get(56),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(128L,timeSlots.get(57),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(129L,timeSlots.get(58),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(130L,timeSlots.get(59),courtList.get(1)));
 
-        courtTimeSlots.add(new CourtTimeSlot(109L,timeSlots.get(55),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(110L,timeSlots.get(55),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(111L,timeSlots.get(56),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(112L,timeSlots.get(56),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(113L,timeSlots.get(57),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(114L,timeSlots.get(57),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(115L,timeSlots.get(58),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(116L,timeSlots.get(58),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(117L,timeSlots.get(59),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(118L,timeSlots.get(59),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(119L,timeSlots.get(60),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(120L,timeSlots.get(60),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(121L,timeSlots.get(61),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(122L,timeSlots.get(61),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(123L,timeSlots.get(62),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(124L,timeSlots.get(62),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(125L,timeSlots.get(63),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(126L,timeSlots.get(63),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(127L,timeSlots.get(64),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(128L,timeSlots.get(64),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(129L,timeSlots.get(65),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(130L,timeSlots.get(65),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(131L,timeSlots.get(60),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(132L,timeSlots.get(61),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(133L,timeSlots.get(62),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(134L,timeSlots.get(63),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(135L,timeSlots.get(64),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(136L,timeSlots.get(65),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(137L,timeSlots.get(66),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(138L,timeSlots.get(67),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(139L,timeSlots.get(68),courtList.get(1)));
+        courtTimeSlots.add(new CourtTimeSlot(140L,timeSlots.get(69),courtList.get(1)));
 
-
-        courtTimeSlots.add(new CourtTimeSlot(131L,timeSlots.get(66),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(132L,timeSlots.get(66),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(133L,timeSlots.get(67),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(134L,timeSlots.get(67),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(135L,timeSlots.get(68),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(136L,timeSlots.get(68),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(137L,timeSlots.get(69),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(138L,timeSlots.get(69),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(139L,timeSlots.get(70),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(140L,timeSlots.get(70),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(141L,timeSlots.get(71),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(142L,timeSlots.get(71),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(143L,timeSlots.get(72),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(144L,timeSlots.get(72),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(145L,timeSlots.get(73),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(146L,timeSlots.get(73),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(147L,timeSlots.get(74),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(148L,timeSlots.get(74),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(149L,timeSlots.get(75),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(150L,timeSlots.get(75),courtList.get(1)));
-        courtTimeSlots.add(new CourtTimeSlot(151L,timeSlots.get(76),courtList.get(0)));
-        courtTimeSlots.add(new CourtTimeSlot(152L,timeSlots.get(76),courtList.get(1)));
 
     }
 
@@ -481,8 +469,6 @@ public class InMemoryDataStore implements DataStore{
     }
 
 
-
-
     private static Group getPadelGroup(String groupName){
         Group group=null;
         Optional<Group> groupOptional = clubGroups.stream().filter(Group.Predicates.withGroupName(groupName)).findFirst();
@@ -498,6 +484,18 @@ public class InMemoryDataStore implements DataStore{
 
     public List<Reservation> getReservations(){
         return reservations;
+    }
+
+    @Override
+    public Reservation findReservation(CourtTimeSlot courtTimeSlot, LocalDate localDate) {
+        Reservation reservation=null;
+        if (!CollectionUtils.isEmpty(reservations)){
+            Optional<Reservation> optionalReservation = reservations.stream().filter(Reservation.Predicates.withCourtTimeSlot(courtTimeSlot).and(Reservation.Predicates.withDate(localDate))).findFirst();
+            if (optionalReservation.isPresent()){
+                reservation = optionalReservation.get();
+            }
+        }
+        return reservation;
     }
 
     public List<Member> getPadelMembers(){

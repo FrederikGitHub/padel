@@ -5,8 +5,8 @@ import com.realdolmen.padel.entity.ReservationTypeEntity;
 import java.util.function.Function;
 
 public enum ReservationType {
-    FIXED(3L, "FIXED"),
-    POULE(4L, "POULE");
+    FIXED(3L, "MANUAL"),
+    AUTO(4L, "AUTO");
 
     private final String name;
     private final Long id;

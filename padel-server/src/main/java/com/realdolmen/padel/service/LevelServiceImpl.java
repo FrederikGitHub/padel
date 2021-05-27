@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InMemoryLevelService implements LevelService{
+public class LevelServiceImpl implements LevelService{
 
     @Autowired
     DataStore dataStore;

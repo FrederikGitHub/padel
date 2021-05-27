@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class InMemoryMemberService implements MemberService {
+public class MemberServiceImpl implements MemberService {
 
     @Autowired
     DataStore dataStore;

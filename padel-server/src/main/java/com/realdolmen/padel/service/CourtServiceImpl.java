@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class InMemoryCourtService implements CourtService {
+public class CourtServiceImpl implements CourtService {
 
     @Autowired
     DataStore dataStore;

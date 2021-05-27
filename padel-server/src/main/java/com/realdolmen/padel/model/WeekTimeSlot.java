@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class WeekTimeSlot {
     private LocalDate day;
-    private CourtTimeSlot timeslot;
+    private CourtTimeSlot courtTimeslot;
     private Week week;
 
     public LocalDate getDay() {
@@ -16,12 +16,12 @@ public class WeekTimeSlot {
         return this;
     }
 
-    public CourtTimeSlot getTimeslot() {
-        return timeslot;
+    public CourtTimeSlot getCourtTimeslot() {
+        return courtTimeslot;
     }
 
-    public WeekTimeSlot setTimeslot(CourtTimeSlot timeslot) {
-        this.timeslot = timeslot;
+    public WeekTimeSlot setCourtTimeslot(CourtTimeSlot courtTimeslot) {
+        this.courtTimeslot = courtTimeslot;
         return this;
     }
 
@@ -39,7 +39,7 @@ public class WeekTimeSlot {
     public String toString() {
         return "WeekTimeSlot{" +
                 "day=" + day +
-                ", timeslot=" + timeslot +
+                ", timeslot=" + courtTimeslot +
                 ", weekNr=" + week +
                 '}';
     }

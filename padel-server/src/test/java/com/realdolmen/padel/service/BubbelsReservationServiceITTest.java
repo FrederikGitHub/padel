@@ -1,19 +1,16 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.data.BubbelsInMemoryDataStore;
 import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.CourtTimeSlotBuilder;
 import com.realdolmen.padel.model.builder.WeekBuilder;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -22,10 +19,10 @@ import java.util.*;
 
 
 @ExtendWith(SpringExtension.class)
-@Ignore
-public class BubbelsReservationServiceImplTest {
+@SpringBootTest
+public class BubbelsReservationServiceITTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(BubbelsReservationServiceImplTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BubbelsReservationServiceITTest.class);
 
     @Autowired
     private ReservationService reservationService;
@@ -88,16 +85,19 @@ public class BubbelsReservationServiceImplTest {
     private CourtTimeSlot wednesdayAt2130OnCourt2;
 
     @Autowired
-    //@Qualifier("InMemoryMemberService")
     private MemberService memberService;
 
     @Autowired
-    //@Qualifier("InMemoryCourtService")
     private CourtService courtService;
 
     @Autowired
-    //@Qualifier("InMemoryCourtService")
     private GroupService groupService;
+
+    @Autowired
+    private CourtTimeSlotService courtTimeSlotService;
+
+    @Autowired
+    private TimeSlotService timeSlotService;
 
     LocalDate startDate;
     LocalDate endDate;
@@ -110,7 +110,7 @@ public class BubbelsReservationServiceImplTest {
     public void setUp() {
 
 
-        dataStore.deleteAllReservations();
+        //dataStore.deleteAllReservations();
         //different padel group used for testing
         bubbelOneMenMembers = memberService.getMembersForGroupAvailability(dataStore.BUBBEL_ONE_MEN);
         bubbelTwoMenMembers = memberService.getMembersForGroupAvailability(dataStore.BUBBEL_TWO_MEN);
@@ -128,49 +128,49 @@ public class BubbelsReservationServiceImplTest {
 
 
         //court used for testing
-        courtOne = courtService.getCourt("1");
-        courtTwo = courtService.getCourt("2");
+        courtOne = courtService.getCourt("COURT1");
+        courtTwo = courtService.getCourt("COURT2");
 
         //timeslots used for testing
-        thursdayAt1830OnCourt1 = new CourtTimeSlotBuilder().setId(1L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_1830_2000).setCourt(courtOne).build();
-        thursdayAt1830OnCourt2 = new CourtTimeSlotBuilder().setId(2L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_1830_2000).setCourt(courtTwo).build();
+        thursdayAt1830OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_THURSDAY_1830_2000);
+        thursdayAt1830OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_THURSDAY_1830_2000);
 
-        thursdayAt2000OnCourt1 = new CourtTimeSlotBuilder().setId(3L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_2000_2130).setCourt(courtOne).build();
-        thursdayAt2000OnCourt2 = new CourtTimeSlotBuilder().setId(4L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_2000_2130).setCourt(courtTwo).build();
+        thursdayAt2000OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_THURSDAY_2000_2130);
+        thursdayAt2000OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_THURSDAY_2000_2130);
 
-        thursdayAt2130OnCourt1 = new CourtTimeSlotBuilder().setId(5L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_2130_2300).setCourt(courtOne).build();
-        thursdayAt2130OnCourt2 = new CourtTimeSlotBuilder().setId(6L).setTimeSlot(TimeSlot.TIME_SLOT_THURSDAY_2130_2300).setCourt(courtTwo).build();
-
-
-        mondayAt1830OnCourt1 = new CourtTimeSlotBuilder().setId(7L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_1830_2000).setCourt(courtOne).build();
-        mondayAt1830OnCourt2 = new CourtTimeSlotBuilder().setId(8L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_1830_2000).setCourt(courtTwo).build();
-
-        mondayAt2000OnCourt1 = new CourtTimeSlotBuilder().setId(9L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_2000_2130).setCourt(courtOne).build();
-        mondayAt2000OnCourt2 = new CourtTimeSlotBuilder().setId(10L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_2000_2130).setCourt(courtTwo).build();
-
-        mondayAt2130OnCourt1 = new CourtTimeSlotBuilder().setId(5L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_2130_2300).setCourt(courtOne).build();
-        mondayAt2130OnCourt2 = new CourtTimeSlotBuilder().setId(6L).setTimeSlot(TimeSlot.TIME_SLOT_MONDAY_2130_2300).setCourt(courtTwo).build();
+        thursdayAt2130OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_THURSDAY_2130_2300);
+        thursdayAt2130OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_THURSDAY_2130_2300);
 
 
-        tuesdayAt1830OnCourt1 = new CourtTimeSlotBuilder().setId(7L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_1830_2000).setCourt(courtOne).build();
-        tuesdayAt1830OnCourt2 = new CourtTimeSlotBuilder().setId(8L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_1830_2000).setCourt(courtTwo).build();
+        mondayAt1830OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_MONDAY_1830_2000);
+        mondayAt1830OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_MONDAY_1830_2000);
 
-        tuesdayAt2000OnCourt1 = new CourtTimeSlotBuilder().setId(9L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_2000_2130).setCourt(courtOne).build();
-        tuesdayAt2000OnCourt2 = new CourtTimeSlotBuilder().setId(10L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_2000_2130).setCourt(courtTwo).build();
+        mondayAt2000OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_MONDAY_2000_2130);
+        mondayAt2000OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_MONDAY_2000_2130);
 
-        tuesdayAt2130OnCourt1 = new CourtTimeSlotBuilder().setId(5L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_2130_2300).setCourt(courtOne).build();
-        tuesdayAt2130OnCourt2 = new CourtTimeSlotBuilder().setId(6L).setTimeSlot(TimeSlot.TIME_SLOT_TUESDAY_2130_2300).setCourt(courtTwo).build();
+        mondayAt2130OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_MONDAY_2130_2300);
+        mondayAt2130OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_MONDAY_2130_2300);
+
+
+        tuesdayAt1830OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_TUESDAY_1830_2000);
+        tuesdayAt1830OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_TUESDAY_1830_2000);
+
+        tuesdayAt2000OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_TUESDAY_2000_2130);
+        tuesdayAt2000OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_TUESDAY_2000_2130);
+
+        tuesdayAt2130OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_TUESDAY_2130_2300);
+        tuesdayAt2130OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_TUESDAY_2130_2300);
 
 
 
-        wednesdayAt1830OnCourt1 = new CourtTimeSlotBuilder().setId(7L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_1830_2000).setCourt(courtOne).build();
-        wednesdayAt1830OnCourt2 = new CourtTimeSlotBuilder().setId(8L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_1830_2000).setCourt(courtTwo).build();
+        wednesdayAt1830OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_WEDNESDAY_1830_2000);
+        wednesdayAt1830OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_WEDNESDAY_1830_2000);
 
-        wednesdayAt2000OnCourt1 = new CourtTimeSlotBuilder().setId(9L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_2000_2130).setCourt(courtOne).build();
-        wednesdayAt2000OnCourt2 = new CourtTimeSlotBuilder().setId(10L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_2000_2130).setCourt(courtTwo).build();
+        wednesdayAt2000OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_WEDNESDAY_2000_2130);
+        wednesdayAt2000OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_WEDNESDAY_2000_2130);
 
-        wednesdayAt2130OnCourt1 = new CourtTimeSlotBuilder().setId(5L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_2130_2300).setCourt(courtOne).build();
-        wednesdayAt2130OnCourt2 = new CourtTimeSlotBuilder().setId(6L).setTimeSlot(TimeSlot.TIME_SLOT_WEDNESDAY_2130_2300).setCourt(courtTwo).build();
+        wednesdayAt2130OnCourt1 = courtTimeSlotService.findCourtTimeSlot(courtOne,TimeSlot.TIME_SLOT_WEDNESDAY_2130_2300);
+        wednesdayAt2130OnCourt2 = courtTimeSlotService.findCourtTimeSlot(courtTwo,TimeSlot.TIME_SLOT_WEDNESDAY_2130_2300);
 
 
         //correct plan period
@@ -181,7 +181,7 @@ public class BubbelsReservationServiceImplTest {
 
 
     @Test
-    public void generateWeekPlanningBubbelsTest() {
+    public void generateWeekPlanningBubbelsITTest() {
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
 
@@ -200,7 +200,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel one
         Set<WeekPlanning> bubbelOneWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelOneCourtTimeSlotListByWeek, bubbelOneMenMembers, groupService.getGroup(dataStore.BUBBEL_ONE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelOneWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_ONE_MEN));
+        reservationService.storeWeekPlanning(bubbelOneWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelOneWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_ONE_MEN));
 
 
         //weekly timeslots for bubbel two
@@ -218,7 +219,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel two
         Set<WeekPlanning> bubbelTwoWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelTwoCourtTimeSlotListByWeek, bubbelTwoMenMembers, groupService.getGroup(dataStore.BUBBEL_TWO_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelTwoWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_MEN));
+        reservationService.storeWeekPlanning(bubbelTwoWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelTwoWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_MEN));
 
 
         //weekly timeslots for bubbel three
@@ -236,7 +238,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel three
         Set<WeekPlanning> bubbelThreeWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelThreeCourtTimeSlotListByWeek, bubbelThreeMenMembers, groupService.getGroup(dataStore.BUBBEL_THREE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelThreeWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_THREE_MEN));
+        reservationService.storeWeekPlanning(bubbelThreeWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelThreeWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_THREE_MEN));
 
 
 
@@ -255,7 +258,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel four
         Set<WeekPlanning> bubbelFourWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFourCourtTimeSlotListByWeek, bubbelFourMenMembers, groupService.getGroup(dataStore.BUBBEL_FOUR_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelFourWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_MEN));
+        reservationService.storeWeekPlanning(bubbelFourWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelFourWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_MEN));
 
 
         //weekly timeslots for bubbel five
@@ -273,7 +277,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel five
         Set<WeekPlanning> bubbelFiveWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFiveCourtTimeSlotListByWeek, bubbelFiveMenMembers, groupService.getGroup(dataStore.BUBBEL_FIVE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelFiveWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FIVE_MEN));
+        reservationService.storeWeekPlanning(bubbelFiveWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelFiveWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FIVE_MEN));
 
 
         //weekly timeslots for bubbel six
@@ -292,7 +297,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel six
         Set<WeekPlanning> bubbelSixWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelSixCourtTimeSlotListByWeek, bubbelSixMenMembers, groupService.getGroup(dataStore.BUBBEL_SIX_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelSixWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SIX_MEN));
+        reservationService.storeWeekPlanning(bubbelSixWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelSixWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SIX_MEN));
 
 
         //weekly timeslots for bubbel seven
@@ -310,7 +316,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel seven
         Set<WeekPlanning> bubbelSevenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelSevenCourtTimeSlotListByWeek, bubbelSevenMenMembers, groupService.getGroup(dataStore.BUBBEL_SEVEN_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelSevenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SEVEN_MEN));
+        reservationService.storeWeekPlanning(bubbelSevenWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelSevenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SEVEN_MEN));
 
 
         //weekly timeslots for bubbel eight
@@ -328,11 +335,12 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel eight
         Set<WeekPlanning> bubbelEightWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelEightCourtTimeSlotListByWeek, bubbelEightMenMembers, groupService.getGroup(dataStore.BUBBEL_EIGHT_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelEightWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_EIGHT_MEN));
+        reservationService.storeWeekPlanning(bubbelEightWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelEightWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_EIGHT_MEN));
 
 
 
-//weekly timeslots for bubbel one women
+        //weekly timeslots for bubbel one women
         Map<Week, List<CourtTimeSlot>> bubbelOneWomenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
         bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
         bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
@@ -347,7 +355,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel one women
         Set<WeekPlanning> bubbelOneWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelOneWomenCourtTimeSlotListByWeek, bubbelOneWomenMembers, groupService.getGroup(dataStore.BUBBEL_ONE_WOMEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelOneWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_ONE_WOMEN));
+        reservationService.storeWeekPlanning(bubbelOneWomenWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelOneWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_ONE_WOMEN));
 
 
 
@@ -366,7 +375,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel one women
         Set<WeekPlanning> bubbelTwoWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelTwoWomenCourtTimeSlotListByWeek, bubbelTwoWomenMembers, groupService.getGroup(dataStore.BUBBEL_TWO_WOMEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelTwoWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_WOMEN));
+        reservationService.storeWeekPlanning(bubbelTwoWomenWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelTwoWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_WOMEN));
 
 
 
@@ -386,7 +396,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel three women
         Set<WeekPlanning> bubbelThreeWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelThreeWomenCourtTimeSlotListByWeek, bubbelThreeWomenMembers, groupService.getGroup(dataStore.BUBBEL_THREE_WOMEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelThreeWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_THREE_WOMEN));
+        reservationService.storeWeekPlanning(bubbelThreeWomenWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelThreeWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_THREE_WOMEN));
 
 
         //weekly timeslots for bubbel four women
@@ -404,7 +415,8 @@ public class BubbelsReservationServiceImplTest {
 
         //generate weekplanning for bubbel four
         Set<WeekPlanning> bubbelFourWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFourWomenCourtTimeSlotListByWeek, bubbelFourWomenMembers, groupService.getGroup(dataStore.BUBBEL_FOUR_WOMEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelFourWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_WOMEN));
+        reservationService.storeWeekPlanning(bubbelFourWomenWeekPlanningList,false,false);
+        //weekPlanningDisplay.displayPlanning(bubbelFourWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_WOMEN));
 
 
 
@@ -414,8 +426,8 @@ public class BubbelsReservationServiceImplTest {
 
     }
 
-    @TestConfiguration
-    static class ReservationServiceImplTestContextConfiguration {
+    /*@TestConfiguration
+    static class ReservationServiceITContextConfiguration {
 
         @Bean
         public ReservationService reservationService() {
@@ -425,19 +437,19 @@ public class BubbelsReservationServiceImplTest {
         @Bean
         //@Bean("InMemoryMemberService")
         public MemberService memberService() {
-            return new MemberServiceImpl();
+            return new InMemoryMemberService();
         }
 
 
 //        @Bean("InMemoryCourtService")
         @Bean
         public CourtService courtService() {
-            return new CourtServiceImpl();
+            return new InMemoryCourtService();
         }
 
         @Bean
         public GroupService groupService() {
-            return new GroupServiceImpl();
+            return new InMemoryGroupService();
         }
 
 
@@ -445,11 +457,11 @@ public class BubbelsReservationServiceImplTest {
 
         @Bean
         public DataStore dataSource() {
-            return new BubbelsInMemoryDataStore();
+            return new MysqlDatabaseStore();
         }
 
 
-    }
+    }*/
 
 
 

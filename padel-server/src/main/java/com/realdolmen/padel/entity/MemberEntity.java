@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "member", schema = "padel")
+@Table(name =  "\"member\"", schema = "padel")
 public class MemberEntity {
     @Id
     @Column(name = "MEMBER_ID")

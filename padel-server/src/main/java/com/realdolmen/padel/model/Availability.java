@@ -86,8 +86,16 @@ public enum Availability {
             @Override
             public Availability apply(AvailabilityEntity availabilityEntity) {
                 List<Integer> weekNumbers = new ArrayList<Integer>();
+
+                /*String[] elements = csv.split(",");
+
+                List<String> fixedLenghtList = Arrays.asList(elements);
+
+                intList.addAll(strList.stream().map(Integer::valueOf).collect(Collectors.toList()));*/
+
+
                 if (StringUtils.isNotEmpty(availabilityEntity.getWeekNumbers())) {
-                    weekNumbers = new ArrayList<String>(Arrays.asList(availabilityEntity.getWeekNumbers().split(" , "))).stream().map(Integer::valueOf).collect(Collectors.toList());
+                    weekNumbers = new ArrayList<String>(Arrays.asList(availabilityEntity.getWeekNumbers().split(","))).stream().map(Integer::valueOf).collect(Collectors.toList());
                 }
                 return Availability.forValues(availabilityEntity.getId(), availabilityEntity.getLabel(), weekNumbers);
             }

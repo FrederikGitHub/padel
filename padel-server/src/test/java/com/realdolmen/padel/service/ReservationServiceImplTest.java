@@ -602,19 +602,19 @@ public class ReservationServiceImplTest {
         @Bean
         //@Bean("InMemoryMemberService")
         public MemberService memberService() {
-            return new InMemoryMemberService();
+            return new MemberServiceImpl();
         }
 
 
 //        @Bean("InMemoryCourtService")
         @Bean
         public CourtService courtService() {
-            return new InMemoryCourtService();
+            return new CourtServiceImpl();
         }
 
         @Bean
         public GroupService groupService() {
-            return new InMemoryGroupService();
+            return new GroupServiceImpl();
         }
 
 

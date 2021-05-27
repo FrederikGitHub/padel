@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InMemoryAvailabilityService implements AvailabilityService{
+public class AvailabilityServiceImpl implements AvailabilityService{
 
 
     @Autowired

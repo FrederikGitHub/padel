@@ -27,10 +27,6 @@ public class ReservationEntity {
     @Column(name = "RESERVATION_WEEK")
     private Integer week;
 
-    @ManyToOne
-    @JoinColumn(name = "RESERVATION_TIMESLOT_ID")
-    private TimeSlotEntity timeSlot;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "reservation_member", joinColumns = {
             @JoinColumn(name = "RESERVATION_MEMBER_RESERVATION_ID")},
@@ -44,6 +40,10 @@ public class ReservationEntity {
     @ManyToOne
     @JoinColumn(name = "RESERVATION_GROUP_ID")
     private GroupEntity groupEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "RESERVATION_COURT_TIMESLOT_ID")
+    private CourtTimeSlotEntity courtTimeSlotEntity;
 
     public long getId() {
         return id;
@@ -85,12 +85,12 @@ public class ReservationEntity {
         this.week = week;
     }
 
-    public TimeSlotEntity getTimeSlot() {
-        return timeSlot;
+    public CourtTimeSlotEntity getCourtTimeSlot() {
+        return courtTimeSlotEntity;
     }
 
-    public void setTimeSlot(TimeSlotEntity timeSlot) {
-        this.timeSlot = timeSlot;
+    public void setCourtTimeSlot(CourtTimeSlotEntity courtTimeSlot) {
+        this.courtTimeSlotEntity = courtTimeSlot;
     }
 
     public Set<MemberEntity> getReservationMembers() {

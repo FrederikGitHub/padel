@@ -28,7 +28,7 @@ public class HibernateReservationDaoITTest {
     private ReservationDao reservationDao;
 
     @Autowired
-    private TimeSlotDao timeSlotDao;
+    private CourtTimeSlotDao courtTimeSlotDao;
 
     @Autowired
     private ReservationTypeDao reservationTypeDao;
@@ -55,8 +55,8 @@ public class HibernateReservationDaoITTest {
         List<ReservationTypeEntity> reservationTypeEntityList = reservationTypeDao.getReservationTypeList();
         ReservationTypeEntity fixedReservationType = reservationTypeEntityList.get(reservationTypeEntityList.size()-1);
         reservationEntity.setReservationType(fixedReservationType);
-        TimeSlotEntity timeSlotEntity = timeSlotDao.getTimeSlotList().get(0);
-        reservationEntity.setTimeSlot(timeSlotEntity);
+        CourtTimeSlotEntity courtTimeSlotEntity = courtTimeSlotDao.getCourtTimeSlotList().get(0);
+        reservationEntity.setCourtTimeSlot(courtTimeSlotEntity);
         GroupEntity groupEntity = groupDao.getGroupList().get(0);
         reservationEntity.setGroupEntity(groupEntity);
         List<MemberEntity> memberEntityList = memberDao.getMemberList();

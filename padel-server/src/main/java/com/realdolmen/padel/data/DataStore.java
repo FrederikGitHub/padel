@@ -2,6 +2,7 @@ package com.realdolmen.padel.data;
 
 import com.realdolmen.padel.model.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -44,6 +45,8 @@ public interface DataStore {
     List<Group> getGroups();
 
     List<Reservation> getReservations();
+
+    Reservation findReservation(CourtTimeSlot courtTimeSlot, LocalDate localDate);
 
     List<Member> getPadelMembers();
 

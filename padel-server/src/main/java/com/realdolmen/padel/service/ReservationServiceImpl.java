@@ -93,11 +93,12 @@ public class ReservationServiceImpl implements ReservationService {
             Integer weekTimeSlotIndex = 0;
             for (WeekTimeSlot weekTimeSlot : weekTimeSlots) {
                 Reservation reservation = new Reservation();
+                reservation.setReservationType(ReservationType.AUTO);
                 reservation.setWeek(entry.getKey().getWeekOfYear());
                 reservation.setDay(weekTimeSlot.getDay().getDayOfMonth());
                 reservation.setMonth(weekTimeSlot.getDay().getMonthValue());
                 reservation.setYear(weekTimeSlot.getDay().getYear());
-                reservation.setCourtTimeSlot(weekTimeSlot.getTimeslot());
+                reservation.setCourtTimeSlot(weekTimeSlot.getCourtTimeslot());
                 reservation.setReserveMembers(reserveList.entrySet().stream().findFirst().get().getKey());
                 reservation.setGroup(group);
                 List<Member> reservationMembers;
@@ -404,7 +405,7 @@ public class ReservationServiceImpl implements ReservationService {
                 WeekTimeSlot weekTimeSlot = new WeekTimeSlot();
                 weekTimeSlot.setWeek(week);
                 weekTimeSlot.setDay(day);
-                weekTimeSlot.setTimeslot(courtTimeSlot);
+                weekTimeSlot.setCourtTimeslot(courtTimeSlot);
                 weekTimeSlotList.add(weekTimeSlot);
             }
         }
@@ -508,22 +509,25 @@ public class ReservationServiceImpl implements ReservationService {
                 } else {
                     reservationsToBeCreated.add(reservation);
                 }
-                for (Member reservationMember : reservation.getReservationMembers()) {
-                    List<Reservation> weekMemberReservations = findReservationsForPeriodAndMember(weekPlanning.getWeek().getStartWeekDay(), weekPlanning.getWeek().getEndWeekDay(), reservationMember);
-                    if (!CollectionUtils.isEmpty(weekMemberReservations)) {
+                reservationsToBeCreated.add(reservation);
+                if (validateMemberOverBooking){
+                    for (Member reservationMember : reservation.getReservationMembers()) {
+                        List<Reservation> weekMemberReservations = findReservationsForPeriodAndMember(weekPlanning.getWeek().getStartWeekDay(), weekPlanning.getWeek().getEndWeekDay(), reservationMember);
+                        if (!CollectionUtils.isEmpty(weekMemberReservations)) {
 
-                        String playDates = weekMemberReservations.stream().map(Reservation.Functions.TO_PLAY_DATE).map(new Function<LocalDate, String>() {
-                            @Override
-                            public String apply(LocalDate localDate) {
-                                return localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                            }
-                        }).collect(Collectors.joining());
-                        Map<String, String> paramMap = Stream.of(new String[][]{
-                                {"member", reservationMember.getName() + " " + reservationMember.getFirstName()},
-                                {"playdates", playDates},
-                        }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
-                        Message message = new Message(PadelMessageCode.MEMBER_OVERBOOKING, paramMap);
-                        tooManyMemberReservationMessages.add(message);
+                            String playDates = weekMemberReservations.stream().map(Reservation.Functions.TO_PLAY_DATE).map(new Function<LocalDate, String>() {
+                                @Override
+                                public String apply(LocalDate localDate) {
+                                    return localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                                }
+                            }).collect(Collectors.joining());
+                            Map<String, String> paramMap = Stream.of(new String[][]{
+                                    {"member", reservationMember.getName() + " " + reservationMember.getFirstName()},
+                                    {"playdates", playDates},
+                            }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+                            Message message = new Message(PadelMessageCode.MEMBER_OVERBOOKING, paramMap);
+                            tooManyMemberReservationMessages.add(message);
+                        }
                     }
                 }
 
@@ -564,11 +568,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation findReservationForPeriodAndCourtTimeSlot(LocalDate localdate, CourtTimeSlot courtTimeSlot) {
-        Reservation reservation = null;
-        Optional<Reservation> optionalReservation = dataStore.getReservations().stream().filter(Reservation.Predicates.withCourtTimeSlot(courtTimeSlot).and(Reservation.Predicates.withDate(localdate))).findFirst();
-        if (optionalReservation.isPresent()) {
-            reservation = optionalReservation.get();
-        }
+        Reservation reservation = dataStore.findReservation(courtTimeSlot,localdate);
         return reservation;
     }
 

@@ -1,6 +1,7 @@
 package com.realdolmen.padel.dao.hibernate;
 
 import com.realdolmen.padel.dao.ReservationTypeDao;
+import com.realdolmen.padel.entity.GroupEntity;
 import com.realdolmen.padel.entity.ReservationTypeEntity;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +31,22 @@ public class HibernateReservationTypeDao implements ReservationTypeDao {
         List<ReservationTypeEntity> reservationTypeEntityList = entityManager.createQuery("Select reservationType From ReservationTypeEntity reservationType", ReservationTypeEntity.class).getResultList();
         return reservationTypeEntityList;
     }
+
+    @Override
+    public ReservationTypeEntity findReservationTypeById(Long id) {
+
+        ReservationTypeEntity reservationTypeEntity = null;
+        try {
+            reservationTypeEntity = (ReservationTypeEntity) entityManager.createQuery(
+                    "select reservationType from ReservationTypeEntity reservationType where reservationType.id = :id")
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception e) {
+
+        }
+
+        return reservationTypeEntity;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.realdolmen.padel.dao.hibernate;
 
 import com.realdolmen.padel.dao.MemberDao;
+import com.realdolmen.padel.entity.GroupEntity;
 import com.realdolmen.padel.entity.MemberEntity;
 import org.springframework.stereotype.Repository;
 
@@ -35,16 +36,19 @@ public class HibernateMemberDao implements MemberDao {
 
         MemberEntity memberEntity = null;
         try {
-            memberEntity = (MemberEntity) entityManager.createQuery(
+            memberEntity = entityManager.getReference(MemberEntity.class,id);
+            /*memberEntity = (MemberEntity) entityManager.createQuery(
                     "select member from MemberEntity member where member.id = :id")
                     .setParameter("id", id)
-                    .getSingleResult();
+                    .getSingleResult();*/
         } catch (Exception e) {
-
+            System.out.println("" + e);
         }
 
         return memberEntity;
     }
+
+
 
 
 }

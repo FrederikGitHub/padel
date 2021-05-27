@@ -4,10 +4,12 @@ import com.realdolmen.padel.dao.ReservationDao;
 import com.realdolmen.padel.entity.CourtEntity;
 import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.ReservationEntity;
+import com.realdolmen.padel.model.CourtTimeSlot;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -49,11 +51,12 @@ public class HibernateReservationDao implements ReservationDao {
     }
 
 
-    public List<ReservationEntity> findReservationsByDay(Long id) {
-
-
+    public ReservationEntity findReservation(CourtTimeSlot courtTimeSlot, LocalDate localDate) {
+        List<ReservationEntity> reservationEntityList = entityManager.createQuery("Select reservation From ReservationEntity reservation where reservation.courtTimeSlotEntity.id = :id and reservation.day = :reservationDay and reservation.month = :reservationMonth and reservation.year = :reservationYear", ReservationEntity.class).setParameter("id", courtTimeSlot.getId()).setParameter("reservationDay", localDate.getDayOfMonth()).setParameter("reservationMonth", localDate.getMonthValue()).setParameter("reservationYear", localDate.getYear()).getResultList();
+        if (reservationEntityList != null && reservationEntityList.size()>0){
+            return reservationEntityList.get(0);
+        }
         return null;
     }
-
 
 }

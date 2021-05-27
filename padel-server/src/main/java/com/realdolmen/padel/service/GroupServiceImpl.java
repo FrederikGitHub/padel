@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class InMemoryGroupService implements GroupService {
+public class GroupServiceImpl implements GroupService {
 
     @Autowired
     DataStore dataStore;

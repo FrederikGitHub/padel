@@ -4,14 +4,20 @@ import com.realdolmen.padel.dao.*;
 import com.realdolmen.padel.entity.*;
 import com.realdolmen.padel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Component
 @Transactional
+@Primary
 public class MysqlDatabaseStore implements DataStore {
 
     @Autowired
@@ -35,7 +41,11 @@ public class MysqlDatabaseStore implements DataStore {
     @Autowired
     private VtvLevelDao vtvLevelDao;
 
+    @Autowired
+    private ReservationTypeDao reservationTypeDao;
 
+    @Autowired
+    private CourtTimeSlotDao courtTimeSlotDao;
 
 
     @Override
@@ -50,6 +60,16 @@ public class MysqlDatabaseStore implements DataStore {
         List<ReservationEntity> reservationEntityList = reservationDao.getReservationList();
         List<Reservation> reservationList = reservationEntityList.stream().map(Reservation.Functions.FROM_RESERVATION_ENTITY).collect(Collectors.toList());
         return reservationList;
+    }
+
+    @Override
+    public Reservation findReservation(CourtTimeSlot courtTimeSlot, LocalDate localDate) {
+        ReservationEntity reservationEntity = reservationDao.findReservation(courtTimeSlot, localDate);
+        Reservation reservation = null;
+        if (reservationEntity != null){
+            reservation = Reservation.Functions.FROM_RESERVATION_ENTITY.apply(reservationEntity);
+        }
+        return reservation;
     }
 
     @Override
@@ -101,7 +121,6 @@ public class MysqlDatabaseStore implements DataStore {
     }
 
 
-
     @Override
     public void update(Member member) {
         MemberEntity memberEntity = memberDao.findMemberById(member.getId());
@@ -148,9 +167,39 @@ public class MysqlDatabaseStore implements DataStore {
     public void create(Reservation reservation) {
         ReservationEntity reservationEntity = new ReservationEntity();
 
-        if (reservation.getGroup() != null){
+        if (reservation.getGroup() != null) {
             GroupEntity groupEntity = groupDao.findGroupById(reservation.getGroup().getId());
             reservationEntity.setGroupEntity(groupEntity);
+        }
+
+        reservationEntity.setYear(reservation.getYear());
+        reservationEntity.setMonth(reservation.getMonth());
+        reservationEntity.setDay(reservation.getDay());
+
+        if (reservation.getReservationType() != null) {
+            ReservationTypeEntity reservationTypeEntity = reservationTypeDao.findReservationTypeById(reservation.getReservationType().getId());
+            reservationEntity.setReservationType(reservationTypeEntity);
+        }
+
+        if (reservation.getGroup() != null) {
+            GroupEntity groupEntity = groupDao.findGroupById(reservation.getGroup().getId());
+            reservationEntity.setGroupEntity(groupEntity);
+        }
+
+
+        Set<MemberEntity> reservationMembers = new HashSet<MemberEntity>();
+        reservation.getReservationMembers().forEach(new Consumer<Member>() {
+            @Override
+            public void accept(Member member) {
+                reservationMembers.add(memberDao.findMemberById(member.getId()));
+            }
+        });
+        reservationEntity.setReservationMembers(reservationMembers);
+
+
+        if (reservation.getCourtTimeSlot() != null) {
+            CourtTimeSlotEntity courtTimeSlotEntity = courtTimeSlotDao.findCourtTimeSlotById(reservation.getCourtTimeSlot().getId());
+            reservationEntity.setCourtTimeSlot(courtTimeSlotEntity);
         }
 
 
@@ -159,12 +208,14 @@ public class MysqlDatabaseStore implements DataStore {
 
     @Override
     public void delete(Reservation reservation) {
-        throw new UnsupportedOperationException();
+        ReservationEntity reservationEntity = reservationDao.findReservationById(reservation.getId());
+        reservationDao.delete(reservationEntity);
     }
 
     @Override
     public void update(Reservation reservation) {
-        throw new UnsupportedOperationException();
+        ReservationEntity reservationEntity = reservationDao.findReservationById(reservation.getId());
+        reservationDao.delete(reservationEntity);
     }
 
     @Override
@@ -189,6 +240,8 @@ public class MysqlDatabaseStore implements DataStore {
 
     @Override
     public List<CourtTimeSlot> getCourtTimeSlots() {
-        throw new UnsupportedOperationException();
+        List<CourtTimeSlotEntity> courtTimeSlotEntityList = courtTimeSlotDao.getCourtTimeSlotList();
+        List<CourtTimeSlot> courtTimeSlotList = courtTimeSlotEntityList.stream().map(CourtTimeSlot.Functions.FROM_COURT_TIMESLOT_ENTITY).collect(Collectors.toList());
+        return courtTimeSlotList;
     }
 }
