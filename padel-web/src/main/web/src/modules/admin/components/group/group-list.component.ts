@@ -57,13 +57,6 @@ export class GroupListComponent implements OnInit,OnDestroy, OnChanges {
                 filter: true,
                 sortable: true,
                 editable: false,
-            },
-            {
-                headerName: "Niveau",
-                field: "vtvLevel",
-                filter: true,
-                sortable: true,
-                editable: false,
             }
 
         ];

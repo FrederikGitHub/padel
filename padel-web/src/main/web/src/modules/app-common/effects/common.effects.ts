@@ -21,7 +21,7 @@ export class CommonEffects {
     @Effect({dispatch: false})
     failure$: Observable<any> = this.actions$.pipe(
         ofType(CommonActions.CommonActionTypes.FAILURE_ACTION),
-        map((action: CommonActions.SuccessAction) => {
+        map((action: CommonActions.FailureAction) => {
             this.toastrService.error(action.payload, '', {positionClass: 'toast-bottom-full-width'});
         })
     );

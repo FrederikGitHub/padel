@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<div [ngClass]="resolveMaterialTheme()">
+    <div class="mat-app-background">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+

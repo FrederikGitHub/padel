@@ -1,7 +1,10 @@
 package com.realdolmen.padel.service;
 
 import com.realdolmen.padel.data.DataStore;
+import com.realdolmen.padel.exception.PadelMessageCode;
+import com.realdolmen.padel.exception.PadelRuntimeException;
 import com.realdolmen.padel.model.Group;
+import com.realdolmen.padel.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +41,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(Group group) {
-        dataStore.delete(group);
+    public void delete(Long groupId) {
+        if (membersPartOfGroup(groupId)) {
+            throw new PadelRuntimeException(PadelMessageCode.MEMBER_PART_OF_GROUP);
+        }
+        Group group = new Group();
+        group.setId(groupId);
+        group.setActive("N");
+        dataStore.update(group);
+    }
+
+    private boolean membersPartOfGroup(Long groupId){
+        return dataStore.getPadelMembers().stream().filter(Member.Predicates.IS_ACTIVE.and(Member.Predicates.withGroupId(groupId))).findFirst().isPresent();
     }
 
     @Override

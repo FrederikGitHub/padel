@@ -1,6 +1,7 @@
 export interface Court {
     id?: number;
     name?: string;
+    active?: string;
 }
 
 export interface Availability {
@@ -15,7 +16,13 @@ export interface Group {
     id?: number;
     name?: string;
     active?: string;
-    vtvLevel?: string;
+    //vtvLevel?: string;
+
+}
+
+export interface VtvLevel {
+    id?: number;
+    name?: string;
 
 }
 
@@ -30,7 +37,7 @@ export interface Member {
     firstName?: string;
     email?: string;
     gsm?: string;
-    level?: string;
+    vtvLevel?: VtvLevel;
     active?: string;
     gender?: string;
     groupAvailabilityList?: GroupAvailability[];

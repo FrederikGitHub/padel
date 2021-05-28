@@ -1,4 +1,5 @@
 <padel-layout-dashboard>
     <padel-dashboard-head [hideBreadcrumbs]="false"></padel-dashboard-head>
-    <padel-group></padel-group>
+    <padel-group (update)="updateGroup($event)" (remove)="removeGroup($event)"></padel-group>
+
 </padel-layout-dashboard>

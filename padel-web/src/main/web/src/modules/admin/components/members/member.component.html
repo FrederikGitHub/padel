@@ -1,166 +1,136 @@
-<mat-dialog-content>
-    <div class="card bg-light">
+<!--mat-toolbar color="accent">
+    <span class="fill-remaining-space">Leden</span>
+</mat-toolbar-->
 
 
-        <div class="card-header text-white bg-primary">
-            <h3 class="card-title">Leden</h3>
-        </div>
-
-        <div class="card-body">
-
-
-            <form [formGroup]="memberForm" id="memberForm" name="memberForm">
-
-                <div class="form-group row">
-                    <label for="name"
-                           class="col-xl-2 control-label">Naam</label>
-                    <div class="col-xl-10">
-                        <input type="text" required class="form-control" maxlength="30" formControlName="name" id="name" name="name">
-
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="firstName"
-                           class="col-xl-2 control-label">Voornaam</label>
-                    <div class="col-xl-10">
-                        <input type="text" required class="form-control" maxlength="20" formControlName="firstName"
-                               id="firstName" name="firstName">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="email"
-                           class="col-xl-2 control-label">Email</label>
-                    <div class="col-xl-10">
-                        <input type="email" required class="form-control" maxlength="30" formControlName="email"
-                               id="email" name="email">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="gsm"
-                           class="col-xl-2 control-label">Gsm/Tel</label>
-                    <div class="col-xl-10">
-                        <input type="text" class="form-control" maxlength="15" formControlName="gsm"
-                               id="gsm" name="gsm">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="level"
-                           class="col-xl-2 control-label">Niveau</label>
-                    <div class="col-xl-10">
-
-                        <select class="form-control" required id="level"
-                                formControlName="level"
-                                name="level">
-
-                            <option *ngFor="let level of levels" [ngValue]="level">
-                                {{ level }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-xl-2 control-label">geslacht</label>
-                    <div class="col-xl-10">
-                        <select class="form-control" required id="gender"
-                                formControlName="gender"
-                                name="gender">
-
-                            <option *ngFor="let gender of genders" [ngValue]="gender">
-                                {{ gender }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
+<form [formGroup]="memberForm" id="memberForm" name="memberForm">
+    <mat-card>
+        <mat-card-content>
+            <mat-form-field class="form-element">
+                <input matInput type="text" required placeholder="Naam" maxlength="45" formControlName="name" name="name" id="name">
+                <mat-error *ngIf="!memberForm.controls['name'].valid && memberForm.controls['name'].touched">De naam
+                    moet verplicht ingevuld worden
+                </mat-error>
+            </mat-form-field>
 
 
+            <mat-form-field class="form-element">
+                <input matInput type="text" required placeholder="Voornaam" maxlength="45" formControlName="firstName" name="firstName"
+                       id="firstName">
+                <mat-error *ngIf="!memberForm.controls['firstName'].valid && memberForm.controls['firstName'].touched">
+                    De voornaam moet verplicht ingevuld worden
+                </mat-error>
+            </mat-form-field>
 
 
-                <table class="table table-striped table-hover" formArrayName="groupAvailabilityList">
-                    <thead>
-                    <tr>
-                        <th>Groep</th>
-                        <th>Percentage</th>
-                        <th><span style="margin-right:10px;"><fa-icon [icon]='["fas", "copy"]' (click)="duplicateGroupAvailability()"></fa-icon></span></th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <p>
+                <mat-form-field class="form-element">
+                    <input matInput type="email" placeholder="Email" maxlength="45" formControlName="email" name="email"
+                           id="email">
+                    <mat-error *ngIf="!memberForm.controls['email'].valid && memberForm.controls['email'].touched">Een
+                        correct email moet ingevuld worden
+                    </mat-error>
+                </mat-form-field>
+            </p>
+
+            <p>
+                <mat-form-field class="form-element">
+                    <input matInput type="text" placeholder="Gsm/Tel" maxlength="45" formControlName="gsm" name="gsm" id="gsm">
+                </mat-form-field>
+            </p>
+
+            <p>
+                <mat-form-field class="form-element">
+                    <select matNativeControl required [compareWith]="compareFn" placeholder="Niveau" formControlName="vtvLevel">
+                        <option *ngFor="let vtvLevel of vtvLevels" [ngValue]="vtvLevel">
+                            {{ vtvLevel.name }}
+                        </option>
+                    </select>
+                </mat-form-field>
+                <mat-error *ngIf="!memberForm.controls['vtvLevel'].valid && memberForm.controls['vtvLevel'].touched">Vtv
+                    niveau moet ingevuld worden
+                </mat-error>
+            </p>
+
+            <p>
+                <mat-form-field class="form-element">
+                    <select matNativeControl required placeholder="Geslacht" formControlName="gender">
+                        <option *ngFor="let gender of genders" [ngValue]="gender">
+                            {{ gender }}
+                        </option>
+                    </select>
+                </mat-form-field>
+                <mat-error *ngIf="!memberForm.controls['gender'].valid && memberForm.controls['gender'].touched">
+                    Geslacht moet ingevuld worden
+                </mat-error>
+            </p>
+
+            <table class="table table-striped table-hover" formArrayName="groupAvailabilityList">
+                <thead>
+                <tr>
+                    <th>Groep</th>
+                    <th>Percentage</th>
+                    <th><span style="margin-right:10px;"><fa-icon [icon]='["fas", "copy"]'
+                                                                  (click)="duplicateGroupAvailability()"></fa-icon></span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
 
 
-                    <tr *ngFor="let groupAvailability of groupAvailabilityList.controls; let groupAvailabilityIndex = index"
-                        [formGroupName]="groupAvailabilityIndex">
+                <tr *ngFor="let groupAvailability of groupAvailabilityList.controls; let groupAvailabilityIndex = index"
+                    [formGroupName]="groupAvailabilityIndex">
 
+                    <td>
 
-                        <td>
-
-                            <select class="form-control" [compareWith]="compareFn" formControlName="group" name="group" style="height: 26px;font-size: 10px;">
-                                <option *ngFor="let group of groups" [ngValue]="group">{{group.name}}</option>
+                        <!--select class="form-control" [compareWith]="compareFn" formControlName="group" name="group" style="height: 26px;font-size: 10px;">
+                            <option *ngFor="let group of groups" [ngValue]="group">{{group.name}}</option>
+                        </select-->
+                        <mat-form-field class="form-element">
+                            <select [compareWith]="compareFn" matNativeControl required placeholder="Groep"
+                                    formControlName="group">
+                                <option *ngFor="let group of groups" [ngValue]="group">
+                                    {{group.name}}
+                                </option>
                             </select>
-                        </td>
+                        </mat-form-field>
+                    </td>
 
 
-                        <td>
-                            <select class="form-control" [compareWith]="compareFn" formControlName="availability" name="availability" style="height: 26px;font-size: 10px;">
-                                <option *ngFor="let availability of availabilities" [ngValue]="availability">{{availability.label}} </option>
+                    <td>
+                        <mat-form-field class="form-element">
+                            <select [compareWith]="compareFn" matNativeControl required placeholder="Beschikbaarheid"
+                                    formControlName="availability">
+                                <option *ngFor="let availability of availabilities" [ngValue]="availability">
+                                    {{availability.label}}
+                                </option>
                             </select>
-                        </td>
+                        </mat-form-field>
+                    </td>
 
 
-
-                        <td>
-                            <span style="margin-right:10px;"><fa-icon [icon]='["fas", "trash-alt"]' (click)="removeGroupAvailability(groupAvailabilityIndex)"></fa-icon></span>
-                        </td>
-
-
-
-                    </tr>
-                    </tbody>
-                </table>
-
-                <p>{{memberForm.value | json}}</p>
-
-            </form>
-        </div>
-        <div class="card-footer">
-
-            <div class="btn-toolbar">
-
-                <div class="btn-group mr-2" role="group">
-                    <button class="btn btn-primary btn-sm" [disabled]="memberForm.invalid" (click)="onSubmit()">
-                        save
-                    </button>
-                </div>
-                <div class="btn-group mr-2" role="group">
-                    <button class="btn btn-primary btn-sm" (click)="addMember()">
-                        Add
-                    </button>
-                </div>
-
-                <div class="btn-group mr-2" role="group">
-                    <button class="btn btn-primary btn-sm" (click)="removeMember()">
-                        Remove
-                    </button>
-                </div>
-
-                <div class="btn-group mr-2" role="group">
-                    <button class="btn btn-primary btn-sm" (click)="test()">
-                        Test
-                    </button>
-                </div>
-
-            </div>
+                    <td>
+                        <span style="margin-right:10px;"><fa-icon [icon]='["fas", "trash-alt"]'
+                                                                  (click)="removeGroupAvailability(groupAvailabilityIndex)"></fa-icon></span>
+                    </td>
 
 
-        </div>
+                </tr>
+                </tbody>
+            </table>
 
 
-    </div>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" [disabled]="!memberForm.valid" (click)="onSubmit()">Lid opslaan</button>
 
-</mat-dialog-content>
+                <button mat-raised-button color="primary" (click)="addMember()">Lid toevoegen</button>
+
+                <button mat-raised-button color="primary" (click)="removeMember()">Lid verwijderen</button>
 
 
+            </mat-card-actions>
+
+        </mat-card-content>
+    </mat-card>
+</form>
 

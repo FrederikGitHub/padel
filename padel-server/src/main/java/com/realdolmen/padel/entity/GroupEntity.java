@@ -22,11 +22,11 @@ public class GroupEntity {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "group_vtv_level", joinColumns = {
             @JoinColumn(name = "GROUP_VTV_LEVEL_GROUP_ID")},
             inverseJoinColumns = {@JoinColumn(name = "GROUP_VTV_LEVEL_VTV_LEVEL_ID")})
-    private Set<VtvLevelEntity> vtvLevels;
+    private Set<VtvLevelEntity> vtvLevels;*/
 
     public GroupEntity() {
 
@@ -62,11 +62,11 @@ public class GroupEntity {
         this.active = active;
     }
 
-    public Set<VtvLevelEntity> getVtvLevels() {
+    /*public Set<VtvLevelEntity> getVtvLevels() {
         return vtvLevels;
     }
 
     public void setVtvLevels(Set<VtvLevelEntity> vtvLevels) {
         this.vtvLevels = vtvLevels;
-    }
+    }*/
 }

@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 public class Court implements Comparable<Court> {
     private long id;
     private String name;
+    private String active;
 
     public Court() {
 
@@ -38,11 +39,20 @@ public class Court implements Comparable<Court> {
         return this;
     }
 
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "Court{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", active='" + active + '\'' +
                 '}';
     }
 
@@ -83,6 +93,13 @@ public class Court implements Comparable<Court> {
                 }
             };
         }
+
+        public static final Predicate<Court> IS_ACTIVE = new Predicate<Court>() {
+            @Override
+            public boolean test(Court court) {
+                return court.getActive() == null || court.getActive().equalsIgnoreCase("Y");
+            }
+        };
     }
 
     public static class Functions {
@@ -93,6 +110,7 @@ public class Court implements Comparable<Court> {
                 Court court = new Court();
                 court.setId(courtEntity.getId());
                 court.setName(courtEntity.getName());
+                court.setActive(courtEntity.getActive());
                 return court;
             }
         };
@@ -103,6 +121,7 @@ public class Court implements Comparable<Court> {
                 CourtEntity courtEntity = new CourtEntity();
                 courtEntity.setId(court.getId());
                 courtEntity.setName(court.getName());
+                courtEntity.setActive(court.getActive());
                 return courtEntity;
             }
         };

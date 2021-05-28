@@ -33,18 +33,7 @@ public class HibernateMemberDao implements MemberDao {
     }
 
     public MemberEntity findMemberById(Long id) {
-
-        MemberEntity memberEntity = null;
-        try {
-            memberEntity = entityManager.getReference(MemberEntity.class,id);
-            /*memberEntity = (MemberEntity) entityManager.createQuery(
-                    "select member from MemberEntity member where member.id = :id")
-                    .setParameter("id", id)
-                    .getSingleResult();*/
-        } catch (Exception e) {
-            System.out.println("" + e);
-        }
-
+        MemberEntity memberEntity = entityManager.getReference(MemberEntity.class,id);
         return memberEntity;
     }
 

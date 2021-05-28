@@ -2,6 +2,7 @@ package com.realdolmen.padel.model;
 
 import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.MemberGroupAvailabilityEntity;
+import com.realdolmen.padel.entity.VtvLevelEntity;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -222,13 +223,18 @@ public class Member implements Comparable<Member> {
             @Override
             public MemberEntity apply(Member member) {
                 MemberEntity memberEntity = new MemberEntity();
-                memberEntity.setId(member.getId());
+                //memberEntity.setId(member.getId());
                 memberEntity.setName(member.getName());
                 memberEntity.setFirstName(member.getFirstName());
                 memberEntity.setPassword(member.getPassword());
                 memberEntity.setGsm(member.getGsm());
                 memberEntity.setActive(member.getActive());
                 memberEntity.setEmail(member.getEmail());
+                if (member.getVtvLevel() != null){
+                    VtvLevelEntity vtvLevelEntity = VtvLevel.Functions.TO_VTV_LEVEL_ENTITY.apply(member.vtvLevel);
+                    memberEntity.setVtvLevel(vtvLevelEntity);
+                }
+
                 if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())){
                     Set<MemberGroupAvailabilityEntity> memberGroupAvailabilityEntityList = member.getGroupAvailabilityList().stream().map(GroupAvailability.Functions.TO_MEMBER_GROUP_AVAILABILITY_ENTITY).collect(Collectors.toSet());
                     memberEntity.setGroupAvailabilityList(memberGroupAvailabilityEntityList);
@@ -247,6 +253,15 @@ public class Member implements Comparable<Member> {
                 @Override
                 public boolean test(Member member) {
                     return member.getGroupAvailabilityList().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
+                }
+            };
+        }
+
+        public static final Predicate<Member> withGroupId(final Long groupId) {
+            return new Predicate<Member>() {
+                @Override
+                public boolean test(Member member) {
+                    return member.getGroupAvailabilityList().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupId(groupId));
                 }
             };
         }

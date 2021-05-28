@@ -18,7 +18,7 @@ export class TimeSlotEffects {
                     catchError(() => EMPTY))
             )
         )
-    );
+        , {dispatch: true});
 
 
     constructor(

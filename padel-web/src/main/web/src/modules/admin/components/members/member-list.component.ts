@@ -69,10 +69,11 @@ export class MemberListComponent implements OnInit,OnDestroy, OnChanges {
                 headerName: "Beschikbaar",
                 valueGetter: function (params:any) {
                     let availability:string = "";
-                    for (let i=0;i < params.node.data.groupAvailabilityList.length;i++) {
-                        availability = availability + "week " + params.node.data.groupAvailabilityList[i].availability.weekNumbers + " in " + params.node.data.groupAvailabilityList[i].group.name + ";";
+                    if (params.node.data.groupAvailabilityList){
+                        for (let i=0;i < params.node.data.groupAvailabilityList.length;i++) {
+                            availability = availability + "week " + params.node.data.groupAvailabilityList[i].availability.weekNumbers + " in " + params.node.data.groupAvailabilityList[i].group.name + ";";
+                        }
                     }
-
                     return availability;
                 },
                 sortable: true,
@@ -80,7 +81,7 @@ export class MemberListComponent implements OnInit,OnDestroy, OnChanges {
             },
             {
                 headerName: "niveau",
-                field: "level",
+                field: "vtvLevel.name",
                 filter: true,
                 sortable: true,
                 editable: false,

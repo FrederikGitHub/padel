@@ -26,9 +26,11 @@ export class CourtService {
         return this.http.put<Court>(this.restCourtUrl, court);
     }
 
-    addGroup(court: Court): Observable<Court> {
+
+    addCourt(court: Court): Observable<Court> {
         return this.http.post<Court>(this.restCourtUrl, court);
     }
+    
 
 
 

@@ -10,7 +10,7 @@ import {
     SimpleChanges
 } from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Availability, Group, Member} from "@common/models";
+import {Availability, Group, Member, VtvLevel} from "@common/models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RouteData} from "@common/services/route-data.service";
 import {ToastrService} from "ngx-toastr";
@@ -20,6 +20,7 @@ import {ToastrService} from "ngx-toastr";
     selector: 'padel-member',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './member.component.html',
+    styleUrls: ['./member.component.scss']
 })
 export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
 
@@ -27,7 +28,7 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
 
     groups: Group[] = [];
     availabilities: Availability[] = [];
-    levels: string[] = [];
+    vtvLevels: VtvLevel[] = [];
     genders: string[] = [];
 
 
@@ -41,7 +42,7 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
             'firstName': ["", Validators.required],
             'email': ["", Validators.email],
             'gsm': [""],
-            'level': ["", Validators.required],
+            'vtvLevel': [{}, Validators.required],
             'gender': ["", Validators.required],
             'groupAvailabilityList': this.fb.array([]),
             'active': [""],
@@ -84,12 +85,9 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
 
     removeMember() {
         this.memberForm.get('active')?.setValue('N');
-        this.router.navigate(['admin/members']);
+        this.onSubmit();
     }
 
-    test(){
-        this.toastrService.warning("Niet alle gegevens zijn correct ingevuld", "Leden", {positionClass: 'toast-bottom-full-width'});
-    }
 
     onSubmit() {
         const values = this.memberForm.value;
@@ -117,7 +115,7 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
         this.memberForm.controls.firstName.setValue(member.firstName);
         this.memberForm.controls.email.setValue(member.email);
         this.memberForm.controls.gsm.setValue(member.gsm);
-        this.memberForm.controls.level.setValue(member.level);
+        this.memberForm.controls.vtvLevel.setValue(member.vtvLevel);
         this.memberForm.controls.gender.setValue(member.gender);
 
 
@@ -148,7 +146,7 @@ export class MemberComponent implements OnInit, OnChanges, AfterViewInit {
         this.fillFormData(this.routeData.storage);
         this.availabilities = this.route.snapshot.data['memberResolverData']['availabilities'];
         this.groups = this.route.snapshot.data['memberResolverData']['groups'];
-        this.levels = this.route.snapshot.data['memberResolverData']['levels'];
+        this.vtvLevels = this.route.snapshot.data['memberResolverData']['levels'];
         this.genders = this.route.snapshot.data['memberResolverData']['genders'];
     }
 

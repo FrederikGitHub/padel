@@ -1,8 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {catchError, map, mergeMap} from "rxjs/operators";
-import {EMPTY} from "rxjs";
+import {catchError, exhaustMap, map, mergeMap} from "rxjs/operators";
+import {EMPTY, of} from "rxjs";
 import {GroupService} from "@common/services/group.service";
+import {GroupActions, MemberActions} from "@modules/admin/actions";
+import {FailureAction, SuccessAction} from "@common/actions/common.action";
 
 @Injectable()
 export class GroupEffects {
@@ -17,7 +19,41 @@ export class GroupEffects {
                     catchError(() => EMPTY))
             )
         )
+        , {dispatch: true});
+
+    updateGroup$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(GroupActions.UpdateGroup),
+            mergeMap((action) => this.groupService$.updateGroup(action.group)
+                .pipe(
+                    map((group) => new SuccessAction('Groep gegevens zijn correct bewaard')),
+                    catchError((responseError) => of(new FailureAction(responseError.error))))
+            )
+        )
     );
+
+
+    addGroup$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(GroupActions.AddGroup),
+                exhaustMap((action) => this.groupService$.addGroup(action.group)
+                    .pipe(
+                        map((group) => new SuccessAction('Groep ' + group.name + " is correct toegevoegd")),
+                        catchError((responseError) => of(new FailureAction(responseError.error))))
+                )
+            )
+        , {dispatch: true});
+
+    removeGroup$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(GroupActions.RemoveGroup),
+                exhaustMap((action) => this.groupService$.removeGroup(action.group)
+                    .pipe(
+                        map((group) => new SuccessAction('Groep ' + group.name + " is correct verwijderd")),
+                        catchError((responseError) => of(new FailureAction(responseError.error))))
+                )
+            )
+        , {dispatch: true});
 
 
     constructor(

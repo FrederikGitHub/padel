@@ -2,6 +2,7 @@ package com.realdolmen.padel.service;
 
 import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.model.Court;
+import com.realdolmen.padel.model.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,8 @@ public class CourtServiceImpl implements CourtService {
 
     @Override
     public List<Court> getCourts() {
-        return dataStore.getCourtList().stream().sorted().collect(Collectors.toList());
+        return dataStore.getCourtList().stream().filter(Court.Predicates.IS_ACTIVE).sorted().collect(Collectors.toList());
+
     }
 }
 

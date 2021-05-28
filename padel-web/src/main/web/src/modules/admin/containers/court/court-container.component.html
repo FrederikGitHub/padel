@@ -1,4 +1,4 @@
 <padel-layout-dashboard>
     <padel-dashboard-head [hideBreadcrumbs]="false"></padel-dashboard-head>
-    <padel-court></padel-court>
+    <padel-court (update)="updateCourt($event)"></padel-court>
 </padel-layout-dashboard>

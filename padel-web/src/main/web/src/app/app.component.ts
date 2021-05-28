@@ -9,7 +9,8 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    title = 'padelr';
+    title = 'padel';
+
     constructor(public router: Router, private titleService: Title) {
         this.router.events
             .pipe(filter(event => event instanceof ChildActivationEnd))
@@ -21,4 +22,9 @@ export class AppComponent {
                 this.titleService.setTitle(snapshot.data.title || 'SB Admin Angular');
             });
     }
+
+    resolveMaterialTheme() {
+        return 'bs-light-theme';
+    }
 }
+

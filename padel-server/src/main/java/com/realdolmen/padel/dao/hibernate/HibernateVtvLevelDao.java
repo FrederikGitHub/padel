@@ -1,6 +1,7 @@
 package com.realdolmen.padel.dao.hibernate;
 
 import com.realdolmen.padel.dao.VtvLevelDao;
+import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.VtvLevelEntity;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +30,11 @@ public class HibernateVtvLevelDao implements VtvLevelDao {
     public List<VtvLevelEntity> getVtvLevelList() {
         List<VtvLevelEntity> vtvLevelList = entityManager.createQuery("Select vtvLevels From VtvLevelEntity vtvLevels ", VtvLevelEntity.class).getResultList();
         return vtvLevelList;
+    }
+
+    @Override
+    public VtvLevelEntity findLevelById(Long id) {
+        VtvLevelEntity vtvLevelEntity = entityManager.getReference(VtvLevelEntity.class,id);
+        return vtvLevelEntity;
     }
 }

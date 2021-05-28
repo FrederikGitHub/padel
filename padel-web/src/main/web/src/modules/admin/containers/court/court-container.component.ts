@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Court} from "@common/models";
+import {Store} from "@ngrx/store";
 
 @Component({
     selector: 'padel-court-container',
@@ -6,6 +8,17 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     templateUrl: './court-container.component.html',
 })
 export class CourtContainerComponent implements OnInit {
-    constructor() {}
-    ngOnInit() {}
+    constructor(private store: Store<{ court: Court }>) {
+    }
+
+    ngOnInit() {
+    }
+
+    updateCourt(court: Court) {
+        if (court.id == -1) {
+            this.store.dispatch({type: 'Add court', court: court});
+        } else {
+            this.store.dispatch({type: 'Update court', court: court});
+        }
+    }
 }

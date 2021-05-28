@@ -6,6 +6,7 @@ import com.realdolmen.padel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -110,7 +111,8 @@ public class MysqlDatabaseStore implements DataStore {
 
     @Override
     public void create(Member member) {
-        MemberEntity memberEntity = Member.Functions.TO_MEMBER_ENTITY.apply(member);
+        MemberEntity memberEntity = new MemberEntity();
+        setMemberProperties(member,memberEntity);
         memberDao.save(memberEntity);
     }
 
@@ -120,16 +122,35 @@ public class MysqlDatabaseStore implements DataStore {
         memberDao.delete(memberEntity);
     }
 
+    private void setMemberProperties(Member member, MemberEntity memberEntity){
+        memberEntity.setFirstName(member.getFirstName());
+        memberEntity.setName(member.getName());
+        memberEntity.setGsm(member.getGsm());
+        memberEntity.setGender(member.getGender());
+        memberEntity.setActive(member.getActive());
+        if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())){
+            Set<MemberGroupAvailabilityEntity> memberGroupAvailabilityEntityList = member.getGroupAvailabilityList().stream().map(GroupAvailability.Functions.TO_MEMBER_GROUP_AVAILABILITY_ENTITY).collect(Collectors.toSet());
+            memberEntity.setGroupAvailabilityList(memberGroupAvailabilityEntityList);
+        }
+        if (member.getVtvLevel() != null){
+            VtvLevelEntity vtvLevelEntity = vtvLevelDao.findLevelById(member.getVtvLevel().getId());
+            memberEntity.setVtvLevel(vtvLevelEntity);
+        }
+    }
+
 
     @Override
     public void update(Member member) {
         MemberEntity memberEntity = memberDao.findMemberById(member.getId());
+        setMemberProperties(member,memberEntity);
         memberDao.save(memberEntity);
     }
 
     @Override
     public void create(Group group) {
-        GroupEntity groupEntity = Group.Functions.TO_GROUP_ENTITY.apply(group);
+        GroupEntity groupEntity = new GroupEntity();
+        groupEntity.setName(group.getName());
+        groupEntity.setActive(group.getActive());
         groupDao.save(groupEntity);
     }
 
@@ -142,12 +163,16 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void update(Group group) {
         GroupEntity groupEntity = groupDao.findGroupById(group.getId());
+        groupEntity.setName(group.getName());
+        groupEntity.setActive(group.getActive());
         groupDao.save(groupEntity);
     }
 
     @Override
     public void create(Court court) {
-        CourtEntity courtEntity = Court.Functions.TO_COURT_ENTITY.apply(court);
+        CourtEntity courtEntity = new CourtEntity();
+        courtEntity.setName(court.getName());
+        courtEntity.setActive(court.getActive());
         courtDao.save(courtEntity);
     }
 
@@ -160,7 +185,9 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void update(Court court) {
         CourtEntity courtEntity = courtDao.findCourtById(court.getId());
-        courtDao.delete(courtEntity);
+        courtEntity.setName(court.getName());
+        courtEntity.setActive(court.getActive());
+        courtDao.save(courtEntity);
     }
 
     @Override

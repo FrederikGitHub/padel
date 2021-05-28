@@ -10,6 +10,7 @@ import {EffectsModule} from "@ngrx/effects";
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgBootstrapFormValidationModule} from "ng-bootstrap-form-validation";
+import {MaterialModule} from "@modules/material/material.module";
 
 @NgModule({
     declarations: [AppComponent],
@@ -17,6 +18,7 @@ import {NgBootstrapFormValidationModule} from "ng-bootstrap-form-validation";
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        MaterialModule,
         HttpClientModule,
         AppCommonModule,
         ToastrModule.forRoot(),

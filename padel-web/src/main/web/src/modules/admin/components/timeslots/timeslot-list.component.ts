@@ -73,8 +73,8 @@ export class TimeSlotListComponent implements OnInit,OnDestroy, OnChanges {
     }
 
     onRowDoubleClick(params: any) {
-        this.routeData.storage = params.node.data;
-        this.router.navigate(['./edit', params.node.data.id],{ relativeTo: this.route} );
+        //this.routeData.storage = params.node.data;
+        //this.router.navigate(['./edit', params.node.data.id],{ relativeTo: this.route} );
     }
 
 

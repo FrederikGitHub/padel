@@ -14,6 +14,10 @@ public class CourtEntity {
     @Column(name = "COURT_NAME")
     private String name;
 
+    @Basic
+    @Column(name = "COURT_ACTIVE")
+    private String active;
+
     public CourtEntity() {
 
     }
@@ -37,5 +41,13 @@ public class CourtEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 }

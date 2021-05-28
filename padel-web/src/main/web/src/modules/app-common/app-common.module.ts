@@ -26,9 +26,11 @@ import * as appCommonServices from './services';
 import * as authServices from '@modules/auth/services';
 import {CallbackPipe} from "./pipes";
 import {NgbDateCustomParserFormatter} from "@common/services/custom-date-formatter-parser.service";
+import {EffectsModule} from "@ngrx/effects";
+import {CommonEffects} from "@common/effects/common.effects";
 
 @NgModule({
-    imports: [CommonModule,NgbModule, RouterModule, ...thirdParty],
+    imports: [CommonModule,NgbModule, RouterModule, ...thirdParty,EffectsModule.forFeature([CommonEffects])],
     providers: [{provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},...appCommonServices.services, ...authServices.services, ...appCommonGuards.guards,...appCommonPipes.pipes],
     declarations: [...appCommonContainers.containers, ...appCommonComponents.components, CallbackPipe],
     exports: [...appCommonContainers.containers, ...appCommonComponents.components, ...thirdParty, CallbackPipe],

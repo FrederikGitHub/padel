@@ -77,4 +77,23 @@ public class RestGroupResource extends BaseResource {
 
     }
 
+
+    @RequestMapping(value = "/rest/group", method = RequestMethod.DELETE)
+    public ResponseEntity<Group> removeGroup(final @RequestParam Long groupId) {
+        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
+
+        try {
+            if (groupId != null) {
+                groupService.delete(groupId);
+                responseEntity = new ResponseEntity(HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            responseEntity = handleException("Er is een fout opgetreden bij het opslaan van de groepgegevens", e);
+        }
+
+        return responseEntity;
+
+    }
+
 }

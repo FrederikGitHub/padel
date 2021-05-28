@@ -35,6 +35,7 @@ import {TimeSlotEffects} from "@modules/admin/effects/timeslot.effects";
 import {AvailabilityService} from "@modules/admin/services/availability.service";
 import {MemberDataResolverService} from "@modules/admin/services/member-data-resolver.service";
 import {NgBootstrapFormValidationModule} from "ng-bootstrap-form-validation";
+import {MaterialModule} from "@modules/material/material.module";
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import {NgBootstrapFormValidationModule} from "ng-bootstrap-form-validation";
         AgGridModule,
         NavigationModule,
         NgBootstrapFormValidationModule,
+        MaterialModule,
         StoreModule.forFeature('admin', reducers),
         EffectsModule.forFeature([MemberEffects,GroupEffects,CourtEffects,CourtEffects,TimeSlotEffects]),
     ],

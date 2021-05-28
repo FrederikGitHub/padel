@@ -4,7 +4,7 @@ import {Observable, of, zip} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {selectAvailabilityState, selectGroupState} from "@modules/admin/reducers";
 import {AvailabilityService} from "@modules/admin/services/availability.service";
-import {Availability, Group} from "@common/models";
+import {Availability, Group, VtvLevel} from "@common/models";
 import {map} from "rxjs/operators";
 import {GroupService} from "@common/services/group.service";
 
@@ -31,7 +31,7 @@ export class MemberDataResolverService implements Resolve<any> {
         let groups$:Observable<Array<Group>> = this.groupService.getGroups();
         let availabilities$:Observable<Array<Group>> = this.availabilityService.getAvailabilities();
         //levels: string[] = ["P50", "P100", "P200", "P300", "P500", "P750", "P1000"];
-        let levels$:Observable<Array<String>> = of (["P50", "P100", "P200", "P300", "P500", "P750", "P1000"]);
+        let levels$:Observable<Array<VtvLevel>> = of ([{id:1,name:"P50"}, {id:2,name:"P100"}, {id:3,name:"P200"}, {id:4,name:"P300"}, {id:5,name:"P500"}, {id:6,name:"P750"}, {id:7,name:"P1000"}]);
         let genders$:Observable<Array<String>> = of (["M", "V"]);
         return zip(availabilities$, groups$,levels$,genders$).pipe(
             map(([availabilities, groups,levels,genders]) => ({ availabilities, groups,levels,genders })),

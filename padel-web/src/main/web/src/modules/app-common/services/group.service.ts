@@ -26,14 +26,24 @@ export class GroupService {
 
     }
 
-    updateGroup(member: Member): Observable<Member> {
+    updateGroup(group: Group): Observable<Group> {
 
-        return this.http.put<Member>(this.restGroupUrl, member);
+        return this.http.put<Group>(this.restGroupUrl, group);
     }
 
-    addGroup(member: Member): Observable<Member> {
+    addGroup(group: Group): Observable<Group> {
 
-        return this.http.post<Member>(this.restGroupUrl, member);
+        return this.http.post<Group>(this.restGroupUrl, group);
+    }
+
+    removeGroup(group: Group): Observable<Group> {
+
+        let httpParams = new HttpParams().set('groupId', '' + group.id);
+
+        let options = { params: httpParams };
+
+        return this.http.delete(this.restGroupUrl,options);
+
     }
 
 

@@ -20,3 +20,22 @@
 @import "navigation/sidenav/sidenav.scss";
 @import "navigation/sidenav/sidenav-dark.scss";
 @import "navigation/sidenav/sidenav-light.scss";
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Pacifico');
+@import '~@angular/material/theming';
+@import './styles/material-theme';
+//@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+@media only screen and (max-width: 600px)  {
+    html {
+        font-size: 80%;
+    }
+}
+

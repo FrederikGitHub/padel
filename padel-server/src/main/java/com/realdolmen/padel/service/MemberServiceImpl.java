@@ -58,11 +58,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void update(Member padelMember) {
-
         if (hasDuplicateAvailability(padelMember)) {
             throw new PadelRuntimeException(PadelMessageCode.MEMBER_AVAILABILITY_DUPLICATES);
         }
-
         dataStore.update(padelMember);
     }
 

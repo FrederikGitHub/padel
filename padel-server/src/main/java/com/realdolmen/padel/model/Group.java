@@ -21,7 +21,7 @@ public class Group implements Comparable<Group> {
 
     }
 
-    public Group(long id, String name, List<VtvLevel> vtvLevels, String active) {
+    public Group(long id, String name,List<VtvLevel> vtvLevels, String active) {
         this.id = id;
         this.name = name;
         this.vtvLevels = vtvLevels;
@@ -70,7 +70,7 @@ public class Group implements Comparable<Group> {
         return "Group{" +
                 "id=" + id +
                 "name=" + name +
-                "vtvLevel=" + vtvLevels +
+                //"vtvLevel=" + vtvLevels +
                 "active=" + active +
                 '}';
     }
@@ -105,14 +105,23 @@ public class Group implements Comparable<Group> {
             };
         }
 
-        public static final Predicate<Group> withGroupLevel(final String vtvLevel) {
+        public static final Predicate<Group> withGroupId(final Long groupId) {
+            return new Predicate<Group>() {
+                @Override
+                public boolean test(Group group) {
+                    return group.getName() != null && group.getId() == groupId;
+                }
+            };
+        }
+
+        /*public static final Predicate<Group> withGroupLevel(final String vtvLevel) {
             return new Predicate<Group>() {
                 @Override
                 public boolean test(Group group) {
                     return group.getVtvLevels() != null && group.getVtvLevels().contains(vtvLevel);
                 }
             };
-        }
+        }*/
 
         public static final Predicate<Group> IS_ACTIVE = new Predicate<Group>() {
             @Override
@@ -138,10 +147,10 @@ public class Group implements Comparable<Group> {
                 Group group = new Group();
                 group.setId(groupEntity.getId());
                 group.setName(groupEntity.getName());
-                if (!CollectionUtils.isEmpty(groupEntity.getVtvLevels())) {
+                /*if (!CollectionUtils.isEmpty(groupEntity.getVtvLevels())) {
                     List<VtvLevel> vtvLevelList = groupEntity.getVtvLevels().stream().map(VtvLevel.Functions.FROM_VTV_LEVEL_ENTITY).collect(Collectors.toList());
                     group.setVtvLevel(vtvLevelList);
-                }
+                }*/
                 group.setActive(groupEntity.getActive());
                 return group;
             }
@@ -153,10 +162,10 @@ public class Group implements Comparable<Group> {
                 GroupEntity groupEntity = new GroupEntity();
                 groupEntity.setId(group.getId());
                 groupEntity.setName(group.getName());
-                if (!CollectionUtils.isEmpty(group.getVtvLevels())) {
+                /*if (!CollectionUtils.isEmpty(group.getVtvLevels())) {
                     List<VtvLevelEntity> vtvLevelEntityList = group.getVtvLevels().stream().map(VtvLevel.Functions.TO_VTV_LEVEL_ENTITY).collect(Collectors.toList());
                     groupEntity.setVtvLevels(new HashSet<>(vtvLevelEntityList));
-                }
+                }*/
                 groupEntity.setActive(group.getActive());
                 return groupEntity;
             }
