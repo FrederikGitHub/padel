@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {Court, Member, PlanningRequest} from "@common/models";
+import {Court, Member, PlanningRequest, ReservationRequest} from "@common/models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 
@@ -18,8 +18,8 @@ export class AutoGenerateReservationsContainerComponent implements OnInit {
 
     ngOnInit() {}
 
-    generatePlanning(planningRequest: PlanningRequest) {
-        this.store.dispatch({ type: 'Generate planning',planningRequest:planningRequest});
+    generatePlanning(reservationRequest: ReservationRequest) {
+        this.store.dispatch({ type: 'Generate planning',reservationRequest:reservationRequest});
         /*if (member.id == -1){
 
         }else{

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, mergeMap} from "rxjs/operators";
 import {EMPTY} from "rxjs";
-import {TimeSlotService} from "@modules/admin/services/timeslot.service";
+import {TimeSlotService} from "@common/services/timeslot.service";
 
 @Injectable()
 export class TimeSlotEffects {

@@ -9,6 +9,7 @@ import com.realdolmen.padel.entity.TimeSlotEntity;
 
 import java.time.DayOfWeek;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TimeSlot {
@@ -133,6 +134,24 @@ public enum TimeSlot {
 
         return null;
     }
+
+    public static class Predicates {
+
+        public static final Predicate<TimeSlot> withDayOfWeek(final DayOfWeek dayOfWeek) {
+            return new Predicate<TimeSlot>() {
+                @Override
+                public boolean test(TimeSlot timeSlot) {
+                    return timeSlot.getDayOfWeek().equals(dayOfWeek);
+                }
+            };
+        }
+
+
+
+
+
+    }
+
 
     public static class Functions {
 

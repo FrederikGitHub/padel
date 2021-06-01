@@ -17,7 +17,7 @@ export class ReservationEffects {
     generatePlanning$ = createEffect(() =>
             this.actions$.pipe(
                 ofType(ReservationActions.GeneratePlanning),
-                exhaustMap((action) => this.planningService.generateAndValidatePlanning(action.planningRequest)
+                exhaustMap((action) => this.planningService.generateAndValidatePlanning(action.reservationRequest)
                     .pipe(
                         map(() => this.router.navigate(['reservations/week'])),
                         catchError(() => EMPTY))

@@ -126,3 +126,16 @@ export interface PlanningRequest {
     group?:Group;
 }
 
+export interface CourtTimeSlotWeek {
+    week?: string;
+    courtTimeSlot?: CourtTimeSlot;
+}
+
+export interface ReservationRequest {
+    fromDate?: string;
+    toDate?: string;
+    courtTimeSlotWeekList?: CourtTimeSlotWeek[];
+    members?:Member[];
+    group?:Group;
+    day?: string;
+}

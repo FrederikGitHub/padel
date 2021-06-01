@@ -18,6 +18,7 @@ export class CourtTimeSlotService {
 
     getCourtTimeSlots(): Observable<CourtTimeSlot[]> {
 
+
         let courtTimeSlots$: Observable<CourtTimeSlot[]> = this.http.get<CourtTimeSlot[]>(this.restCourtTimeSlotUrl);
 
         return courtTimeSlots$;

@@ -101,13 +101,13 @@ public class RestReservationResource extends BaseResource {
     }
 
     @RequestMapping(value = "/rest/reservation/day", method = RequestMethod.POST)
-    public ResponseEntity<Map<Court, List<Reservation>>> findDayReservations(final HttpServletRequest request, final @RequestBody ReservationRequest reservationRequest) {
+    public ResponseEntity<List<Reservation>> findDayReservations(final HttpServletRequest request, final @RequestBody ReservationRequest reservationRequest) {
         ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
 
         try {
             if (reservationRequest != null) {
-                Map<Court, List<Reservation>> dayReservationsByCourt = reservationService.getDayReservations(reservationRequest.getDay());
-                responseEntity = new ResponseEntity(dayReservationsByCourt, HttpStatus.OK);
+                List<Reservation> dayReservations = reservationService.getDayReservations(reservationRequest.getDay());
+                responseEntity = new ResponseEntity(dayReservations, HttpStatus.OK);
             }
 
         } catch (Exception e) {
@@ -154,15 +154,15 @@ public class RestReservationResource extends BaseResource {
     }
 
 
-    /*@RequestMapping(value = "/rest/reservation/generateAndValidate", method = RequestMethod.POST)
-    public ResponseEntity<Set<WeekPlanning>> generateAndValidatePlanning(final HttpServletRequest request, final @RequestBody PlanningRequest planningRequest) {
+    @RequestMapping(value = "/rest/reservation/generateAndValidate", method = RequestMethod.POST)
+    public ResponseEntity<Set<WeekPlanning>> generateAndValidatePlanning(final HttpServletRequest request, final @RequestBody ReservationRequest reservationRequest) {
         Set<WeekPlanning> weekPlannings = new HashSet<WeekPlanning>();
 
         ResponseEntity responseEntity = new ResponseEntity(weekPlannings, HttpStatus.OK);
 
         try {
-            if (planningRequest != null) {
-                weekPlannings = reservationService.restGenerateWeekPlanning(planningRequest.getFromDate(), planningRequest.getToDate(), planningRequest.getCourtTimeSlotWeekList(), planningRequest.getMembers(), planningRequest.getGroup(),false);
+            if (reservationRequest != null) {
+                weekPlannings = reservationService.restGenerateWeekPlanning(reservationRequest.getFromDate(), reservationRequest.getToDate(), reservationRequest.getCourtTimeSlotWeekList(), reservationRequest.getMembers(), reservationRequest.getGroup(),false);
                 reservationService.validateWeekPlanning(weekPlannings, true, true);
                 responseEntity = new ResponseEntity(weekPlannings, HttpStatus.OK);
             }
@@ -172,7 +172,7 @@ public class RestReservationResource extends BaseResource {
         }
 
         return responseEntity;
-    }*/
+    }
 
 
 }

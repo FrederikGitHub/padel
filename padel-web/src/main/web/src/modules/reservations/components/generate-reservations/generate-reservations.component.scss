@@ -1,1 +1,16 @@
 @import 'styles/variables.scss';
+
+mat-list {
+    max-height: 300px;
+    overflow: auto;
+}
+
+mat-selection-list {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.form-element {
+    padding: 5px 0px 25px 2px;
+    width: 100%;
+}

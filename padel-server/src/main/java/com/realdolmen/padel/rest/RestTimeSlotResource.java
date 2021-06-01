@@ -1,7 +1,9 @@
 package com.realdolmen.padel.rest;
 
+import com.ibm.security.util.text.resources.LocaleData;
 import com.realdolmen.padel.model.Court;
 import com.realdolmen.padel.model.TimeSlot;
+import com.realdolmen.padel.model.WeekDay;
 import com.realdolmen.padel.service.TimeSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,28 @@ public class RestTimeSlotResource extends BaseResource {
 
 
             timeSlotList = timeslotService.getTimeSlots();
+
+            responseEntity = new ResponseEntity(timeSlotList, HttpStatus.OK);
+
+            return responseEntity;
+
+        } catch (Exception e) {
+            responseEntity = handleException("Er is een fout opgetreden bij het ophalen van de timeslots", e);
+
+        }
+        return responseEntity;
+
+    }
+
+
+    @RequestMapping(value = "/rest/timeslot/day", method = RequestMethod.GET)
+    public ResponseEntity<List<TimeSlot>> getDayTimeSlots(final HttpServletRequest request,final @RequestParam Integer dayOfWeek) {
+
+        List<TimeSlot> timeSlotList = new ArrayList<TimeSlot>();
+        ResponseEntity<List<TimeSlot>> responseEntity = new ResponseEntity<List<TimeSlot>>(timeSlotList, HttpStatus.OK);
+        try {
+
+            timeSlotList = timeslotService.getDayTimeSlots(DayOfWeek.of(dayOfWeek));
 
             responseEntity = new ResponseEntity(timeSlotList, HttpStatus.OK);
 

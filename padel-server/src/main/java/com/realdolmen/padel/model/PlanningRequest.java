@@ -19,6 +19,7 @@ public class PlanningRequest {
     private List<Member> members;
     private Group group;
 
+
     public LocalDate getFromDate() {
         return fromDate;
     }

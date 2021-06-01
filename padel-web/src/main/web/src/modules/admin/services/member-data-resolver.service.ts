@@ -3,7 +3,7 @@ import {Resolve} from "@angular/router";
 import {Observable, of, zip} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {selectAvailabilityState, selectGroupState} from "@modules/admin/reducers";
-import {AvailabilityService} from "@modules/admin/services/availability.service";
+import {AvailabilityService} from "@common/services/availability.service";
 import {Availability, Group, VtvLevel} from "@common/models";
 import {map} from "rxjs/operators";
 import {GroupService} from "@common/services/group.service";

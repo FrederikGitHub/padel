@@ -446,8 +446,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Map<Court, List<Reservation>> getDayReservations(LocalDate day) {
-        return dataStore.getReservations().stream().filter(Reservation.Predicates.withDate(day)).collect(Collectors.groupingBy(Reservation.Functions.TO_COURT));
+    public List<Reservation> getDayReservations(LocalDate day) {
+        //return dataStore.getReservations().stream().filter(Reservation.Predicates.withDate(day)).collect(Collectors.groupingBy(Reservation.Functions.TO_COURT));
+        return dataStore.getReservations().stream().filter(Reservation.Predicates.withDate(day)).collect(Collectors.toList());
     }
 
 

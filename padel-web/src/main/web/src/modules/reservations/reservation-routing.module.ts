@@ -10,6 +10,7 @@ import { ReservationModule } from './reservation.module';
 import * as reservationContainers from './containers';
 import {MemberDataResolverService} from "@modules/admin/services/member-data-resolver.service";
 import {ReservationDataResolverService} from "@modules/reservations/services/reservation-data-resolver";
+import {CourtReservationDataResolverService} from "@modules/reservations/services/court-reservation-data-resolver";
 
 export const ROUTES: Routes = [
 
@@ -27,6 +28,9 @@ export const ROUTES: Routes = [
                 },
             ],
         } as SBRouteData,
+        resolve: {
+            courtReservationResolverData: CourtReservationDataResolverService
+        },
         canActivate: [],
         component: reservationContainers.CourtReservationsContainerComponent,
     },
@@ -67,7 +71,7 @@ export const ROUTES: Routes = [
     {
         path: 'auto',
         resolve: {
-            memberResolverData: ReservationDataResolverService
+            reservationResolverData: ReservationDataResolverService
         },
         data: {
             title: 'Genereer reservaties',

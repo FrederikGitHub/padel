@@ -440,10 +440,8 @@ public class ReservationServiceImplTest {
         }
         logger.debug("totalReservationsByMember" + totalReservationsByMember);
 
-        Map<Court,List<Reservation>> dayReservations = reservationService.getDayReservations(LocalDate.of(2021,Month.APRIL,1));
-        for (Map.Entry<Court, List<Reservation>> entry : dayReservations.entrySet()) {
-            logger.debug(entry.getKey().getName() + " " + "=" + entry.getValue().size());
-        }
+        List<Reservation> dayReservations = reservationService.getDayReservations(LocalDate.of(2021,Month.APRIL,1));
+        
         logger.debug("dayReservations" + dayReservations);
 
 

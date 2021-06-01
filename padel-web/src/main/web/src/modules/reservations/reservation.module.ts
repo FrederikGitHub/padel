@@ -23,6 +23,8 @@ import {ReservationEffects} from "@modules/reservations/effects/reservation.effe
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MaterialModule} from "@modules/material/material.module";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
         MatNativeDateModule,
         MatGridListModule,
         NavigationModule,
+        MaterialModule,
+        FlexLayoutModule,
         EffectsModule.forFeature([ReservationEffects]),
 
     ],

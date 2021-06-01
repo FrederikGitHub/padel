@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, exhaustMap, map, mergeMap} from "rxjs/operators";
 import {EMPTY, of} from "rxjs";
-import {CourtService} from "@modules/admin/services/court.service";
+import {CourtService} from "@common/services/court.service";
 import {CourtActions, GroupActions} from "@modules/admin/actions";
 import {FailureAction, SuccessAction} from "@common/actions/common.action";
 

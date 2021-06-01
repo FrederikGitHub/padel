@@ -3,11 +3,14 @@ package com.realdolmen.padel.service;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.realdolmen.padel.model.CourtTimeSlot;
+import com.realdolmen.padel.model.CourtTimeSlotWeek;
 import com.realdolmen.padel.model.Group;
 import com.realdolmen.padel.model.Member;
 import com.realdolmen.padel.util.UtcDateDeserializer;
 import com.realdolmen.padel.util.UtcDateSerializer;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservationRequest {
     @JsonSerialize(using = UtcDateSerializer.class)
@@ -24,9 +27,10 @@ public class ReservationRequest {
     @JsonDeserialize(using = UtcDateDeserializer.class)
     private LocalDate day;
 
-    private CourtTimeSlot courtTimeSlot;
 
-    private Member member;
+    private List<Member> members;
+
+    private List<CourtTimeSlotWeek> courtTimeSlotWeekList = new ArrayList<CourtTimeSlotWeek>();
 
     public LocalDate getFromDate() {
         return fromDate;
@@ -64,21 +68,21 @@ public class ReservationRequest {
         return this;
     }
 
-    public CourtTimeSlot getCourtTimeSlot() {
-        return courtTimeSlot;
+
+
+    public List<Member> getMembers() {
+        return members;
     }
 
-    public ReservationRequest setCourtTimeSlot(CourtTimeSlot courtTimeSlot) {
-        this.courtTimeSlot = courtTimeSlot;
-        return this;
+    public void setMembers(List<Member> members) {
+        this.members = members;
     }
 
-    public Member getMember() {
-        return member;
+    public List<CourtTimeSlotWeek> getCourtTimeSlotWeekList() {
+        return courtTimeSlotWeekList;
     }
 
-    public ReservationRequest setMember(Member member) {
-        this.member = member;
-        return this;
+    public void setCourtTimeSlotWeekList(List<CourtTimeSlotWeek> courtTimeSlotWeekList) {
+        this.courtTimeSlotWeekList = courtTimeSlotWeekList;
     }
 }

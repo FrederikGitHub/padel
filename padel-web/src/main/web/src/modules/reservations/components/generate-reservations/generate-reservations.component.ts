@@ -13,7 +13,7 @@ import {CourtTimeSlot, Group, Member, PlanningRequest, Week} from "@common/model
 import {ActivatedRoute, Router} from "@angular/router";
 import {RouteData} from "@common/services/route-data.service";
 import {ToastrService} from "ngx-toastr";
-import moment from 'moment';
+import moment, {now} from 'moment';
 import {Moment} from "moment/moment";
 import {combineLatest, Observable, of} from "rxjs";
 import {map} from "rxjs/operators";
@@ -38,6 +38,7 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
     courtTimeSlots: CourtTimeSlot[] = [];
     groupMembers: Member[] = [];
     planningRequestForm: FormGroup;
+    weeks: Week[] = [];
 
 
     isFromDateDisabled = (date: NgbDate, current: {month: number}) => new Date(date.year,date.month-1,date.day).getDay() === 2 ||  new Date(date.year,date.month-1,date.day).getDay() === 3 || new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 5 ||  new Date(date.year,date.month-1,date.day).getDay() === 6 ||  new Date(date.year,date.month-1,date.day).getDay() === 0;
@@ -51,17 +52,24 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
             'fromDate': [""],
             'toDate': ["", Validators.required],
             'group': ["", Validators.required],
+            'week': [""],
+            'courtTimeSlot': [""],
             'members': [[], Validators.required],
-            'courtTimeSlotWeekList':this.fb.array([]),
+
+
+            'courtTimeSlotWeekList': this.fb.array([this.fb.group({
+                week: [""],
+                courtTimeSlot: [""],
+            })])
         });
 
 
-        this.groups = this.route.snapshot.data['memberResolverData']['groups'];
-        this.courtTimeSlots = this.route.snapshot.data['memberResolverData']['courtTimeSlots'];
+        this.groups = this.route.snapshot.data['reservationResolverData']['groups'];
+        this.courtTimeSlots = this.route.snapshot.data['reservationResolverData']['courtTimeSlots'];
         this.planningRequestForm.controls.group.setValue(this.groups[0]);
 
 
-        this.members$ = of(this.route.snapshot.data['memberResolverData']['members']);
+        this.members$ = of(this.route.snapshot.data['reservationResolverData']['members']);
         this.group$ = this.planningRequestForm.controls.group.valueChanges;
         this.groupMembers$ = combineLatest(this.members$, this.group$).pipe(
             map(([members, group]) =>
@@ -91,6 +99,34 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
 
         return false;
 
+    }
+
+    get courtTimeSlotWeekList(): FormArray {
+        return this.planningRequestForm.get('courtTimeSlotWeekList') as FormArray;
+    }
+
+
+    get weekCourtTimeSlot(): FormGroup {
+        return this.fb.group({
+            week: this.planningRequestForm.controls.week.value,
+            courtTimeSlot: this.planningRequestForm.controls.courtTimeSlot.value,
+        });
+    }
+
+    addWeekCourtTimeSlot(){
+        console.log("week" + JSON.stringify(this.planningRequestForm.controls.week.value));
+        console.log("courtTimeSlot" + JSON.stringify(this.planningRequestForm.controls.courtTimeSlot.value));
+        this.courtTimeSlotWeekList.push(this.weekCourtTimeSlot);
+        //let courtTimeSlot:CourtTimeSlotWeek = {};
+
+        /*public class CourtTimeSlotWeek {
+            private Week week;
+            private List<CourtTimeSlot> courtTimeSlotList;
+
+        courtTimeSlot:CourtTims
+        this.courtTimeSlotWeekList.push({});*/
+        //this.guidedSalesPassengersList.push(this.passengers);
+        //this.planningRequestForm.controls.courtTimeSlotListByWeek.value = {};
     }
 
 
@@ -142,9 +178,16 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
         console.log("LOCALE_ID.toString()" + this.locale);
 
 
-        this.planningRequestForm.controls.fromDate.setValue("2021-04-01");
+        this.planningRequestForm.controls.fromDate.setValue(new Date());
         this.planningRequestForm.controls.toDate.setValue("2021-06-30");
 
+
+
+        this.weeks = [
+            {weekOfYear:'13',weekOfMonth:'1',startWeekDay:'5/04/2021',endWeekDay:'11/04/2021',year:2021},
+            {weekOfYear:'14',weekOfMonth:'2',startWeekDay:'12/04/2021',endWeekDay:'18/04/2021',year:2021},
+            {weekOfYear:'15',weekOfMonth:'3',startWeekDay:'19/04/2021',endWeekDay:'25/04/2021',year:2021}
+        ]
 
         //{id:1,{from:"",to:"",dayOfWeek:"MONDAY"},{id:1,name:"1"}},{id:1,{from:"",to:"",dayOfWeek:"MONDAY"},{id:1,name:"1"}}
 
@@ -196,9 +239,6 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
     }
 
 
-    get courtTimeSlotWeekList(): FormArray {
-        return this.planningRequestForm.get('courtTimeSlotWeekList') as FormArray;
-    }
 
     onChangeGroup(event:any){
 

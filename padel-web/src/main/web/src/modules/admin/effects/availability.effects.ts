@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, exhaustMap, map, mergeMap} from "rxjs/operators";
 import {EMPTY} from "rxjs";
-import {AvailabilityService} from "@modules/admin/services/availability.service";
+import {AvailabilityService} from "@common/services/availability.service";
 import {MemberActions} from "@modules/admin/actions";
 
 @Injectable()
