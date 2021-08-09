@@ -244,6 +244,25 @@ public class Member implements Comparable<Member> {
             }
         };
 
+        public static Function<Member, MemberEntity> TO_MEMBER_ENTITY2 = new Function<Member, MemberEntity>() {
+            @Override
+            public MemberEntity apply(Member member) {
+                MemberEntity memberEntity = new MemberEntity();
+                memberEntity.setId(member.getId());
+                memberEntity.setName(member.getName());
+                memberEntity.setFirstName(member.getFirstName());
+                memberEntity.setPassword(member.getPassword());
+                memberEntity.setGsm(member.getGsm());
+                memberEntity.setActive(member.getActive());
+                memberEntity.setEmail(member.getEmail());
+
+
+                return memberEntity;
+            }
+        };
+
+
+
     }
 
     public static class Predicates {

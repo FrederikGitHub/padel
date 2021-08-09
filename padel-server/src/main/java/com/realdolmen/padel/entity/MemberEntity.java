@@ -39,7 +39,7 @@ public class MemberEntity {
     @JoinColumn(name = "MEMBER_VTV_LEVEL")
     private VtvLevelEntity vtvLevel;
 
-    @OneToMany(mappedBy="member")
+    @OneToMany(mappedBy="member",cascade = CascadeType.PERSIST)
     private Set<MemberGroupAvailabilityEntity> groupAvailabilityList;
 
     @ManyToMany(fetch = FetchType.LAZY)

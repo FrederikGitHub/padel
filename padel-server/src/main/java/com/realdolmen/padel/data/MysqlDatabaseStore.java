@@ -48,6 +48,9 @@ public class MysqlDatabaseStore implements DataStore {
     @Autowired
     private CourtTimeSlotDao courtTimeSlotDao;
 
+    @Autowired
+    private WeeklyReserveDao weeklyReserveDao;
+
 
     @Override
     public List<Group> getGroups() {
@@ -112,6 +115,13 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void create(Member member) {
         MemberEntity memberEntity = new MemberEntity();
+        /*memberEntity.getGroupAvailabilityList().forEach(new Consumer<GroupAvailability>() {
+            @Override
+            public void accept(GroupAvailability groupAvailability) {
+                memberGroupAvailabilityEntityList.add(memberDao.findMemberById(member.getId()));
+            }
+        });*/
+
         setMemberProperties(member,memberEntity);
         memberDao.save(memberEntity);
     }
@@ -126,6 +136,7 @@ public class MysqlDatabaseStore implements DataStore {
         memberEntity.setFirstName(member.getFirstName());
         memberEntity.setName(member.getName());
         memberEntity.setGsm(member.getGsm());
+        memberEntity.setEmail(member.getEmail());
         memberEntity.setGender(member.getGender());
         memberEntity.setActive(member.getActive());
         if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())){
@@ -142,6 +153,11 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void update(Member member) {
         MemberEntity memberEntity = memberDao.findMemberById(member.getId());
+
+        Set<MemberGroupAvailabilityEntity> memberGroupAvailabilityEntityList = new HashSet<MemberGroupAvailabilityEntity>();
+
+        memberEntity.setGroupAvailabilityList(memberGroupAvailabilityEntityList);
+
         setMemberProperties(member,memberEntity);
         memberDao.save(memberEntity);
     }
@@ -263,6 +279,34 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void update(TimeSlot timeSlot) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void create(WeeklyReserve weeklyReserve) {
+        WeeklyReserveEntity weeklyReserveEntity = new WeeklyReserveEntity();
+        if (weeklyReserve.getGroup() != null) {
+            GroupEntity groupEntity = groupDao.findGroupById(weeklyReserve.getGroup().getId());
+            weeklyReserveEntity.setGroup(groupEntity);
+        }
+
+        if (weeklyReserve.getReservation() != null) {
+            LocalDate reservationDate = LocalDate.of(weeklyReserve.getReservation().getYear(),weeklyReserve.getReservation().getMonth(),weeklyReserve.getReservation().getDay());
+            ReservationEntity reservationEntity = reservationDao.findReservation(weeklyReserve.getReservation().getCourtTimeSlot(),reservationDate);
+            weeklyReserveEntity.setReservation(reservationEntity);
+        }
+
+        weeklyReserveEntity.setYear(weeklyReserve.getYear());
+        weeklyReserveEntity.setWeekNr(weeklyReserve.getWeekNr());
+
+
+        if (weeklyReserve.getMember() != null) {
+            MemberEntity memberEntity = memberDao.findMemberById(weeklyReserve.getMember().getId());
+            weeklyReserveEntity.setMember(memberEntity);
+        }
+
+
+        weeklyReserveDao.save(weeklyReserveEntity);
+
     }
 
     @Override

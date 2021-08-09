@@ -69,6 +69,24 @@ public class GroupAvailability {
             }
         };
 
+
+        public static final Function<GroupAvailability, MemberGroupAvailabilityEntity> ToMemberGroupAvailabilityEntity(final Member member) {
+            return new Function<GroupAvailability, MemberGroupAvailabilityEntity>() {
+                public MemberGroupAvailabilityEntity apply(GroupAvailability groupAvailability) {
+                    MemberGroupAvailabilityEntity memberGroupAvailabilityEntity = new MemberGroupAvailabilityEntity();
+                    //memberGroupAvailabilityEntity.setMember(Member.Functions.TO_MEMBER_ENTITY.apply(member));
+                    if (groupAvailability.getAvailability() != null){
+                        memberGroupAvailabilityEntity.setAvailability(Availability.Functions.TO_AVAILABILITY_ENTITY.apply(groupAvailability.getAvailability()));
+                    }
+                    if (groupAvailability.getGroup() != null){
+                        memberGroupAvailabilityEntity.setGroup(Group.Functions.TO_GROUP_ENTITY.apply(groupAvailability.getGroup()));
+                    }
+                    return memberGroupAvailabilityEntity;
+                }
+            };
+
+        }
+
         public static Function<MemberGroupAvailabilityEntity, GroupAvailability> FROM_MEMBER_GROUP_AVAILABILITY_ENTITY = new Function<MemberGroupAvailabilityEntity, GroupAvailability>() {
             @Override
             public GroupAvailability apply(MemberGroupAvailabilityEntity memberGroupAvailabilityEntity) {
@@ -82,6 +100,8 @@ public class GroupAvailability {
                 }
                 return groupAvailability;
             }
+
+
         };
 
     }
@@ -94,9 +114,9 @@ public class GroupAvailability {
                 @Override
                 public boolean test(GroupAvailability groupAvailability) {
                     return groupAvailability.getGroup().getName().equalsIgnoreCase(group.getName());
-                }
+                };
 
-                ;
+
             };
 
         }

@@ -27,6 +27,10 @@ public class WeeklyReserveEntity {
     @JoinColumn(name = "WEEKLY_RESERVE_GROUP_ID")
     private GroupEntity group;
 
+    @ManyToOne
+    @JoinColumn(name = "WEEKLY_RESERVE_RESERVATION_ID")
+    private ReservationEntity reservation;
+
     public long getId() {
         return id;
     }
@@ -65,5 +69,14 @@ public class WeeklyReserveEntity {
 
     public void setGroup(GroupEntity group) {
         this.group = group;
+    }
+
+    public ReservationEntity getReservation() {
+        return reservation;
+    }
+
+    public WeeklyReserveEntity setReservation(ReservationEntity reservation) {
+        this.reservation = reservation;
+        return this;
     }
 }

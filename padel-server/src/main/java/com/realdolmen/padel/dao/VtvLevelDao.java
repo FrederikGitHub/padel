@@ -1,6 +1,5 @@
 package com.realdolmen.padel.dao;
 
-import com.realdolmen.padel.entity.GroupEntity;
 import com.realdolmen.padel.entity.VtvLevelEntity;
 
 import java.util.List;

@@ -1,5 +1,9 @@
 package com.realdolmen.padel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.realdolmen.padel.util.UtcDateDeserializer;
+import com.realdolmen.padel.util.UtcDateSerializer;
 import io.micrometer.core.instrument.util.StringUtils;
 
 import java.time.LocalDate;
@@ -11,7 +15,11 @@ import java.util.stream.Stream;
 public class Week implements Comparable<Week>{
     private Integer weekOfYear;
     private Integer weekOfMonth;
+    @JsonSerialize(using = UtcDateSerializer.class)
+    @JsonDeserialize(using = UtcDateDeserializer.class)
     private LocalDate startWeekDay;
+    @JsonSerialize(using = UtcDateSerializer.class)
+    @JsonDeserialize(using = UtcDateDeserializer.class)
     private LocalDate endWeekDay;
     private Integer year;
 

@@ -1,6 +1,5 @@
 package com.realdolmen.padel.model.builder;
 
-import com.realdolmen.padel.model.Member;
 import com.realdolmen.padel.model.Week;
 
 import java.time.LocalDate;

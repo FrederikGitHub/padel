@@ -45,6 +45,9 @@ public class ReservationEntity {
     @JoinColumn(name = "RESERVATION_COURT_TIMESLOT_ID")
     private CourtTimeSlotEntity courtTimeSlotEntity;
 
+    @OneToMany(fetch = FetchType.EAGER,mappedBy="reservation")
+    private Set<WeeklyReserveEntity> reserveList;
+
     public long getId() {
         return id;
     }
@@ -115,5 +118,14 @@ public class ReservationEntity {
 
     public void setGroupEntity(GroupEntity groupEntity) {
         this.groupEntity = groupEntity;
+    }
+
+    public Set<WeeklyReserveEntity> getReserveList() {
+        return reserveList;
+    }
+
+    public ReservationEntity setReserveList(Set<WeeklyReserveEntity> reserveList) {
+        this.reserveList = reserveList;
+        return this;
     }
 }

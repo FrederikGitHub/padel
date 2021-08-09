@@ -93,4 +93,6 @@ public interface DataStore {
 
     void update(TimeSlot timeSlot);
 
+    void create(WeeklyReserve weeklyReserve);
+
 }

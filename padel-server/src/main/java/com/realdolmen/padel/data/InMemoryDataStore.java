@@ -611,7 +611,10 @@ public class InMemoryDataStore implements DataStore{
 
     }
 
+    @Override
+    public void create(WeeklyReserve weeklyReserve) {
 
+    }
 
 
     @Override

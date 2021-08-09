@@ -16,17 +16,15 @@ export class ReservationService {
     constructor(private http: HttpClient) {
     }
 
-    getWeekReservations(): Observable<WeekPlanning[]> {
+    getWeekReservations(reservationRequest: ReservationRequest): Observable<WeekPlanning[]> {
         return this.http
-            .get<WeekPlanning[]>(this.base_url + this.week_endpoint);
+            .post<WeekPlanning[]>(this.base_url + this.week_endpoint, reservationRequest);
     }
 
     getDayReservations(reservationRequest: ReservationRequest): Observable<Reservation[]> {
         console.log("ReservationService getDayReservations");
         return this.http.post<Reservation[]>(this.base_url + this.dayReservation_endpoint, reservationRequest);
     }
-
-
 
     generateAndValidatePlanning(reservationRequest: ReservationRequest): Observable<WeekPlanning[]> {
         return this.http.post<WeekPlanning[]>(this.base_url + this.generateAndValidate_endpoint, reservationRequest);

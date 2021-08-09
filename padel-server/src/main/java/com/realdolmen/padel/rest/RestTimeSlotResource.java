@@ -1,6 +1,6 @@
 package com.realdolmen.padel.rest;
 
-import com.ibm.security.util.text.resources.LocaleData;
+
 import com.realdolmen.padel.model.Court;
 import com.realdolmen.padel.model.TimeSlot;
 import com.realdolmen.padel.model.WeekDay;

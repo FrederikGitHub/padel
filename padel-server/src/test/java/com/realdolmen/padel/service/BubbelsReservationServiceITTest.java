@@ -426,42 +426,6 @@ public class BubbelsReservationServiceITTest {
 
     }
 
-    /*@TestConfiguration
-    static class ReservationServiceITContextConfiguration {
-
-        @Bean
-        public ReservationService reservationService() {
-            return new ReservationServiceImpl();
-        }
-
-        @Bean
-        //@Bean("InMemoryMemberService")
-        public MemberService memberService() {
-            return new InMemoryMemberService();
-        }
-
-
-//        @Bean("InMemoryCourtService")
-        @Bean
-        public CourtService courtService() {
-            return new InMemoryCourtService();
-        }
-
-        @Bean
-        public GroupService groupService() {
-            return new InMemoryGroupService();
-        }
-
-
-
-
-        @Bean
-        public DataStore dataSource() {
-            return new MysqlDatabaseStore();
-        }
-
-
-    }*/
 
 
 

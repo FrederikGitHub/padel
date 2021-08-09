@@ -3,7 +3,22 @@
         <mat-card-content>
 
             <p>
-            <mat-form-field class="form-element" appearance="fill">
+
+                <mat-form-field class="form-element" appearance="fill">
+                    <mat-label>Kies Periode</mat-label>
+                    <mat-date-range-input
+                        [rangePicker]="reservationDateRangePicker">
+                        <input matStartDate placeholder="Start date" (change)="generateWeeks()" formControlName="fromDate">
+                        <!--input matInput [matDatepicker]="picker" placeholder="Input & change events"
+                               (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)"-->
+
+                        <input matEndDate placeholder="End date" (change)="generateWeeks()" formControlName="toDate">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="reservationDateRangePicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #reservationDateRangePicker></mat-date-range-picker>
+                </mat-form-field>
+
+            <!--mat-form-field class="form-element" appearance="fill">
 
                     <mat-label>Kies een start datum</mat-label>
                     <input matInput required formControlName="fromDate" [matDatepicker]="fromDatePicker">
@@ -14,10 +29,10 @@
                 <mat-error *ngIf="!planningRequestForm.controls['fromDate'].valid && planningRequestForm.controls['fromDate'].touched">
                     Startdatum moet ingevuld worden
                 </mat-error>
-            </mat-form-field>
+            </mat-form-field-->
             </p>
 
-            <p>
+            <!--p>
             <mat-form-field class="form-element" appearance="fill">
 
                 <mat-label>Kies een eind datum</mat-label>
@@ -30,7 +45,7 @@
                     Einddatum moet ingevuld worden
                 </mat-error>
             </mat-form-field>
-            </p>
+            </p-->
 
             <p>
             <mat-form-field class="form-element">
@@ -75,7 +90,7 @@
             </div>
 
             <div class="form-element">
-                <button mat-raised-button color="primary" (click)="addWeekCourtTimeSlot()" class="button">Voeg toe</button>
+                <button mat-raised-button color="accent" (click)="addWeekCourtTimeSlot()" class="button">Voeg toe</button>
             </div>
 
             <table class="table table-striped table-hover" formArrayName="courtTimeSlotWeekList">
@@ -83,6 +98,8 @@
                 <tr>
                     <th>Week</th>
                     <th>Beschikbare Timeslots</th>
+                    <th>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -93,18 +110,31 @@
 
 
                     <td>
-                        <input type="text" size="50" readonly formControlName="week" value="{{courtTimeSlotWeek?.value.week}}">
+                        {{"WEEK"}}
+                        {{courtTimeSlotWeek?.value?.week?.weekOfYear}}
+                        {{courtTimeSlotWeek?.value?.week?.startWeekDay}}
+                        {{courtTimeSlotWeek?.value?.week?.endWeekDay}}
+                        <!--input type="text" size="50" readonly formControlName="week" value="{{courtTimeSlotWeek?.value.week}}"-->
                     </td>
 
 
                     <td>
+                        {{courtTimeSlotWeek?.value?.courtTimeSlot?.court?.name}} {{courtTimeSlotWeek?.value?.courtTimeSlot?.timeSlot?.dayOfWeek}} {{courtTimeSlotWeek?.value?.courtTimeSlot?.timeSlot?.from}} {{courtTimeSlotWeek?.value?.courtTimeSlot?.timeSlot?.to}}
 
-                        <input type="text" size="50" readonly formControlName="week" value="{{courtTimeSlotWeek?.value.courtTimeSlot.court.name}}">
+
+
+                        <!--input type="text" size="50" readonly formControlName="week" value="{{courtTimeSlotWeek?.value.courtTimeSlot.court.name}}"-->
                         <!--input type="text" size="50" readonly formControlName="courtTimeSlot" value="{{courtTimeSlotWeek?.value.courtTimeSlot.timeslot.id}}"-->
 
                         <!--select size="4" class="form-control" formControlName="courtTimeSlotList" name="courtTimeSlotList" >
                             <option *ngFor="let courtTimeSlot of courtTimeSlots" [ngValue]="courtTimeSlot">{{courtTimeSlot.court.name}} {{courtTimeSlot.timeSlot.dayOfWeek}} {{courtTimeSlot.timeSlot.from}}  {{courtTimeSlot.timeSlot.to}}</option>
                         </select-->
+                    </td>
+
+
+                    <td>
+                        <span style="margin-right:10px;"><fa-icon [icon]='["fas", "trash-alt"]'
+                                                                  (click)="removeWeekCourtTimeSlot(courtTimeSlotIndex)"></fa-icon></span>
                     </td>
 
 
@@ -116,7 +146,7 @@
             </table>
 
             <mat-card-actions>
-                <button mat-raised-button color="primary" [disabled]="!planningRequestForm.valid" (click)="onSubmit()">Genereer planning</button>
+                <button mat-raised-button color="accent" [disabled]="!planningRequestForm.valid" (click)="onSubmit()">Genereer planning</button>
             </mat-card-actions>
 
 

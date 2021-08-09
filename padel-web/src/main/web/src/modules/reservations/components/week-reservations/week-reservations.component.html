@@ -1,89 +1,68 @@
-<p>Op deze pagina zal je weekreservaties kunnen zien van een bepaalde groep(rakkers,lovers) en wie de reserves van de week zijn</p>
+<form [formGroup]="weekReservationForm" id="weekReservationForm" name="weekReservationForm">
+    <mat-card>
+        <mat-card-content>
+
+            <mat-form-field class="form-element">
+                <select [compareWith]="compareFn" matNativeControl required placeholder="Groep"
+                        formControlName="group">
+                    <option *ngFor="let group of groups" [ngValue]="group">
+                        {{group.name}}
+                    </option>
+                </select>
+            </mat-form-field>
+
+            <mat-form-field class="form-element" appearance="fill">
+                <mat-label>Kies Periode</mat-label>
+                <mat-date-range-input
+                    [rangePicker]="reservationDateRangePicker">
+                    <input matStartDate placeholder="Start date" formControlName="fromDate">
+                    <input matEndDate placeholder="End date" formControlName="toDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="reservationDateRangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #reservationDateRangePicker></mat-date-range-picker>
+            </mat-form-field>
 
 
-<!--form>
-    <div class="form-group row">
-        <div class="input-group">
-            <label for="dp" class="col-sm-2 col-form-label">DagPlanning voor</label>
-            <input class="form-control" placeholder="dd-mm-yyyy"
-                   name="dp"  id="dp" ngbDatepicker #d="ngbDatepicker">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
-            </div>
-        </div>
-    </div>
+            <mat-card-actions>
+                <button mat-raised-button color="accent" [disabled]="!weekReservationForm.valid"
+                        (click)="showReservations()">Reservaties tonen
+                </button>
 
+                <button mat-raised-button color="accent">Reservaties downloaden</button>
+
+
+            </mat-card-actions>
+
+        </mat-card-content>
+    </mat-card>
 </form>
-<h1>ddd</h1>
-<div *ngFor="let weekPlanning of weekPlannings;">
-<h1>{{weekPlanning.from}} </h1>
-</div>
 
+<br>
 
-<div>
-    <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" data-ng-repeat="order in orders">
+<ng-container *ngFor="let weekplanning of weekPlannings">
+    <mat-card class="example-card">
 
-            <div class="bs-component">
+        <mat-card-header>
+            <div mat-card-avatar class="week-reservations-header-image"></div>
+            <mat-card-title>planning voor group {{weekplanning.group.name}}</mat-card-title>
+            <mat-card-subtitle>vanaf {{weekplanning.week.startWeekDay}} tot {{weekplanning.week.endWeekDay}},weekjaar {{weekplanning.week.weekOfYear}},weekmaand {{weekplanning.week.weekOfMonth}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <ul>
+                <h5>Reservaties</h5>
+                <li *ngFor="let reservation of weekplanning.reservationList;let i = index;">
+                    <span>{{reservation.day}}/{{reservation.month}}/{{reservation.year}} {{reservation.courtTimeSlot.timeSlot.from}} tot {{reservation.courtTimeSlot.timeSlot.to}} </span>
+                    <span *ngFor="let member of reservation.reservationMembers;">{{member.firstName}} {{member.name}} {{","}}</span>
 
-                <div class="panel panel-primary">
+                </li>
+            </ul>
 
-                    <div class="panel-heading order-panel-title">
-
-
-
-                        <div class="btn-group" >
-                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a style="cursor: pointer;font-size:15px" data-ng-click="annulation(order)">{{'order.annulation' | translate}}</a></li>
-                            </ul>
-                        </div>
-
-
-                        <span style="font-size: small">{{order.orderDate | toHHmm}} {{order.account.firstname}}</span>
-
-                        <span class="badge">{{order.name}}</span>
-
-
-                    </div>
-
-                    <div class="panel-body order-panel-body" data-ng-click="showOrderDetails(order)" role="button"
-                         style="height:175px;overflow-y:scroll;">
-                        <table class="table">
-                            <tr data-ng-repeat="item in order.items | orderBy : 'status.id'">
-                                <td data-ng-class="{'line-through': item.status==='CANCEL'}">{{item.total}} {{item.name}}</td>
-                                <td><i class="{{getOrderItemStatusClass(item.status)}}"></i></td>
-                            </tr>
-                        </table>
-
-
-                    </div>
-
-                    <div class="panel-heading order-panel-title" data-ng-click="updateStatus(order)"
-                         style="cursor: pointer;cursor: hand;">
-                        <div class="row">
-
-                            <div title="{{getNextAllowedStateTooltip(order) | translate}}" class="col-xs-6"><i class="{{getNextAllowedStateClass(order)}}"></i> {{getNextAllowedStateLabel(order)
-                                | translate}}
-                            </div>
-                            <div class="col-xs-6">{{getOrderTotal(order) | currency: "€ "}}
-
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-</div-->
+            <ul>
+                <h5>Reserves</h5>
+                <li *ngFor="let reserve of weekplanning.reserveList">{{reserve.firstName}} {{reserve.name}}</li>
+            </ul>
+        </mat-card-content>
+    </mat-card>
+    <br>
+</ng-container>

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -174,120 +175,156 @@ public class BubbelsReservationServiceImplTest {
 
 
         //correct plan period
-        startDate = LocalDate.of(2021, Month.MAY,3);
-        endDate = LocalDate.of(2021, Month.JULY, 5);
+        startDate = LocalDate.of(2021, Month.AUGUST,16);
+        endDate = LocalDate.of(2021, Month.NOVEMBER, 20);
 
     }
-
 
     @Test
     public void generateWeekPlanningBubbelsTest() {
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
 
+
         //weekly timeslots for bubbel one
         Map<Week, List<CourtTimeSlot>> bubbelOneCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(wednesdayAt2130OnCourt1, wednesdayAt2130OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(wednesdayAt1830OnCourt1, wednesdayAt1830OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(wednesdayAt2000OnCourt1, wednesdayAt2000OnCourt2));
+
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+        bubbelOneCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
 
         //generate weekplanning for bubbel one
-        Set<WeekPlanning> bubbelOneWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelOneCourtTimeSlotListByWeek, bubbelOneMenMembers, groupService.getGroup(dataStore.BUBBEL_ONE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelOneWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_ONE_MEN));
+        Set<WeekPlanning> bubbelOneWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelOneCourtTimeSlotListByWeek, bubbelOneMenMembers, groupService.getGroup(dataStore.BUBBEL_ONE_MEN), false);
+        weekPlanningDisplay.displayPlanning(bubbelOneWeekPlanningList, groupService.getGroup(dataStore.BUBBEL_ONE_MEN));
 
 
         //weekly timeslots for bubbel two
         Map<Week, List<CourtTimeSlot>> bubbelTwoCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(wednesdayAt1830OnCourt1, wednesdayAt1830OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(wednesdayAt2000OnCourt1, wednesdayAt2000OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(wednesdayAt2130OnCourt1, wednesdayAt2130OnCourt2));
+
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+        bubbelTwoCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+
 
         //generate weekplanning for bubbel two
-        Set<WeekPlanning> bubbelTwoWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelTwoCourtTimeSlotListByWeek, bubbelTwoMenMembers, groupService.getGroup(dataStore.BUBBEL_TWO_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelTwoWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_MEN));
+        Set<WeekPlanning> bubbelTwoWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelTwoCourtTimeSlotListByWeek, bubbelTwoMenMembers, groupService.getGroup(dataStore.BUBBEL_TWO_MEN), false);
+        weekPlanningDisplay.displayPlanning(bubbelTwoWeekPlanningList, groupService.getGroup(dataStore.BUBBEL_TWO_MEN));
+
 
 
         //weekly timeslots for bubbel three
         Map<Week, List<CourtTimeSlot>> bubbelThreeCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
-        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(wednesdayAt2000OnCourt1, wednesdayAt2000OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(wednesdayAt2130OnCourt1, wednesdayAt2130OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelThreeCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+
 
         //generate weekplanning for bubbel three
-        Set<WeekPlanning> bubbelThreeWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelThreeCourtTimeSlotListByWeek, bubbelThreeMenMembers, groupService.getGroup(dataStore.BUBBEL_THREE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelThreeWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_THREE_MEN));
-
+        Set<WeekPlanning> bubbelThreeWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelThreeCourtTimeSlotListByWeek, bubbelThreeMenMembers, groupService.getGroup(dataStore.BUBBEL_THREE_MEN), false);
+        weekPlanningDisplay.displayPlanning(bubbelThreeWeekPlanningList, groupService.getGroup(dataStore.BUBBEL_THREE_MEN));
 
 
         //weekly timeslots for bubbel four
         Map<Week, List<CourtTimeSlot>> bubbelFourCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(wednesdayAt2130OnCourt1, wednesdayAt2130OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(wednesdayAt1830OnCourt1, wednesdayAt1830OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(wednesdayAt2000OnCourt1, wednesdayAt2000OnCourt2));
+
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+        bubbelFourCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+
 
         //generate weekplanning for bubbel four
-        Set<WeekPlanning> bubbelFourWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFourCourtTimeSlotListByWeek, bubbelFourMenMembers, groupService.getGroup(dataStore.BUBBEL_FOUR_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelFourWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_MEN));
+        Set<WeekPlanning> bubbelFourWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFourCourtTimeSlotListByWeek, bubbelFourMenMembers, groupService.getGroup(dataStore.BUBBEL_FOUR_MEN), false);
+        weekPlanningDisplay.displayPlanning(bubbelFourWeekPlanningList, groupService.getGroup(dataStore.BUBBEL_FOUR_MEN));
 
 
         //weekly timeslots for bubbel five
         Map<Week, List<CourtTimeSlot>> bubbelFiveCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
-        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(wednesdayAt2000OnCourt1, wednesdayAt2000OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(wednesdayAt2130OnCourt1, wednesdayAt2130OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(wednesdayAt1830OnCourt1, wednesdayAt1830OnCourt2));
+
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(thursdayAt2000OnCourt1, thursdayAt2000OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(thursdayAt2130OnCourt1, thursdayAt2130OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(thursdayAt1830OnCourt1, thursdayAt1830OnCourt2));
+
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(tuesdayAt2000OnCourt1, tuesdayAt2000OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(tuesdayAt2130OnCourt1, tuesdayAt2130OnCourt2));
+        bubbelFiveCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(tuesdayAt1830OnCourt1, tuesdayAt1830OnCourt2));
+
 
         //generate weekplanning for bubbel five
-        Set<WeekPlanning> bubbelFiveWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFiveCourtTimeSlotListByWeek, bubbelFiveMenMembers, groupService.getGroup(dataStore.BUBBEL_FIVE_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelFiveWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FIVE_MEN));
+        Set<WeekPlanning> bubbelFiveWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFiveCourtTimeSlotListByWeek, bubbelFiveMenMembers, groupService.getGroup(dataStore.BUBBEL_FIVE_MEN), false);
+        weekPlanningDisplay.displayPlanning(bubbelFiveWeekPlanningList, groupService.getGroup(dataStore.BUBBEL_FIVE_MEN));
+
+
 
 
         //weekly timeslots for bubbel six
         Map<Week, List<CourtTimeSlot>> bubbelSixCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
+
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
+
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
+
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
+        bubbelSixCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
 
 
         //generate weekplanning for bubbel six
@@ -295,55 +332,23 @@ public class BubbelsReservationServiceImplTest {
         weekPlanningDisplay.displayPlanning(bubbelSixWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SIX_MEN));
 
 
-        //weekly timeslots for bubbel seven
-        Map<Week, List<CourtTimeSlot>> bubbelSevenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(mondayAt1830OnCourt1,mondayAt1830OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(mondayAt2000OnCourt1,mondayAt2000OnCourt2));
-        bubbelSevenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(mondayAt2130OnCourt1,mondayAt2130OnCourt2));
-
-        //generate weekplanning for bubbel seven
-        Set<WeekPlanning> bubbelSevenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelSevenCourtTimeSlotListByWeek, bubbelSevenMenMembers, groupService.getGroup(dataStore.BUBBEL_SEVEN_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelSevenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_SEVEN_MEN));
-
-
-        //weekly timeslots for bubbel eight
-        Map<Week, List<CourtTimeSlot>> bubbelEightCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
-        bubbelEightCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
-
-        //generate weekplanning for bubbel eight
-        Set<WeekPlanning> bubbelEightWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelEightCourtTimeSlotListByWeek, bubbelEightMenMembers, groupService.getGroup(dataStore.BUBBEL_EIGHT_MEN),false);
-        weekPlanningDisplay.displayPlanning(bubbelEightWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_EIGHT_MEN));
-
-
-
-//weekly timeslots for bubbel one women
+        //weekly timeslots for bubbel one women
         Map<Week, List<CourtTimeSlot>> bubbelOneWomenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(wednesdayAt1830OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(wednesdayAt1830OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(wednesdayAt1830OnCourt1));
-        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(wednesdayAt1830OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
+
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(thursdayAt1830OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(thursdayAt2000OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(thursdayAt2130OnCourt1));
+
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(tuesdayAt1830OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(tuesdayAt2000OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(tuesdayAt2130OnCourt1));
+
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(wednesdayAt1830OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(wednesdayAt2000OnCourt1));
+        bubbelOneWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(wednesdayAt2130OnCourt1));
 
         //generate weekplanning for bubbel one women
         Set<WeekPlanning> bubbelOneWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelOneWomenCourtTimeSlotListByWeek, bubbelOneWomenMembers, groupService.getGroup(dataStore.BUBBEL_ONE_WOMEN),false);
@@ -351,38 +356,46 @@ public class BubbelsReservationServiceImplTest {
 
 
 
-        //weekly timeslots for bubbel one women
+        //weekly timeslots for bubbel two women
         Map<Week, List<CourtTimeSlot>> bubbelTwoWomenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(wednesdayAt2130OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(wednesdayAt1830OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(wednesdayAt2130OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(wednesdayAt1830OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(wednesdayAt2130OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(wednesdayAt1830OnCourt2));
-        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(wednesdayAt1830OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(wednesdayAt2130OnCourt2));
 
-        //generate weekplanning for bubbel one women
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(thursdayAt1830OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(thursdayAt2000OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(thursdayAt2130OnCourt2));
+
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(tuesdayAt1830OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(tuesdayAt2000OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(tuesdayAt2130OnCourt2));
+
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(wednesdayAt1830OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(wednesdayAt2000OnCourt2));
+        bubbelTwoWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(wednesdayAt2130OnCourt2));
+
+        //generate weekplanning for bubbel two women
         Set<WeekPlanning> bubbelTwoWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelTwoWomenCourtTimeSlotListByWeek, bubbelTwoWomenMembers, groupService.getGroup(dataStore.BUBBEL_TWO_WOMEN),false);
         weekPlanningDisplay.displayPlanning(bubbelTwoWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_TWO_WOMEN));
 
 
-
-
         //weekly timeslots for bubbel three women
         Map<Week, List<CourtTimeSlot>> bubbelThreeWomenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
+
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
+
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
+
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelThreeWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
 
         //generate weekplanning for bubbel three women
         Set<WeekPlanning> bubbelThreeWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelThreeWomenCourtTimeSlotListByWeek, bubbelThreeWomenMembers, groupService.getGroup(dataStore.BUBBEL_THREE_WOMEN),false);
@@ -391,28 +404,28 @@ public class BubbelsReservationServiceImplTest {
 
         //weekly timeslots for bubbel four women
         Map<Week, List<CourtTimeSlot>> bubbelFourWomenCourtTimeSlotListByWeek = new HashMap<Week, List<CourtTimeSlot>>();
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(19).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 3)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 9)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(20).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 10)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 16)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(21).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 17)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 23)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(22).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 24)).setEndWeekDay(LocalDate.of(2021, Month.MAY, 30)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(23).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.MAY, 31)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 6)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(24).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 7)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 13)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(25).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 14)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 20)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(26).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 21)).setEndWeekDay(LocalDate.of(2021, Month.JUNE, 27)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(27).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JUNE, 28)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 4)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
-        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(28).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.JULY, 5)).setEndWeekDay(LocalDate.of(2021, Month.JULY, 12)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(34).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 16)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 22)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(35).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 23)).setEndWeekDay(LocalDate.of(2021, Month.AUGUST, 29)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(36).setWeekOfMonth(6).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.AUGUST, 30)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 5)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
 
-        //generate weekplanning for bubbel four
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(37).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 6)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 12)).build(), Arrays.asList(thursdayAt2130OnCourt1,thursdayAt2130OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(38).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 13)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 19)).build(), Arrays.asList(thursdayAt1830OnCourt1,thursdayAt1830OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(39).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 20)).setEndWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 26)).build(), Arrays.asList(thursdayAt2000OnCourt1,thursdayAt2000OnCourt2));
+
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(40).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.SEPTEMBER, 27)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 3)).build(), Arrays.asList(tuesdayAt2130OnCourt1,tuesdayAt2130OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(41).setWeekOfMonth(1).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 4)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 10)).build(), Arrays.asList(tuesdayAt1830OnCourt1,tuesdayAt1830OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(42).setWeekOfMonth(2).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 11)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 17)).build(), Arrays.asList(tuesdayAt2000OnCourt1,tuesdayAt2000OnCourt2));
+
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(43).setWeekOfMonth(3).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 18)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 24)).build(), Arrays.asList(wednesdayAt2130OnCourt1,wednesdayAt2130OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(44).setWeekOfMonth(4).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.OCTOBER, 25)).setEndWeekDay(LocalDate.of(2021, Month.OCTOBER, 31)).build(), Arrays.asList(wednesdayAt1830OnCourt1,wednesdayAt1830OnCourt2));
+        bubbelFourWomenCourtTimeSlotListByWeek.put(new WeekBuilder().setWeekOfYear(45).setWeekOfMonth(5).setYear(2021).setStartWeekDay(LocalDate.of(2021, Month.NOVEMBER, 1)).setEndWeekDay(LocalDate.of(2021, Month.NOVEMBER, 7)).build(), Arrays.asList(wednesdayAt2000OnCourt1,wednesdayAt2000OnCourt2));
+
+        //generate weekplanning for bubbel four women
         Set<WeekPlanning> bubbelFourWomenWeekPlanningList = reservationService.generateWeekPlanning(startDate, endDate, bubbelFourWomenCourtTimeSlotListByWeek, bubbelFourWomenMembers, groupService.getGroup(dataStore.BUBBEL_FOUR_WOMEN),false);
         weekPlanningDisplay.displayPlanning(bubbelFourWomenWeekPlanningList,groupService.getGroup(dataStore.BUBBEL_FOUR_WOMEN));
-
-
-
-
-
-
-
     }
+
+
 
     @TestConfiguration
     static class ReservationServiceImplTestContextConfiguration {

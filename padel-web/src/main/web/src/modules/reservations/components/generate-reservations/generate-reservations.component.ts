@@ -54,13 +54,9 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
             'group': ["", Validators.required],
             'week': [""],
             'courtTimeSlot': [""],
-            'members': [[], Validators.required],
+            'members': [[]],
+            'courtTimeSlotWeekList': this.fb.array([])
 
-
-            'courtTimeSlotWeekList': this.fb.array([this.fb.group({
-                week: [""],
-                courtTimeSlot: [""],
-            })])
         });
 
 
@@ -79,6 +75,13 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
             )
         );
 
+    }
+
+
+
+
+    removeWeekCourtTimeSlot(index:number) {
+        this.courtTimeSlotWeekList.removeAt(index);
     }
 
 
@@ -260,12 +263,14 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
 
 
     generateWeeks(){
+        console.log("generateWeeks 1");
         let control = <FormArray>this.planningRequestForm.controls.courtTimeSlotWeekList;
         control.clear();
         let weeks:Week[] = [];
         var startDate:Moment = moment(this.planningRequestForm.controls.fromDate.value);
         var toDate:Moment = moment(this.planningRequestForm.controls.toDate.value);
         var runningDate:Moment = startDate;
+        console.log("generateWeeks 2");
         while (runningDate.isBefore(toDate) || runningDate.isSame(toDate)){
             let startWeekDay:string = runningDate.format("yyyy-MM-DD");
             console.log("startWeekDay" + startWeekDay);
@@ -285,6 +290,9 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
                 courtTimeSlotList: []
             }),
         ));
+
+
+
 
 
     }

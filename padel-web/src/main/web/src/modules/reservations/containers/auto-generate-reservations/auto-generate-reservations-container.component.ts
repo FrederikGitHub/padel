@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {Court, Member, PlanningRequest, ReservationRequest} from "@common/models";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ReservationRequest} from "@common/models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngrx/store";
 

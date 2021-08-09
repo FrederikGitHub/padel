@@ -1,1 +1,11 @@
 @import 'styles/variables.scss';
+
+.week-reservations-header-image {
+    background-image: url('../../../../assets/img/logo-lierde.png');
+    background-size: cover;
+}
+
+.form-element {
+    padding: 5px 0px 25px 2px;
+    width: 100%;
+}

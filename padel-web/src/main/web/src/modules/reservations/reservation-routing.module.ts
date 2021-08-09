@@ -11,6 +11,7 @@ import * as reservationContainers from './containers';
 import {MemberDataResolverService} from "@modules/admin/services/member-data-resolver.service";
 import {ReservationDataResolverService} from "@modules/reservations/services/reservation-data-resolver";
 import {CourtReservationDataResolverService} from "@modules/reservations/services/court-reservation-data-resolver";
+import {WeekReservationsDataResolverService} from "@modules/reservations/services/week-reservation-data-resolver";
 
 export const ROUTES: Routes = [
 
@@ -36,6 +37,10 @@ export const ROUTES: Routes = [
     },
     {
         path: 'week',
+        resolve: {
+            weekReservationsResolverData: WeekReservationsDataResolverService
+        },
+
         data: {
             title: 'Weekreservaties',
             breadcrumbs: [

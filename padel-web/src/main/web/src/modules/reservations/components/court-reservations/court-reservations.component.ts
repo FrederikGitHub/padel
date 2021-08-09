@@ -70,8 +70,11 @@ export class CourtReservationsComponent implements OnInit {
         return c1 && c2 ? c1.id === c2.id : c1 === c2;
     }
 
+    currentDayReservations(){
+
+    }
+
     previousDayReservations(){
-        console.log("previousDayReservations");
         let currentReservationDate:Date = this.courtReservationForm.controls.reservationDay.value;
         let previousReservationDate:Date = new Date(currentReservationDate.getTime() - 86400000);
         this.courtReservationForm.controls.reservationDay.setValue(previousReservationDate);

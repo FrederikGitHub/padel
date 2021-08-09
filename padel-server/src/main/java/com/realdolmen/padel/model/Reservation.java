@@ -1,8 +1,5 @@
 package com.realdolmen.padel.model;
 
-import com.realdolmen.padel.entity.CourtEntity;
-import com.realdolmen.padel.entity.GroupEntity;
-import com.realdolmen.padel.entity.MemberEntity;
 import com.realdolmen.padel.entity.ReservationEntity;
 import org.springframework.util.CollectionUtils;
 
@@ -155,10 +152,15 @@ public class Reservation {
             }
         };
 
+
+
         public static Function<Reservation, Stream<Member>> TO_RESERVE_MEMBERS = new Function<Reservation, Stream<Member>>() {
             @Override
             public Stream<Member> apply(Reservation reservation) {
-                return reservation.getReserveMembers().stream();
+                if (!CollectionUtils.isEmpty(reservation.getReserveMembers())){
+                    return reservation.getReserveMembers().stream();
+                }
+                return null;
             }
         };
 
@@ -228,6 +230,13 @@ public class Reservation {
                     List<Member> reservationMembers = reservationEntity.getReservationMembers().stream().map(Member.Functions.FROM_MEMBER_ENTITY).collect(Collectors.toList());
                     reservation.setReservationMembers(reservationMembers);
                 }
+
+                if (!CollectionUtils.isEmpty(reservationEntity.getReserveList())){
+                    List<Member> reserveMembers = reservationEntity.getReserveList().stream().map(WeeklyReserve.Functions.TO_MEMBER).collect(Collectors.toList());
+                    reservation.setReserveMembers(reserveMembers);
+                }
+
+
 
 
                 return reservation;

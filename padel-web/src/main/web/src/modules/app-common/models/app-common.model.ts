@@ -90,7 +90,6 @@ export interface Week {
     startWeekDay?: string;
     endWeekDay?: string;
     year?: number;
-
 }
 
 export interface WeekDay {
@@ -100,7 +99,8 @@ export interface WeekDay {
 }
 
 export interface WeekPlanning {
-    week?: number;
+    week?: Week;
+    group?:Group;
     reservationList?: Reservation[];
     reserveList?: Member[];
 }

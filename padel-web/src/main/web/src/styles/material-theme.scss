@@ -335,7 +335,7 @@ $ds-light-theme: mat-light-theme($ds-theme-primary, $ds-theme-accent, $ds-theme-
 $ds-dark-theme: mat-dark-theme($ds-theme-primary, $ds-theme-accent, $ds-theme-warn);
 
 // Theme Init
-@include angular-material-theme($bs-dark-theme);
+@include angular-material-theme($bs-light-theme);
 
 .bs-dark-theme {
   @include angular-material-theme($bs-dark-theme);

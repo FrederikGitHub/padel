@@ -3,9 +3,11 @@ package com.realdolmen.padel.service;
 import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.exception.*;
 import com.realdolmen.padel.model.*;
+import com.realdolmen.padel.model.builder.WeeklyReserveBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -28,13 +30,13 @@ public class ReservationServiceImpl implements ReservationService {
 
 
     @Override
-    public Set<WeekPlanning> restGenerateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlotWeek> courtTimeSlotWeekList, List<Member> members, Group group,boolean mixLevels) {
+    public Set<WeekPlanning> restGenerateWeekPlanning(LocalDate fromDate, LocalDate toDate, List<CourtTimeSlotWeek> courtTimeSlotWeekList, List<Member> members, Group group, boolean mixLevels) {
         Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek = courtTimeSlotWeekList.stream().collect(Collectors.toMap(CourtTimeSlotWeek::getWeek, CourtTimeSlotWeek::getCourtTimeSlotList));
-        return generateWeekPlanning(fromDate,toDate,courtTimeSlotListByWeek,members,group,mixLevels);
+        return generateWeekPlanning(fromDate, toDate, courtTimeSlotListByWeek, members, group, mixLevels);
     }
 
     @Override
-    public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members, Group group,boolean mixLevels) {
+    public Set<WeekPlanning> generateWeekPlanning(LocalDate fromDate, LocalDate toDate, Map<Week, List<CourtTimeSlot>> courtTimeSlotListByWeek, List<Member> members, Group group, boolean mixLevels) {
         if (fromDate.isAfter(toDate)) {
             Map<String, String> paramMap = Stream.of(new String[][]{
                     {"startdate", fromDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))},
@@ -72,8 +74,9 @@ public class ReservationServiceImpl implements ReservationService {
         for (Map.Entry<Week, List<WeekTimeSlot>> entry : timeSlotsByWeek.entrySet()) {
 
             List<Member> availableWeekMembers = calculateWeeklyMembers(members, entry.getKey(), group);
-            Integer weeklyAmountReserves = availableWeekMembers.size() % 4;
+            Integer weeklyAmountReserves = availableWeekMembers.size() - (entry.getValue().size() * 4);
             WeekPlanning weekPlanning = new WeekPlanning();
+            weekPlanning.setGroup(group);
             weekPlanning.setWeek(entry.getKey());
 
             List<Member> membersPlannedInOtherGroups = findWeekMembersPlannedInOtherGroup(members, entry.getKey().getWeekOfMonth(), group);
@@ -85,8 +88,8 @@ public class ReservationServiceImpl implements ReservationService {
             List<Reservation> weekReservationList = new ArrayList<Reservation>();
 
             List<WeekTimeSlot> weekTimeSlots = entry.getValue();
-            Map<Integer, List<TimeSlotGroupMembers>> timeSlotGroupMembersByTimeSlotNr=null;
-            if (mixLevels){
+            Map<Integer, List<TimeSlotGroupMembers>> timeSlotGroupMembersByTimeSlotNr = null;
+            if (mixLevels) {
                 timeSlotGroupMembersByTimeSlotNr = findTimeSlotTotalGroupMembers(availableWeekMembers, weekTimeSlots.size(), group);
             }
 
@@ -102,10 +105,10 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.setReserveMembers(reserveList.entrySet().stream().findFirst().get().getKey());
                 reservation.setGroup(group);
                 List<Member> reservationMembers;
-                if (mixLevels && timeSlotGroupMembersByTimeSlotNr != null){
+                if (mixLevels && timeSlotGroupMembersByTimeSlotNr != null) {
                     List<TimeSlotGroupMembers> weekTimeSlotGroupMembers = timeSlotGroupMembersByTimeSlotNr.get(weekTimeSlotIndex);
                     reservationMembers = getRandomWeekMembers(availableWeekMembers, weekTimeSlotGroupMembers);
-                }else{
+                } else {
                     reservationMembers = getRandomWeekMembers(availableWeekMembers);
                 }
 
@@ -131,7 +134,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<Group> availableGroups = availableMembers.stream().flatMap(Member.Functions.TO_GROUP_AVAILABILITY).map(GroupAvailability.Functions.TO_GROUP).distinct().collect(Collectors.toList());
         for (Group availableGroup : availableGroups) {
             List<Member> groupMembers = availableMembers.stream().filter(Member.Predicates.withGroupLevel(availableGroup.getVtvLevels())).collect(Collectors.toList());
-            if (groupMembers.size()==0){
+            if (groupMembers.size() == 0) {
                 break;
             }
             int minimumMembersInGroup = groupMembers.size() / weekTimeSlots;
@@ -195,7 +198,7 @@ public class ReservationServiceImpl implements ReservationService {
 
             //for (TimeSlotGroupMembers mainTimeSlotGroupMember:mainTimeSlotGroupMembers) {
             List<TimeSlotGroupMembers> otherTimeSlotGroupMembers = lookupTimeSlotGroupMembersForOtherGroup(timeSlotGroupMembers, group);
-            if (otherTimeSlotGroupMembers.size()>0){
+            if (otherTimeSlotGroupMembers.size() > 0) {
                 for (TimeSlotGroupMembers otherTimeSlotGroupMember : otherTimeSlotGroupMembers) {
                     if (mainTimeSlotGroupMember.getTotalMembers() + otherTimeSlotGroupMember.getTotalMembers() == 4) {
                         timeSlotGroupMembersToRemove = Arrays.asList(mainTimeSlotGroupMember, otherTimeSlotGroupMember);
@@ -204,7 +207,7 @@ public class ReservationServiceImpl implements ReservationService {
                     }
 
                 }
-            }else{
+            } else {
                 timeSlotGroupMembersToRemove = Arrays.asList(mainTimeSlotGroupMember);
                 newGroupMembersByTimeSlot.put(entry.getKey(), Arrays.asList(mainTimeSlotGroupMember));
             }
@@ -298,9 +301,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
 
-    private List<Member> getRandomWeekMembers(List<Member> availableWeekMembers){
+    private List<Member> getRandomWeekMembers(List<Member> availableWeekMembers) {
         List<Member> randomMembers = new ArrayList<Member>();
-        for (int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             Random random = new Random();
             Member randomMember = availableWeekMembers.get(random.nextInt(availableWeekMembers.size()));
             randomMembers.add(randomMember);
@@ -342,7 +345,7 @@ public class ReservationServiceImpl implements ReservationService {
         Map<Week, List<WeekTimeSlot>> timeSlotsByWeek =
                 fullPeriodTimeSlotList.stream().collect(Collectors.groupingBy(WeekTimeSlot::getWeek));
 
-        for (Map.Entry<Week, List<WeekTimeSlot>> entry : timeSlotsByWeek.entrySet()) {
+        /*for (Map.Entry<Week, List<WeekTimeSlot>> entry : timeSlotsByWeek.entrySet()) {
 
             List<Member> availableWeekMembers = calculateWeeklyMembers(groupMemberList, entry.getKey(), group);
             int neededTimeSlots = availableWeekMembers.size() / 4;
@@ -356,7 +359,7 @@ public class ReservationServiceImpl implements ReservationService {
                 throw new PadelRuntimeException(PadelMessageCode.NOT_ENOUGH_TIMESLOTS, paramMap);
             }
             entry.setValue(entry.getValue().subList(0, (availableWeekMembers.size() / 4)));
-        }
+        }*/
 
         TreeMap<Week, List<WeekTimeSlot>> sortedTimeSlotsByWeek = new TreeMap<>(timeSlotsByWeek);
 
@@ -372,7 +375,7 @@ public class ReservationServiceImpl implements ReservationService {
         TemporalField weekOfYear
                 = weekFields.weekOfYear();
         int yearWeekNr = sunday.get(weekOfYear);
-        List<CourtTimeSlot> courtTimeSlotList = null;
+        List<CourtTimeSlot> courtTimeSlotList = new ArrayList<CourtTimeSlot>();
         for (Map.Entry<Week, List<CourtTimeSlot>> entry : courtTimeSlotListByWeek.entrySet()) {
             if (entry.getKey().getWeekOfYear().equals(yearWeekNr)) {
                 courtTimeSlotList = entry.getValue();
@@ -421,6 +424,7 @@ public class ReservationServiceImpl implements ReservationService {
         Set<WeekPlanning> weekPlanningList = new TreeSet<WeekPlanning>();
         for (Map.Entry<Week, List<Reservation>> entry : reservationsByWeek.entrySet()) {
             WeekPlanning weekPlanning = new WeekPlanning();
+            weekPlanning.setGroup(group);
             weekPlanning.setWeek(entry.getKey());
             weekPlanning.setReservationList(entry.getValue());
             List<Member> reserveList = entry.getValue().stream().flatMap(Reservation.Functions.TO_RESERVE_MEMBERS).distinct().collect(Collectors.toList());
@@ -510,8 +514,8 @@ public class ReservationServiceImpl implements ReservationService {
                 } else {
                     reservationsToBeCreated.add(reservation);
                 }
-                reservationsToBeCreated.add(reservation);
-                if (validateMemberOverBooking){
+
+                if (validateMemberOverBooking) {
                     for (Member reservationMember : reservation.getReservationMembers()) {
                         List<Reservation> weekMemberReservations = findReservationsForPeriodAndMember(weekPlanning.getWeek().getStartWeekDay(), weekPlanning.getWeek().getEndWeekDay(), reservationMember);
                         if (!CollectionUtils.isEmpty(weekMemberReservations)) {
@@ -565,11 +569,34 @@ public class ReservationServiceImpl implements ReservationService {
                 update(reservation);
             }
         });
+        storeWeeklyReserves(weekPlannings);
     }
+
+    private void storeWeeklyReserves(Set<WeekPlanning> weekPlannings) {
+
+        weekPlannings.stream().forEach(new Consumer<WeekPlanning>() {
+            @Override
+            public void accept(WeekPlanning weekPlanning) {
+                weekPlanning.getReserveList().stream().forEach(new Consumer<Member>() {
+                    @Override
+                    public void accept(Member member) {
+                        for (Reservation reservation:weekPlanning.getReservationList()){
+                            WeeklyReserve weeklyReserve = new WeeklyReserveBuilder().setReservation(reservation).setWeekNr(weekPlanning.getWeek().getWeekOfYear()).setYear(weekPlanning.getWeek().getYear()).setGroup(weekPlanning.getGroup()).setMember(member).build();
+                            dataStore.create(weeklyReserve);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+
+
 
     @Override
     public Reservation findReservationForPeriodAndCourtTimeSlot(LocalDate localdate, CourtTimeSlot courtTimeSlot) {
-        Reservation reservation = dataStore.findReservation(courtTimeSlot,localdate);
+        Reservation reservation = dataStore.findReservation(courtTimeSlot, localdate);
         return reservation;
     }
 

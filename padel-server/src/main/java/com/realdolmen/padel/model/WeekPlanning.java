@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 public class WeekPlanning implements Comparable<WeekPlanning> {
     private Week week;
+    private Group group;
     public List<Reservation> reservationList;
     public List<Member> reserveList;
 
@@ -34,6 +35,15 @@ public class WeekPlanning implements Comparable<WeekPlanning> {
 
     public void setWeek(Week week) {
         this.week = week;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public WeekPlanning setGroup(Group group) {
+        this.group = group;
+        return this;
     }
 
     @Override

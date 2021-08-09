@@ -31,7 +31,9 @@
                             "src/styles/styles.scss",
                             "./node_modules/ngx-toastr/toastr.css",
                             "./node_modules/ag-grid-community/dist/styles/ag-grid.css",
-                            "./node_modules/ag-grid-community/dist/styles/ag-theme-blue.css"
+                            "./node_modules/ag-grid-community/dist/styles/ag-theme-alpine-dark.css",
+                            "./node_modules/ag-grid-community/dist/styles/ag-theme-dark.css",
+                            "./node_modules/ag-grid-community/dist/styles/ag-theme-material.css"
                         ],
                         "stylePreprocessorOptions": {
                             "includePaths": [
