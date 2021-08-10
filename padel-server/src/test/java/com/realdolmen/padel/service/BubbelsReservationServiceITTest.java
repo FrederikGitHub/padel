@@ -1,9 +1,12 @@
 package com.realdolmen.padel.service;
 
+import com.realdolmen.padel.data.BubbelsInMemoryDataStore;
 import com.realdolmen.padel.data.DataStore;
+import com.realdolmen.padel.data.MysqlDatabaseStore;
 import com.realdolmen.padel.model.*;
 import com.realdolmen.padel.model.builder.CourtTimeSlotBuilder;
 import com.realdolmen.padel.model.builder.WeekBuilder;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -20,6 +25,7 @@ import java.util.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Ignore
 public class BubbelsReservationServiceITTest {
 
     private static final Logger logger = LoggerFactory.getLogger(BubbelsReservationServiceITTest.class);
@@ -422,6 +428,43 @@ public class BubbelsReservationServiceITTest {
 
 
 
+
+
+    }
+
+    @TestConfiguration
+    static class ReservationServiceImplTestContextConfiguration {
+
+        @Bean
+        public ReservationService reservationService() {
+            return new ReservationServiceImpl();
+        }
+
+        @Bean
+        //@Bean("InMemoryMemberService")
+        public MemberService memberService() {
+            return new MemberServiceImpl();
+        }
+
+
+        //        @Bean("InMemoryCourtService")
+        @Bean
+        public CourtService courtService() {
+            return new CourtServiceImpl();
+        }
+
+        @Bean
+        public GroupService groupService() {
+            return new GroupServiceImpl();
+        }
+
+
+
+
+        @Bean
+        public DataStore dataSource() {
+            return new MysqlDatabaseStore();
+        }
 
 
     }

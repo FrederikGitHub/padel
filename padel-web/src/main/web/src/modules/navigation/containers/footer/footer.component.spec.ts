@@ -45,6 +45,6 @@ describe('FooterComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-footer')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('app-footer')).toEqual(jasmine.anything());
     });
 });

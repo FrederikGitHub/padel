@@ -258,7 +258,7 @@ public class MysqlDatabaseStore implements DataStore {
     @Override
     public void update(Reservation reservation) {
         ReservationEntity reservationEntity = reservationDao.findReservationById(reservation.getId());
-        reservationDao.delete(reservationEntity);
+        reservationDao.save(reservationEntity);
     }
 
     @Override

@@ -271,7 +271,10 @@ public class Member implements Comparable<Member> {
             return new Predicate<Member>() {
                 @Override
                 public boolean test(Member member) {
-                    return member.getGroupAvailabilityList().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
+                    if (!CollectionUtils.isEmpty(member.getGroupAvailabilityList())){
+                        return member.getGroupAvailabilityList().stream().map(GroupAvailability::getGroup).anyMatch(Group.Predicates.withGroupName(groupName));
+                    }
+                    return false;
                 }
             };
         }

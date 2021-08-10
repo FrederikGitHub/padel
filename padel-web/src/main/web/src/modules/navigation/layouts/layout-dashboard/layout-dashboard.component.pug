@@ -1,8 +1,8 @@
-span([ngClass]='{"sb-nav-fixed": !static}')
-    sb-top-nav
+span([ngClass]='{"app-nav-fixed": !static}')
+    app-top-nav
     #layoutSidenav
         #layoutSidenav_nav
-            sb-side-nav(
+            app-side-nav(
                 [sidenavStyle]='sidenavStyle',
                 [sideNavItems]='sideNavItems',
                 [sideNavSections]='sideNavSections'
@@ -11,4 +11,4 @@ span([ngClass]='{"sb-nav-fixed": !static}')
             main
                 .container-fluid
                     ng-content
-            sb-footer
+            app-footer
