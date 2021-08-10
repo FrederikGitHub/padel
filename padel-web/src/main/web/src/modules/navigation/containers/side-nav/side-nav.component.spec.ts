@@ -9,7 +9,7 @@ import { SideNavComponent } from './side-nav.component';
 
 @Component({
     template: `
-        <sb-side-nav [someInput]="someInput" (someFunction)="someFunction($event)"></sb-side-nav>
+        <app-side-nav [someInput]="someInput" (someFunction)="someFunction($event)"></app-side-nav>
     `,
 })
 class TestHostComponent {

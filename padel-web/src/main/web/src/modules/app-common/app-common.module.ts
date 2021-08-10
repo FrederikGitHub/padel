@@ -1,14 +1,10 @@
 /* tslint:disable: ordered-imports*/
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 
 /* Third Party */
-import {NgbDateParserFormatter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { IconsModule } from '@modules/icons/icons.module';
-
-const thirdParty = [IconsModule, NgbModule];
-
+import {IconsModule} from '@modules/icons/icons.module';
 /* Containers */
 import * as appCommonContainers from './containers';
 
@@ -19,19 +15,21 @@ import * as appCommonComponents from './components';
 import * as appCommonGuards from './guards';
 
 import * as appCommonPipes from './pipes';
+import {CallbackPipe} from './pipes';
 
 
 /* Services */
 import * as appCommonServices from './services';
 import * as authServices from '@modules/auth/services';
-import {CallbackPipe} from "./pipes";
-import {NgbDateCustomParserFormatter} from "@common/services/custom-date-formatter-parser.service";
 import {EffectsModule} from "@ngrx/effects";
 import {CommonEffects} from "@common/effects/common.effects";
 
+const thirdParty = [IconsModule];
+
+
 @NgModule({
-    imports: [CommonModule,NgbModule, RouterModule, ...thirdParty,EffectsModule.forFeature([CommonEffects])],
-    providers: [{provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},...appCommonServices.services, ...authServices.services, ...appCommonGuards.guards,...appCommonPipes.pipes],
+    imports: [CommonModule,RouterModule, ...thirdParty,EffectsModule.forFeature([CommonEffects])],
+    providers: [...appCommonServices.services, ...authServices.services, ...appCommonGuards.guards,...appCommonPipes.pipes],
     declarations: [...appCommonContainers.containers, ...appCommonComponents.components, CallbackPipe],
     exports: [...appCommonContainers.containers, ...appCommonComponents.components, ...thirdParty, CallbackPipe],
 })

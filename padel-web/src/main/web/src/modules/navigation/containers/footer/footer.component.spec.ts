@@ -6,7 +6,7 @@ import { FooterComponent } from './footer.component';
 
 @Component({
     template: `
-        <sb-footer [someInput]="someInput" (someFunction)="someFunction($event)"></sb-footer>
+        <app-footer [someInput]="someInput" (someFunction)="someFunction($event)"></app-footer>
     `,
 })
 class TestHostComponent {

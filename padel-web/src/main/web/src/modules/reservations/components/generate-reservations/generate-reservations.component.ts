@@ -2,7 +2,9 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
     Component,
-    EventEmitter, Inject, LOCALE_ID,
+    EventEmitter,
+    Inject,
+    LOCALE_ID,
     OnChanges,
     OnInit,
     Output,
@@ -13,12 +15,11 @@ import {CourtTimeSlot, Group, Member, PlanningRequest, Week} from "@common/model
 import {ActivatedRoute, Router} from "@angular/router";
 import {RouteData} from "@common/services/route-data.service";
 import {ToastrService} from "ngx-toastr";
-import moment, {now} from 'moment';
+import moment from 'moment';
 import {Moment} from "moment/moment";
 import {combineLatest, Observable, of} from "rxjs";
 import {map} from "rxjs/operators";
 import {DateUtils} from "@common/utils/DateUtils";
-import {NgbDate} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -41,9 +42,9 @@ export class GenerateReservationsComponent implements OnInit, OnChanges, AfterVi
     weeks: Week[] = [];
 
 
-    isFromDateDisabled = (date: NgbDate, current: {month: number}) => new Date(date.year,date.month-1,date.day).getDay() === 2 ||  new Date(date.year,date.month-1,date.day).getDay() === 3 || new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 5 ||  new Date(date.year,date.month-1,date.day).getDay() === 6 ||  new Date(date.year,date.month-1,date.day).getDay() === 0;
+    //isFromDateDisabled = (date: NgbDate, current: {month: number}) => new Date(date.year,date.month-1,date.day).getDay() === 2 ||  new Date(date.year,date.month-1,date.day).getDay() === 3 || new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 5 ||  new Date(date.year,date.month-1,date.day).getDay() === 6 ||  new Date(date.year,date.month-1,date.day).getDay() === 0;
 
-    isToDateDisabled = (date: NgbDate, current: {month: number}) => new Date(date.year,date.month-1,date.day).getDay() === 1 ||  new Date(date.year,date.month-1,date.day).getDay() === 2 || new Date(date.year,date.month-1,date.day).getDay() === 3 ||  new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 5 ||  new Date(date.year,date.month-1,date.day).getDay() === 6;
+    //isToDateDisabled = (date: NgbDate, current: {month: number}) => new Date(date.year,date.month-1,date.day).getDay() === 1 ||  new Date(date.year,date.month-1,date.day).getDay() === 2 || new Date(date.year,date.month-1,date.day).getDay() === 3 ||  new Date(date.year,date.month-1,date.day).getDay() === 4 ||  new Date(date.year,date.month-1,date.day).getDay() === 5 ||  new Date(date.year,date.month-1,date.day).getDay() === 6;
 
     constructor(
         @Inject(LOCALE_ID) public locale: string,private toastrService: ToastrService, private routeData: RouteData, private cd: ChangeDetectorRef, private route: ActivatedRoute, private router: Router, private fb: FormBuilder

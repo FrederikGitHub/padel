@@ -22,7 +22,6 @@ import {EffectsModule} from "@ngrx/effects";
 import {ReservationEffects} from "@modules/reservations/effects/reservation.effects";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MaterialModule} from "@modules/material/material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 
@@ -38,7 +37,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
         MatIconModule,
         MatInputModule,
         MatListModule,
-        NgbModule,
         MatDatepickerModule,
         MatNativeDateModule,
         MatGridListModule,

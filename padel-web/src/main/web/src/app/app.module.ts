@@ -9,7 +9,6 @@ import {metaReducers, reducers} from "@app/reducers";
 import {EffectsModule} from "@ngrx/effects";
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {NgBootstrapFormValidationModule} from "ng-bootstrap-form-validation";
 import {MaterialModule} from "@modules/material/material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 
@@ -23,7 +22,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
         HttpClientModule,
         AppCommonModule,
         ToastrModule.forRoot(),
-        NgBootstrapFormValidationModule.forRoot(),
         FlexLayoutModule,
         StoreModule.forRoot(reducers, {metaReducers, runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true }}),
         EffectsModule.forRoot([]),

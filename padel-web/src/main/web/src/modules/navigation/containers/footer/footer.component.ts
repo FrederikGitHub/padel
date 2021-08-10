@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sb-footer',
+    selector: 'app-footer',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './footer.component.html',
     styleUrls: ['footer.component.scss'],
@@ -9,4 +9,5 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
     constructor() {}
     ngOnInit() {}
+
 }
