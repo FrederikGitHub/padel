@@ -27,6 +27,7 @@ public class HibernateAvailabilityDaoITTest {
     @Test
     @Transactional
     @Rollback(true)
+    @Ignore
     public void testCrudAvailabilityTable() {
         AvailabilityEntity availabilityEntity = new AvailabilityEntity();
         availabilityEntity.setWeekNumbers("1,2,3,4,5");

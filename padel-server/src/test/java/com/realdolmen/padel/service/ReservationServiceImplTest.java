@@ -123,7 +123,8 @@ public class ReservationServiceImplTest {
     }
 
 
-    @Test
+    //@Test
+    @Ignore
     public void generateWeekPlanningTest() {
 
         //weekly timeslots by group

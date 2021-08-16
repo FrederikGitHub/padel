@@ -1,10 +1,8 @@
 package com.realdolmen.padel.service;
 
-import com.realdolmen.padel.data.BubbelsInMemoryDataStore;
 import com.realdolmen.padel.data.DataStore;
 import com.realdolmen.padel.data.MysqlDatabaseStore;
 import com.realdolmen.padel.model.*;
-import com.realdolmen.padel.model.builder.CourtTimeSlotBuilder;
 import com.realdolmen.padel.model.builder.WeekBuilder;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
@@ -186,7 +184,8 @@ public class BubbelsReservationServiceITTest {
     }
 
 
-    @Test
+    //@Test
+    @Ignore
     public void generateWeekPlanningBubbelsITTest() {
 
         WeekPlanningDisplay weekPlanningDisplay = new WeekPlanningDisplay();
