@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="nl-BE" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="da92ec9971a8e77687e9b3ad011f612e6bc7b1b5" datatype="html">
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;sb-nav-link-icon&quot; *ngIf=&quot;sideNavItem.icon&quot;&gt;"/><x id="START_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;fa-icon [icon]=&apos;[&quot;fas&quot;, sideNavItem.icon]&apos;&gt;"/><x id="CLOSE_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;/fa-icon&gt;"/><x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> <x id="ICU" equiv-text="{sideNavItem.text, select, Dashboard {Dashboard} Leden {Leden} Groepen {Groepen} Timeslots {Timeslots} Terreinen {Terreinen}}"/> <x id="START_TAG_DIV_1" ctype="x-div_1" equiv-text="&lt;div class=&quot;sb-sidenav-collapse-arrow&quot;&gt;"/><x id="START_TAG_FA_ICON_1" ctype="x-fa_icon_1" equiv-text="&lt;fa-icon class=&quot;ml-auto&quot; *ngIf=&quot;sideNavItem.submenu&quot; [icon]=&quot;[&apos;fas&apos;, &apos;angle-down&apos;]&quot;&gt;"/><x id="CLOSE_TAG_FA_ICON" ctype="x-fa_icon" equiv-text="&lt;/fa-icon&gt;"/><x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/modules/navigation/components/side-nav-item/side-nav-item.component.html</context>
+          <context context-type="linenumber">2,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ebb34ee5a2968d9b3d5588f336dcd4c3d12e4e4c" datatype="html">
+        <source>{VAR_SELECT, select, Dashboard {Dashboard} Leden {Leden} Groepen {Groepen} Timeslots {Timeslots} Terreinen {Terreinen}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/modules/navigation/components/side-nav-item/side-nav-item.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1d4ca9277b46631b4d708e59067bc6366aeb326c" datatype="html">
+        <source>{VAR_SELECT, select, CORE {CORE} ADMIN {ADMIN} RESERVATIES {RESERVATIES} STATISTIEKEN {STATISTIEKEN}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/modules/navigation/containers/side-nav/side-nav.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="clubHeader" datatype="html">
+        <source>Padel Lierde</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/modules/navigation/containers/top-nav/top-nav.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <note priority="1" from="description">Club name header text</note>
+        <note priority="1" from="meaning">Club name header</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

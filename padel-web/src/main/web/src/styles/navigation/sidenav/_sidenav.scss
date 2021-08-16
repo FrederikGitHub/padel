@@ -31,7 +31,7 @@
           transition: transform 0.15s ease;
         }
         &.collapsed {
-          .sb-sidenav-collapse-arrow {
+          .app-sidenav-collapse-arrow {
             transform: rotate(-90deg);
           }
         }
